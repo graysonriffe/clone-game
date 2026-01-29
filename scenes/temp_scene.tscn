@@ -18,6 +18,7 @@ glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wcc6p"]
 albedo_texture = ExtResource("1_mx0yr")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 texture_filter = 5
 
@@ -34,7 +35,7 @@ shadow_enabled = true
 [node name="Floor" type="CSGBox3D" parent="." unique_id=464194791]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 use_collision = true
-size = Vector3(10, 0.5, 10)
+size = Vector3(20, 0.5, 20)
 material = SubResource("StandardMaterial3D_wcc6p")
 
 [node name="Player" parent="." unique_id=1898398498 instance=ExtResource("1_2k85p")]
