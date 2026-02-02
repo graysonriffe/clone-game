@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cpc6elf4acfbl" path="res://scenes/player.tscn" id="1_2k85p"]
 [ext_resource type="Texture2D" uid="uid://8bru68q3vq0n" path="res://icon.svg" id="1_mx0yr"]
+[ext_resource type="PackedScene" uid="uid://dmgudqgytltyu" path="res://scenes/in_game_ui.tscn" id="3_wcc6p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_77iqg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -39,3 +40,7 @@ size = Vector3(20, 0.5, 20)
 material = SubResource("StandardMaterial3D_wcc6p")
 
 [node name="Player" parent="." unique_id=1898398498 instance=ExtResource("1_2k85p")]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1645088656]
+
+[node name="InGameUI" parent="UI" unique_id=1503801790 instance=ExtResource("3_wcc6p")]
