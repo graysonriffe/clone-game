@@ -2,14 +2,17 @@
 class_name CloneData
 extends Resource
 
-## A vector of Input.getVector Vector2s from player inputs on physics frames
-var recordedMovement: Array[Vector2]
+# The initial position of the clone when time starts
+@export var initialPosition: Vector3
 
-## A vector of pitch and yaw pairs of the player's camera view on physics frames
-var recordedLookVectors: Array[Vector2]
+# A vector of Input.getVector Vector2s from player inputs on physics frames
+@export var recordedMovement: Array[Vector2]
 
-## A vector of the state of the jump button on physics frames
-var recordedJumpButton: Array[bool]
+# A vector of pitch and yaw pairs of the player's camera view on physics frames
+@export var recordedLookVectors: Array[Vector2]
+
+# A vector of the state of the jump button on physics frames
+@export var recordedJumpButton: Array[bool]
 
 func getRecordSize() -> int:
     return recordedMovement.size()
@@ -20,6 +23,7 @@ func getNextTimeIndex(prevIndex: int) -> int:
 
 
 func clear():
+    initialPosition = Vector3.ZERO
     recordedMovement.clear()
     recordedLookVectors.clear()
     recordedJumpButton.clear()

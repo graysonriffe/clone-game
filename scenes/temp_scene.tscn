@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://ca08rf6sfv4gl"]
 
-[ext_resource type="PackedScene" uid="uid://cpc6elf4acfbl" path="res://scenes/player.tscn" id="1_2k85p"]
 [ext_resource type="Texture2D" uid="uid://8bru68q3vq0n" path="res://icon.svg" id="1_mx0yr"]
+[ext_resource type="PackedScene" uid="uid://dxtr6nj2d74pw" path="res://scenes/actor/player.tscn" id="2_wcc6p"]
 [ext_resource type="PackedScene" uid="uid://dmgudqgytltyu" path="res://scenes/in_game_ui.tscn" id="3_wcc6p"]
+[ext_resource type="PackedScene" uid="uid://ded35j6ke5hqj" path="res://scenes/actor/clone.tscn" id="4_6t3sc"]
+[ext_resource type="Resource" uid="uid://cy25h7ppx1ksl" path="res://temp_clone_data1.tres" id="5_uowj7"]
+[ext_resource type="Resource" uid="uid://cxch8r12cc8av" path="res://temp_clone_data2.tres" id="6_svxr5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_77iqg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -39,7 +42,13 @@ use_collision = true
 size = Vector3(20, 0.5, 20)
 material = SubResource("StandardMaterial3D_wcc6p")
 
-[node name="Player" parent="." unique_id=1898398498 instance=ExtResource("1_2k85p")]
+[node name="Player" parent="." unique_id=2013142565 instance=ExtResource("2_wcc6p")]
+
+[node name="Clone" parent="." unique_id=1415147154 instance=ExtResource("4_6t3sc")]
+cloneData = ExtResource("5_uowj7")
+
+[node name="Clone2" parent="." unique_id=856139792 instance=ExtResource("4_6t3sc")]
+cloneData = ExtResource("6_svxr5")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1645088656]
 

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dxtr6nj2d74pw"]
+
+[ext_resource type="PackedScene" uid="uid://gccqsvfgoywy" path="res://scenes/actor/actor.tscn" id="1_4ykpa"]
+[ext_resource type="Script" uid="uid://dkdsm0hbdflds" path="res://scripts/actor/Player.gd" id="2_xw35t"]
+[ext_resource type="Resource" uid="uid://2r148w3vvjpm" path="res://temp_clone_data2.tres" id="3_pm1wa"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ykpa"]
+size = Vector3(0.155, 0.295, 0.03)
+
+[node name="Player" unique_id=2013142565 instance=ExtResource("1_4ykpa")]
+script = ExtResource("2_xw35t")
+recordingCloneData = ExtResource("3_pm1wa")
+
+[node name="Head" parent="." index="1" unique_id=1119388618]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2441926, 0)
+
+[node name="Eyes" type="Node3D" parent="Head" index="0" unique_id=1374983330]
+
+[node name="Camera3D" type="Camera3D" parent="Head/Eyes" index="0" unique_id=1414241960]
+
+[node name="RemotePlaceholder" type="MeshInstance3D" parent="Head/Eyes/Camera3D" index="0" unique_id=2016422659]
+transform = Transform3D(0.9661918, 0, -0.25782424, 0, 1, 0, 0.25782424, 0, 0.9661918, 0.22479576, -0.28949738, -0.3525328)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_4ykpa")
