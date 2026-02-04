@@ -14,6 +14,7 @@ var recordingCurrently: bool
 @export var recordingCloneData: CloneData
 
 @onready var eyes: Node3D = $Head/Eyes
+@onready var remotePlaceholder: MeshInstance3D = $Head/Eyes/Camera3D/ViewModel/RemotePlaceholder
 
 @onready var statusLabel: Label = get_tree().root.find_child("StatusLabel", true, false)
 
@@ -44,9 +45,13 @@ func _physics_process(delta: float) -> void:
         headBobbingVector = Vector2(sin(headBobbingTheta / 2) + 0.5, sin(headBobbingTheta))
         eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * 0.1, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * 0.05, 10.0 * delta)
+        remotePlaceholder.position.x = lerp(remotePlaceholder.position.x, headBobbingVector.x * 0.01, 10.0 * delta)
+        remotePlaceholder.position.y = lerp(remotePlaceholder.position.y, headBobbingVector.y * 0.005, 10.0 * delta)
     else:
         eyes.position.x = lerp(eyes.position.x, 0.0, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, 0.0, 10.0 * delta)
+        remotePlaceholder.position.x = lerp(remotePlaceholder.position.x, 0.0, 10.0 * delta)
+        remotePlaceholder.position.y = lerp(remotePlaceholder.position.y, 0.0, 10.0 * delta)
         headBobbingTheta = 0.0
     
     super(delta)

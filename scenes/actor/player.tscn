@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://gccqsvfgoywy" path="res://scenes/actor/actor.tscn" id="1_4ykpa"]
 [ext_resource type="Script" uid="uid://dkdsm0hbdflds" path="res://scripts/actor/Player.gd" id="2_xw35t"]
-[ext_resource type="Resource" uid="uid://2r148w3vvjpm" path="res://temp_clone_data2.tres" id="3_pm1wa"]
+[ext_resource type="Resource" uid="uid://cxch8r12cc8av" path="res://temp_clone_data2.tres" id="3_pm1wa"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4ykpa"]
 size = Vector3(0.155, 0.295, 0.03)
@@ -18,7 +18,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2441926, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head/Eyes" index="0" unique_id=1414241960]
 
-[node name="RemotePlaceholder" type="MeshInstance3D" parent="Head/Eyes/Camera3D" index="0" unique_id=2016422659]
-transform = Transform3D(0.9661918, 0, -0.25782424, 0, 1, 0, 0.25782424, 0, 0.9661918, 0.22479576, -0.28949738, -0.3525328)
+[node name="ViewModel" type="Node3D" parent="Head/Eyes/Camera3D" index="0" unique_id=1417994956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.225, -0.289, -0.353)
+
+[node name="RemotePlaceholder" type="MeshInstance3D" parent="Head/Eyes/Camera3D/ViewModel" index="0" unique_id=2016422659]
+transform = Transform3D(0.9661918, 0, -0.25782424, 0, 1, 0, 0.25782424, 0, 0.9661918, -0.00020423532, -0.00049734116, 0.0004671812)
 cast_shadow = 0
 mesh = SubResource("BoxMesh_4ykpa")
