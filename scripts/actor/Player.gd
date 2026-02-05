@@ -14,7 +14,7 @@ var recordingCurrently: bool
 var recordingCloneData: CloneData
 
 @onready var eyes: Node3D = $Head/Eyes
-@onready var remotePlaceholder: MeshInstance3D = $Head/Eyes/Camera3D/ViewModel/RemotePlaceholder
+@onready var viewModel: Node3D = $Head/Eyes/Camera3D/ViewModel
 
 @onready var statusLabel: Label = get_tree().root.find_child("StatusLabel", true, false)
 
@@ -40,19 +40,21 @@ func _physics_process(delta: float) -> void:
         jump()
     
     # Do headbobbing when walking, and reset when not
-    if velocity.length() > 0.1:
+    if velocity.length() > 2.0:
         headBobbingTheta += 14.0 * delta
         headBobbingVector = Vector2(sin(headBobbingTheta / 2) + 0.5, sin(headBobbingTheta))
         eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * 0.1, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * 0.05, 10.0 * delta)
-        remotePlaceholder.position.x = lerp(remotePlaceholder.position.x, headBobbingVector.x * 0.01, 10.0 * delta)
-        remotePlaceholder.position.y = lerp(remotePlaceholder.position.y, headBobbingVector.y * 0.005, 10.0 * delta)
+        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * 0.01, 10.0 * delta)
+        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * 0.005, 10.0 * delta)
     else:
         eyes.position.x = lerp(eyes.position.x, 0.0, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, 0.0, 10.0 * delta)
-        remotePlaceholder.position.x = lerp(remotePlaceholder.position.x, 0.0, 10.0 * delta)
-        remotePlaceholder.position.y = lerp(remotePlaceholder.position.y, 0.0, 10.0 * delta)
         headBobbingTheta = 0.0
+    
+    # View model bobbing and sway - always tend toward home position
+    viewModel.position.x = lerp(viewModel.position.x, 0.0, 5.0 * delta)
+    viewModel.position.y = lerp(viewModel.position.y, 0.0, 5.0 * delta)
     
     super(delta)
 
@@ -73,13 +75,27 @@ func _unhandled_input(event: InputEvent) -> void:
             rotate_y(-deg_to_rad(event.relative.x * MOUSE_SENSITIVITY))
             head.rotate_x(-deg_to_rad(event.relative.y * MOUSE_SENSITIVITY))
             head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+            
+            # View model sway
+            viewModel.position.x -= event.relative.x * 1e-4
+            viewModel.position.y += event.relative.y * 1e-4
     
-    if event.is_action_released("record_clone"):
-        if recordingCurrently == false:
+    if event.is_action_released("time_play_and_stop") and not recordingCurrently:
+        toggleTime()
+    
+    if (
+        event.is_action_released("record_clone")
+        and ((not timePassing and is_on_floor())
+        or recordingCurrently)
+    ):
+        recordingCurrently = not recordingCurrently
+        
+        if recordingCurrently == true:
             recordingCloneData.clear()
             recordingCloneData.initialPosition = position
+            toggleTime()
         else:
-            #ResourceSaver.save(recordingCloneData)
+            toggleTime()
             var scene: Node3D = get_parent()
             var cloneScene: PackedScene = load("res://scenes/actor/clone.tscn")
             var newClone: Clone = cloneScene.instantiate()
@@ -87,11 +103,9 @@ func _unhandled_input(event: InputEvent) -> void:
             recordingCloneData = CloneData.new()
             scene.add_child(newClone)
         
-        recordingCurrently = not recordingCurrently
-        
         statusLabel.text = "Status: Recording" if recordingCurrently else "Status: Time Stopped"
     
-    if event.is_action_released("delete_all_clones"):
+    if event.is_action_released("delete_all_clones") and not timePassing:
         var sceneChildren = get_parent().get_children()
         for child in sceneChildren:
             if child is Clone:
@@ -100,3 +114,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _getInputDirection() -> Vector2:
     return Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+
+
+func toggleTime():
+    timePassing = not timePassing
+    var sceneChildren = get_parent().get_children()
+    for child in sceneChildren:
+        if child is Clone:
+            child.timePassing = timePassing
+        
+    if timePassing == false:
+        for child in sceneChildren:
+            if child is Clone:
+                child.reset()
+    
+    statusLabel.text = "Status: Time Passing" if timePassing else "Status: Time Stopped"

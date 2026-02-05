@@ -2,21 +2,20 @@
 class_name Clone
 extends Actor
 
+var shouldReset: bool
+
 # The CloneData that describes the clone's movements
 @export var cloneData: CloneData
 
-# Time variables
-var timePassing: bool
-var timeIndex: int
-
-@onready var statusLabel: Label = get_tree().root.find_child("StatusLabel", true, false)
-
 func _ready() -> void:
-    timePassing = false
-    reset()
+    shouldReset = true
 
 
 func _physics_process(delta: float) -> void:
+    if shouldReset:
+        reset()
+        shouldReset = false
+    
     # Set the look vector if time is passing
     if timePassing:
         var nextLookVector: Vector2 = cloneData.getLookVector(timeIndex)
@@ -31,15 +30,6 @@ func _physics_process(delta: float) -> void:
     if timePassing:
         timeIndex = cloneData.getNextTimeIndex(timeIndex)
 
-
-func _unhandled_input(event: InputEvent) -> void:
-    if event.is_action_released("time_play_and_stop"):
-        if timePassing == true:
-            reset()
-        
-        timePassing = not timePassing
-        
-        statusLabel.text = "Status: Time Passing" if timePassing else "Status: Time Stopped"
 
 
 func _getInputDirection() -> Vector2:

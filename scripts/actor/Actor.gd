@@ -8,6 +8,10 @@ const JUMP_VELOCITY = 4.5
 
 var movementDirectionSmoothed: Vector3
 
+# Time variables
+var timePassing: bool
+var timeIndex: int
+
 @onready var head: Node3D = $Head
 
 func _physics_process(delta: float) -> void:
