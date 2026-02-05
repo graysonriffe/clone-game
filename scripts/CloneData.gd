@@ -19,7 +19,7 @@ func getRecordSize() -> int:
 
 
 func getNextTimeIndex(prevIndex: int) -> int:
-    return 0 if prevIndex + 1 >= getRecordSize() else prevIndex + 1
+    return -1 if prevIndex + 1 >= getRecordSize()  or prevIndex == -1 else prevIndex + 1
 
 
 func clear():
@@ -34,6 +34,9 @@ func pushBackMovementVector(vec: Vector2):
 
 
 func getMovementVector(index: int) -> Vector2:
+    if index == -1:
+        return Vector2.ZERO
+    
     return recordedMovement[index]
 
 
@@ -42,6 +45,9 @@ func pushBackLookVector(vec: Vector2):
 
 
 func getLookVector(index: int) -> Vector2:
+    if index == -1:
+        return recordedLookVectors[getRecordSize() - 1]
+    
     return recordedLookVectors[index]
 
 
@@ -50,4 +56,7 @@ func pushBackJump(jump: bool):
 
 
 func getJumpButton(index: int) -> bool:
+    if index == -1:
+        return false
+    
     return recordedJumpButton[index]

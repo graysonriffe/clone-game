@@ -30,10 +30,6 @@ func _physics_process(delta: float) -> void:
     
     if timePassing:
         timeIndex = cloneData.getNextTimeIndex(timeIndex)
-        
-        # Temporarily loop the clones
-        if timeIndex == 0:
-            reset()
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -2,14 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://gccqsvfgoywy" path="res://scenes/actor/actor.tscn" id="1_4ykpa"]
 [ext_resource type="Script" uid="uid://dkdsm0hbdflds" path="res://scripts/actor/Player.gd" id="2_xw35t"]
-[ext_resource type="Resource" uid="uid://cxch8r12cc8av" path="res://temp_clone_data2.tres" id="3_pm1wa"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4ykpa"]
 size = Vector3(0.155, 0.295, 0.03)
 
 [node name="Player" unique_id=2013142565 instance=ExtResource("1_4ykpa")]
 script = ExtResource("2_xw35t")
-recordingCloneData = ExtResource("3_pm1wa")
 
 [node name="Head" parent="." index="1" unique_id=1119388618]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2441926, 0)

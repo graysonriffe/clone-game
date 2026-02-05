@@ -11,7 +11,7 @@ var headBobbingTheta: float
 
 # Recording variables
 var recordingCurrently: bool
-@export var recordingCloneData: CloneData
+var recordingCloneData: CloneData
 
 @onready var eyes: Node3D = $Head/Eyes
 @onready var remotePlaceholder: MeshInstance3D = $Head/Eyes/Camera3D/ViewModel/RemotePlaceholder
@@ -22,7 +22,7 @@ func _ready() -> void:
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
     recordingCurrently = false
-    #recordingCloneData = CloneData.new()
+    recordingCloneData = CloneData.new()
     
     statusLabel.text = "Status: Time Stopped"
 
@@ -79,11 +79,23 @@ func _unhandled_input(event: InputEvent) -> void:
             recordingCloneData.clear()
             recordingCloneData.initialPosition = position
         else:
-            ResourceSaver.save(recordingCloneData)
+            #ResourceSaver.save(recordingCloneData)
+            var scene: Node3D = get_parent()
+            var cloneScene: PackedScene = load("res://scenes/actor/clone.tscn")
+            var newClone: Clone = cloneScene.instantiate()
+            newClone.cloneData = recordingCloneData
+            recordingCloneData = CloneData.new()
+            scene.add_child(newClone)
         
         recordingCurrently = not recordingCurrently
         
         statusLabel.text = "Status: Recording" if recordingCurrently else "Status: Time Stopped"
+    
+    if event.is_action_released("delete_all_clones"):
+        var sceneChildren = get_parent().get_children()
+        for child in sceneChildren:
+            if child is Clone:
+                child.queue_free()
 
 
 func _getInputDirection() -> Vector2:
