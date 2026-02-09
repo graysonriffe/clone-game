@@ -102,6 +102,7 @@ func _unhandled_input(event: InputEvent) -> void:
             newClone.cloneData = recordingCloneData
             recordingCloneData = CloneData.new()
             scene.add_child(newClone)
+            reset_physics_interpolation()
         
         statusLabel.text = "Status: Recording" if recordingCurrently else "Status: Time Stopped"
     
@@ -111,6 +112,9 @@ func _unhandled_input(event: InputEvent) -> void:
             if child is Clone:
                 child.queue_free()
 
+func teleport(startPosition: Node3D):
+    global_transform = startPosition.global_transform
+    reset_physics_interpolation()
 
 func _getInputDirection() -> Vector2:
     return Input.get_vector("move_left", "move_right", "move_forward", "move_backward")

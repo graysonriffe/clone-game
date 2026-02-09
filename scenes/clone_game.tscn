@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bs8b0rrc2sy1n"]
+
+[ext_resource type="Script" uid="uid://cu7qupncvc5ym" path="res://scripts/CloneGame.gd" id="1_iok6x"]
+[ext_resource type="PackedScene" uid="uid://dxtr6nj2d74pw" path="res://scenes/actor/player.tscn" id="2_0ik2x"]
+[ext_resource type="PackedScene" uid="uid://dmgudqgytltyu" path="res://scenes/in_game_ui.tscn" id="2_2rhh6"]
+
+[node name="CloneGame" type="Node" unique_id=1202883684]
+script = ExtResource("1_iok6x")
+
+[node name="Player" parent="." unique_id=2013142565 instance=ExtResource("2_0ik2x")]
+
+[node name="Level" type="Node" parent="." unique_id=246810065]
+
+[node name="Clones" type="Node" parent="." unique_id=1757488074]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1472167567]
+
+[node name="InGameUI" parent="UI" unique_id=1503801790 instance=ExtResource("2_2rhh6")]

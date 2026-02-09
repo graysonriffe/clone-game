@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dwaidov0612vx"]
+
+[ext_resource type="PackedScene" uid="uid://ca08rf6sfv4gl" path="res://scenes/levels/level_template.tscn" id="1_ksju7"]
+
+[node name="Level1" unique_id=2141939930 instance=ExtResource("1_ksju7")]
+levelName = "Temp Level"

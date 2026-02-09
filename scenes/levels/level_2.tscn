@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://y866jdy5i0hb"]
+
+[ext_resource type="PackedScene" uid="uid://ca08rf6sfv4gl" path="res://scenes/levels/level_template.tscn" id="1_j2425"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j2425"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_g2h2n"]
+
+[node name="Level2" unique_id=1254966120 instance=ExtResource("1_j2425")]
+levelName = "Temp Level 2"
+
+[node name="PlayerStart" parent="." index="2" unique_id=1770252819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 5)
+
+[node name="TestPhysicsObject" type="RigidBody3D" parent="." index="4" unique_id=2117726272]
+transform = Transform3D(0.8204813, -0.3596882, -0.44433644, -0.42130655, 0.14491677, -0.8952653, 0.38640815, 0.9217503, -0.032637507, -8, 2.8106167, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TestPhysicsObject" index="0" unique_id=106557494]
+shape = SubResource("BoxShape3D_j2425")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TestPhysicsObject" index="1" unique_id=1681957986]
+mesh = SubResource("BoxMesh_g2h2n")

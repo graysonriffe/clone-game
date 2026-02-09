@@ -13,10 +13,10 @@ config_version=5
 config/name="Clone Game"
 config/description="You must create clones of yourself by recording your movements to move through and complete puzzles."
 config/version="indev"
-run/main_scene="uid://ca08rf6sfv4gl"
+run/main_scene="uid://bs8b0rrc2sy1n"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/icon.svg"
 
 [display]
 

@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://ca08rf6sfv4gl"]
 
-[ext_resource type="Texture2D" uid="uid://8bru68q3vq0n" path="res://icon.svg" id="1_mx0yr"]
-[ext_resource type="PackedScene" uid="uid://dxtr6nj2d74pw" path="res://scenes/actor/player.tscn" id="2_wcc6p"]
-[ext_resource type="PackedScene" uid="uid://dmgudqgytltyu" path="res://scenes/in_game_ui.tscn" id="3_wcc6p"]
+[ext_resource type="Script" uid="uid://c3g3qngf332hl" path="res://scripts/Level.gd" id="1_7hipx"]
+[ext_resource type="Texture2D" uid="uid://8bru68q3vq0n" path="res://assets/icon.svg" id="1_eyte8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_77iqg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -18,29 +17,28 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wcc6p"]
-albedo_texture = ExtResource("1_mx0yr")
+albedo_texture = ExtResource("1_eyte8")
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 texture_filter = 5
 
-[node name="TempScene" type="Node3D" unique_id=2141939930]
+[node name="LevelTemplate" type="Node3D" unique_id=1254966120]
+script = ExtResource("1_7hipx")
+metadata/_custom_type_script = "uid://c3g3qngf332hl"
 metadata/_edit_lock_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1694658970]
 environment = SubResource("Environment_mx0yr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=446477075]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 3, 0)
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 8.033601, 0)
 shadow_enabled = true
+
+[node name="PlayerStart" type="Marker3D" parent="." unique_id=1770252819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 
 [node name="Floor" type="CSGBox3D" parent="." unique_id=464194791]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 use_collision = true
 size = Vector3(20, 0.5, 20)
 material = SubResource("StandardMaterial3D_wcc6p")
-
-[node name="Player" parent="." unique_id=2013142565 instance=ExtResource("2_wcc6p")]
-
-[node name="UI" type="CanvasLayer" parent="." unique_id=1645088656]
-
-[node name="InGameUI" parent="UI" unique_id=1503801790 instance=ExtResource("3_wcc6p")]
