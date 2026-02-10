@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dvhccpxkdey83"]
+
+[ext_resource type="Shader" uid="uid://desisb31ax6ph" path="res://shaders/cartoony_lit.gdshader" id="1_336sd"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_336sd")
+shader_parameter/color = Color(0.16685283, 0.16685283, 0.16685283, 1)
+shader_parameter/shininess = 50.0

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b25safc7q24uv"]
+
+[ext_resource type="Material" uid="uid://uecsjv8lvon8" path="res://assets/materials/post_processing.tres" id="1_wwqff"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_6t3sc"]
+material = ExtResource("1_wwqff")
+flip_faces = true
+size = Vector2(2, 2)
+center_offset = Vector3(0, 0, 1)
+
+[node name="PostProcessingMesh" type="MeshInstance3D" unique_id=1314059824]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_6t3sc")
