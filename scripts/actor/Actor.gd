@@ -1,17 +1,19 @@
-# Actor class - Base class of Player and Clone
+# Actor class - Abstract base class of Player and Clone
 @abstract
 class_name Actor
 extends CharacterBody3D
 
+# Constants
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
+# Variables
 var movementDirectionSmoothed: Vector3
 
-# Time variables
-var timePassing: bool
+# Index into CloneData
 var timeIndex: int
 
+# onready variables
 @onready var head: Node3D = $Head
 
 func _physics_process(delta: float) -> void:
@@ -41,4 +43,5 @@ func _getInputDirection() -> Vector2
 
 
 func jump():
-    velocity.y = JUMP_VELOCITY
+    if is_on_floor():
+        velocity.y = JUMP_VELOCITY

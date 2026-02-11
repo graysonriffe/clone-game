@@ -7,6 +7,10 @@ var shouldReset: bool
 # The CloneData that describes the clone's movements
 @export var cloneData: CloneData
 
+# onready variables
+# TODO: Not a fan of how Clone accesses the timePassing variable
+@onready var cloneGame: CloneGame = get_tree().root.find_child("CloneGame", true, false)
+
 func _ready() -> void:
     shouldReset = true
 
@@ -17,7 +21,7 @@ func _physics_process(delta: float) -> void:
         shouldReset = false
     
     # Set the look vector if time is passing
-    if timePassing:
+    if cloneGame.timePassing:
         var nextLookVector: Vector2 = cloneData.getLookVector(timeIndex)
         global_rotation.y = nextLookVector.y
         head.global_rotation.x = nextLookVector.x
@@ -27,13 +31,13 @@ func _physics_process(delta: float) -> void:
     
     super(delta)
     
-    if timePassing:
+    if cloneGame.timePassing:
         timeIndex = cloneData.getNextTimeIndex(timeIndex)
 
 
 
 func _getInputDirection() -> Vector2:
-    if timePassing:
+    if cloneGame.timePassing:
         return cloneData.getMovementVector(timeIndex)
     else:
         return Vector2.ZERO

@@ -10,21 +10,18 @@ var headBobbingVector: Vector2
 var headBobbingTheta: float
 
 # Recording variables
+# TODO: Maybe move recording logic to CloneGame, but it makes sense to be here for now
 var recordingCurrently: bool
 var recordingCloneData: CloneData
 
 @onready var eyes: Node3D = $Head/Eyes
 @onready var viewModel: Node3D = $Head/Eyes/Camera3D/ViewModel
 
-@onready var statusLabel: Label = get_tree().root.find_child("StatusLabel", true, false)
-
 func _ready() -> void:
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
     recordingCurrently = false
     recordingCloneData = CloneData.new()
-    
-    statusLabel.text = "Status: Time Stopped"
 
 
 func _physics_process(delta: float) -> void:
@@ -34,10 +31,6 @@ func _physics_process(delta: float) -> void:
         var currentLookVector = Vector2(head.global_rotation.x, global_rotation.y)
         recordingCloneData.pushBackLookVector(currentLookVector)
         recordingCloneData.pushBackJump(Input.is_action_pressed("jump"))
-
-    # Handle jump.
-    if Input.is_action_just_pressed("jump") and is_on_floor():
-        jump()
     
     # Do headbobbing when walking, and reset when not
     if velocity.length() > 2.0:
@@ -80,56 +73,14 @@ func _unhandled_input(event: InputEvent) -> void:
             viewModel.position.x -= event.relative.x * 1e-4
             viewModel.position.y += event.relative.y * 1e-4
     
-    if event.is_action_released("time_play_and_stop") and not recordingCurrently:
-        toggleTime()
-    
-    if (
-        event.is_action_released("record_clone")
-        and ((not timePassing and is_on_floor())
-        or recordingCurrently)
-    ):
-        recordingCurrently = not recordingCurrently
-        
-        if recordingCurrently == true:
-            recordingCloneData.clear()
-            recordingCloneData.initialPosition = position
-            toggleTime()
-        else:
-            toggleTime()
-            var scene: Node3D = get_parent()
-            var cloneScene: PackedScene = load("res://scenes/actor/clone.tscn")
-            var newClone: Clone = cloneScene.instantiate()
-            newClone.cloneData = recordingCloneData
-            recordingCloneData = CloneData.new()
-            scene.add_child(newClone)
-            reset_physics_interpolation()
-        
-        statusLabel.text = "Status: Recording" if recordingCurrently else "Status: Time Stopped"
-    
-    if event.is_action_released("delete_all_clones") and not timePassing:
-        var sceneChildren = get_parent().get_children()
-        for child in sceneChildren:
-            if child is Clone:
-                child.queue_free()
+    if event.is_action_pressed("jump"):
+        jump()
 
-func teleport(startPosition: Node3D):
-    global_transform = startPosition.global_transform
+
+func teleport(newTransform: Transform3D):
+    global_transform = newTransform
     reset_physics_interpolation()
+
 
 func _getInputDirection() -> Vector2:
     return Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-
-
-func toggleTime():
-    timePassing = not timePassing
-    var sceneChildren = get_parent().get_children()
-    for child in sceneChildren:
-        if child is Clone:
-            child.timePassing = timePassing
-        
-    if timePassing == false:
-        for child in sceneChildren:
-            if child is Clone:
-                child.reset()
-    
-    statusLabel.text = "Status: Time Passing" if timePassing else "Status: Time Stopped"
