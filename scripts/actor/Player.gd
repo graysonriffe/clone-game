@@ -79,6 +79,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func teleport(newTransform: Transform3D):
     global_transform = newTransform
+    head.rotation = Vector3.ZERO
     reset_physics_interpolation()
 
 
