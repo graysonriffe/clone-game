@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b25safc7q24uv" path="res://scenes/post_processing_mesh.tscn" id="2_amkgp"]
 [ext_resource type="Material" uid="uid://ychntj2cs7nm" path="res://assets/materials/metal_panels.tres" id="2_cvoia"]
 [ext_resource type="PackedScene" uid="uid://dxtr6nj2d74pw" path="res://scenes/actor/player.tscn" id="2_wcc6p"]
-[ext_resource type="PackedScene" uid="uid://dmgudqgytltyu" path="res://scenes/in_game_ui.tscn" id="3_wcc6p"]
+[ext_resource type="PackedScene" uid="uid://co55g1c4uv4nw" path="res://scenes/in_game_ui.tscn" id="3_wcc6p"]
 [ext_resource type="ArrayMesh" uid="uid://cfg1404s2ajgn" path="res://assets/models/bunny.obj" id="5_amkgp"]
 [ext_resource type="Material" uid="uid://dvhccpxkdey83" path="res://assets/materials/cartoony_lit.tres" id="5_uowj7"]
 [ext_resource type="LightmapGIData" uid="uid://mch85j7d2avb" path="res://scenes/bakes/art_test_scene.lmbake" id="8_aghtr"]

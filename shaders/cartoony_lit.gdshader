@@ -4,7 +4,8 @@ render_mode ambient_light_disabled;
 uniform sampler2D albedo_color;
 uniform vec3 color : source_color;
 instance uniform vec3 instance_color : source_color = vec3(1,1,1);
-uniform float shininess;
+uniform float specular_strength = 1.0;
+uniform float shininess = 50.0;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -12,7 +13,7 @@ void vertex() {
 
 void fragment() {
 	// Called for every pixel the material is visible on.
-    ALBEDO = instance_color;
+    ALBEDO = texture(albedo_color, UV).rgb * instance_color;
     EMISSION = texture(albedo_color, UV).rgb * color * instance_color;
 }
 
@@ -33,5 +34,5 @@ void light() {
     float specular_intensity = pow(spec_dot, shininess);
 
     // Applying ATTENUATION ensures the highlight respects shadows and light distance
-    SPECULAR_LIGHT += SPECULAR_AMOUNT * step(0.5, specular_intensity) * (ATTENUATION/PI) * LIGHT_COLOR * 0.5;
+    SPECULAR_LIGHT += SPECULAR_AMOUNT * specular_strength * step(0.5, specular_intensity) * (ATTENUATION/PI) * LIGHT_COLOR * 0.5;
 }
