@@ -18,7 +18,7 @@ var enabled: bool
 @onready var collisionDetector: Area3D = $CollisionDetector
 
 # The CloneData that describes the clone's movements
-@export var cloneData: CloneData
+var cloneData: CloneData
 
 @onready var cloneGame: CloneGame = get_tree().root.find_child("CloneGame", true, false)
 

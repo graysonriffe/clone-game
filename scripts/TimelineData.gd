@@ -10,7 +10,8 @@ extends Resource
 const CLASS_RECORDED_PROPERTIES: Dictionary = {
     "Actor":            [":global_transform", "/Head:global_transform", ":velocity", ":movementDirectionSmoothed", ":isOnFloor"],
     "PhysicsObject":    [":global_transform", ":linear_velocity", ":angular_velocity"],
-    "WeightButton":     [":activated", "/AnimationPlayer:current_animation", ":animationTime"],
+    "WeightButton":     [":activated", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"],
+    "Door":             [":open", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"]
 }
 
 # To get node references, we need access to the SceneTree
@@ -20,7 +21,7 @@ var sceneTree : SceneTree
 # The inner Dictionary isn't an Array because clones will not have data starting at timeIndex of 0.
 # They are necessarily created after some time has passed, so a Dictionary prevents
 # needless memory usage.
-@export var data: Dictionary[NodePath, Dictionary]
+var data: Dictionary[NodePath, Dictionary]
 
 # Register either the Player or a newly, created Clone
 func registerActor(actor: Actor):

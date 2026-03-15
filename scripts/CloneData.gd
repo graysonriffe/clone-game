@@ -1,4 +1,4 @@
-# CloneData - A resource that contains everything a clone needs to replicate player actions
+# CloneData resource - Contains everything a clone needs to replicate player actions
 class_name CloneData
 extends Resource
 

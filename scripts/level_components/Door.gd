@@ -1,8 +1,11 @@
-# WeightButton class - A button that activates if an Actor puts its weight on it
-class_name WeightButton
-extends Activator
+# Door class - Something that can move when something tells it to
+class_name Door
+extends Node3D
 
-const CLASS_NAME = "WeightButton"
+const CLASS_NAME = "Door"
+
+# Variables
+var open: bool
 
 var noSetter: bool
 
@@ -17,11 +20,12 @@ var animationTime: float:
         animationPlayer.active = false
         animationTime = value
 
-@onready var area: Area3D = $Area3D
+@export var activators: Array[Activator]
+
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
-    super()
+    open = false
     noSetter = true
     animationTime = 0.0
     noSetter = false
@@ -31,7 +35,7 @@ func _physics_process(_delta: float) -> void:
     if not animationPlayer.active:
         return
     
-    _checkActors()
+    _checkActivators()
     
     if animationPlayer.is_playing():
         noSetter = true
@@ -39,26 +43,25 @@ func _physics_process(_delta: float) -> void:
         noSetter = false
 
 
-# Update's button state based on if there are any actors in the area3D
-func _checkActors():
-    for body in area.get_overlapping_bodies():
-        if body is Actor:
-            if not activated:
-                _activate()
+func _checkActivators():
+    for activator: Activator in activators:
+        if not activator.activated:
+            if open:
+                _close()
             
             return
-        
-    if activated:
-        _deactivate()
+    
+    if not open:
+        _open()
 
 
-func _activate():
-    activated = true
+func _open():
+    open = true
     animationPlayer.speed_scale = 1.0
-    animationPlayer.play("activate")
+    animationPlayer.play("open")
 
 
-func _deactivate():
-    activated = false
-    animationPlayer.speed_scale = -2.0
-    animationPlayer.play("activate", -1.0, 1.0, true)
+func _close():
+    open = false
+    animationPlayer.speed_scale = -1.0
+    animationPlayer.play("open", -1.0, 1.0, true)

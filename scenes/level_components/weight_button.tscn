@@ -6,7 +6,7 @@
 [ext_resource type="Material" uid="uid://d353brxs70bnx" path="res://assets/materials/cel_shading.tres" id="2_ofi5p"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_bkdw1"]
-height = 0.2475586
+height = 0.25256348
 radius = 0.545
 
 [sub_resource type="Animation" id="Animation_7cg28"]
@@ -113,13 +113,13 @@ _data = {
 [node name="WeightButton" unique_id=1910623683 instance=ExtResource("1_7p8wg")]
 script = ExtResource("2_7cg28")
 
-[node name="WeightButtonBase" parent="." index="0" unique_id=1062611632]
-instance_shader_parameters/color = Color(0, 0, 1, 1)
+[node name="WeightButtonBase" parent="." index="0" unique_id=2041455755]
+instance_shader_parameters/color = Color(0.6442694, 0.76161766, 1, 1)
 surface_material_override/0 = ExtResource("2_ofi5p")
 
-[node name="WeightButton" parent="." index="1" unique_id=1189670843]
+[node name="WeightButton" parent="." index="1" unique_id=2099902161]
 instance_shader_parameters/color = Color(1, 0, 0, 1)
-instance_shader_parameters/emission = 1.4
+instance_shader_parameters/emission = 3.0
 surface_material_override/0 = ExtResource("2_ofi5p")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=945573895]
@@ -138,7 +138,7 @@ shape = ExtResource("2_bkdw1")
 [node name="Area3D" type="Area3D" parent="." index="4" unique_id=1467291799]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=419832028]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28832012, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.29082257, 0)
 shape = SubResource("CylinderShape3D_bkdw1")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5" unique_id=1059560862]

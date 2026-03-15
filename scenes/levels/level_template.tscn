@@ -21,7 +21,6 @@ sky = SubResource("Sky_2k85p")
 ambient_light_source = 1
 tonemap_mode = 2
 glow_enabled = true
-glow_intensity = 5.83
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ulyey"]
 render_priority = 0
@@ -95,40 +94,40 @@ omni_attenuation = 2.0
 
 [node name="World" type="Node" parent="." unique_id=554948861]
 
-[node name="CSGBuilding" type="CSGCombiner3D" parent="World" unique_id=1882725468]
+[node name="Room" type="CSGCombiner3D" parent="World" unique_id=1882725468]
 use_collision = true
 
-[node name="Floor" type="CSGBox3D" parent="World/CSGBuilding" unique_id=464194791]
+[node name="Floor" type="CSGBox3D" parent="World/Room" unique_id=464194791]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 use_collision = true
 size = Vector3(41, 0.5, 41)
 material = ExtResource("2_4s5u3")
 
-[node name="Wall1" type="CSGBox3D" parent="World/CSGBuilding" unique_id=127119137]
+[node name="Wall1" type="CSGBox3D" parent="World/Room" unique_id=127119137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.25, 5, 0)
 use_collision = true
 size = Vector3(0.5, 10, 41)
 material = ExtResource("3_eokde")
 
-[node name="Wall2" type="CSGBox3D" parent="World/CSGBuilding" unique_id=1093076735]
+[node name="Wall2" type="CSGBox3D" parent="World/Room" unique_id=1093076735]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.25, 5, 0)
 use_collision = true
 size = Vector3(0.5, 10, 41)
 material = ExtResource("3_eokde")
 
-[node name="Wall3" type="CSGBox3D" parent="World/CSGBuilding" unique_id=1161521888]
+[node name="Wall3" type="CSGBox3D" parent="World/Room" unique_id=1161521888]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 5, 20.25)
 use_collision = true
 size = Vector3(0.5, 10, 40)
 material = ExtResource("3_eokde")
 
-[node name="Wall4" type="CSGBox3D" parent="World/CSGBuilding" unique_id=1033766136]
+[node name="Wall4" type="CSGBox3D" parent="World/Room" unique_id=1033766136]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 5, -20.25)
 use_collision = true
 size = Vector3(0.5, 10, 40)
 material = ExtResource("3_eokde")
 
-[node name="Ceiling" type="CSGBox3D" parent="World/CSGBuilding" unique_id=613614166]
+[node name="Ceiling" type="CSGBox3D" parent="World/Room" unique_id=613614166]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.25, 0)
 use_collision = true
 size = Vector3(41, 0.5, 41)
