@@ -28,6 +28,10 @@ surface_material_override/0 = ExtResource("1_0jpl5")
 [node name="Head" type="Node3D" parent="." unique_id=1119388618]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
+[node name="InteractRayCast" type="RayCast3D" parent="Head" unique_id=2009332292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.241, 0)
+target_position = Vector3(0, 0, -1.5)
+
 [node name="HeadMesh" type="MeshInstance3D" parent="Head" unique_id=878631315]
 transform = Transform3D(1, 0, 0, 0, 0.98116475, -0.19317274, 0, 0.19317274, 0.98116475, 0, 0.1400001, -0.083)
 instance_shader_parameters/color = Color(1, 1, 1, 1)

@@ -1,8 +1,8 @@
-# WeightButton class - A button that activates if an Actor puts its weight on it
-class_name WeightButton
+# Lever class - A switch that can activate and deactivate something
+class_name Lever
 extends Activator
 
-const CLASS_NAME = "WeightButton"
+const CLASS_NAME = "Lever"
 
 var noSetter: bool
 
@@ -17,7 +17,6 @@ var animationTime: float:
         animationPlayer.active = false
         animationTime = value
 
-@onready var area: Area3D = $Area3D
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
@@ -31,34 +30,19 @@ func _physics_process(_delta: float) -> void:
     if not animationPlayer.active:
         return
     
-    _checkActors()
-    
     if animationPlayer.is_playing():
         noSetter = true
         animationTime = animationPlayer.current_animation_position
         noSetter = false
 
 
-# Update's button state based on if there are any actors in the area3D
-func _checkActors():
-    for body in area.get_overlapping_bodies():
-        if body is Actor:
-            if not isActivated():
-                _activate()
-            
-            return
-        
-    if isActivated():
-        _deactivate()
-
-
 func _activate():
     activated = true
     animationPlayer.speed_scale = 1.0
-    animationPlayer.play("activate")
+    animationPlayer.play("flip")
 
 
 func _deactivate():
     activated = false
-    animationPlayer.speed_scale = -2.0
-    animationPlayer.play("activate", -1.0, 1.0, true)
+    animationPlayer.speed_scale = -1.0
+    animationPlayer.play("flip", -1.0, 1.0, true)

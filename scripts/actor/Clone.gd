@@ -43,6 +43,9 @@ func _physics_process(delta: float) -> void:
         
         if cloneData.getJumpButton(cloneGame.getTimeIndex()):
             _jump()
+        
+        if cloneData.getInteractButton(cloneGame.getTimeIndex()):
+            _interact()
     
     super(delta)
 

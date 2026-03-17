@@ -4,6 +4,8 @@ extends Node3D
 
 const CLASS_NAME = "Door"
 
+enum ActivatableType {AllActivators, AnyActivator}
+
 # Variables
 var open: bool
 
@@ -20,6 +22,7 @@ var animationTime: float:
         animationPlayer.active = false
         animationTime = value
 
+@export var type: ActivatableType
 @export var activators: Array[Activator]
 
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
@@ -44,15 +47,19 @@ func _physics_process(_delta: float) -> void:
 
 
 func _checkActivators():
-    for activator: Activator in activators:
-        if not activator.activated:
-            if open:
-                _close()
-            
-            return
+    var shouldBeOpen: bool = true
     
-    if not open:
+    for activator: Activator in activators:
+        if activator.isActivated() and type == ActivatableType.AnyActivator:
+            shouldBeOpen = true
+            break
+            
+        shouldBeOpen = shouldBeOpen and activator.isActivated()
+    
+    if shouldBeOpen and not open:
         _open()
+    elif not shouldBeOpen and open:
+        _close()
 
 
 func _open():

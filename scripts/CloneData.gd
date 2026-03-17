@@ -15,6 +15,9 @@ extends Resource
 # A boolean of the state of the jump button on physics frames
 @export var recordedJumpButton: Dictionary[int, bool]
 
+# A boolean of the state of the interact button on physics frames
+@export var recordedInteractButton: Dictionary[int, bool]
+
 func _init() -> void:
     startingTimeIndex = -1
     endingTimeIndex = -1
@@ -34,6 +37,10 @@ func pushBackLookVector(timeIndex: int, vec: Vector2):
 
 func pushBackJump(timeIndex: int, jump: bool):
     recordedJumpButton[timeIndex] = jump
+
+
+func pushBackInteract(timeIndex: int, interact: bool):
+    recordedInteractButton[timeIndex] = interact
 
 
 func setStartingTimeIndex(firstTimeIndex: int):
@@ -72,3 +79,13 @@ func getJumpButton(timeIndex: int) -> bool:
         return false
     
     return recordedJumpButton[timeIndex]
+
+
+func getInteractButton(timeIndex: int) -> bool:
+    assert(startingTimeIndex != -1, "StartingTimeIndex not defined for CloneData!")
+    assert(endingTimeIndex != -1, "EndingTimeIndex not defined for CloneData!")
+    
+    if not (timeIndex >= startingTimeIndex and timeIndex <= endingTimeIndex):
+        return false
+    
+    return recordedInteractButton[timeIndex]

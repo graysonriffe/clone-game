@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://bsiew2uhh705e"]
+
+[ext_resource type="PackedScene" uid="uid://2xxbqo8hbifw" path="res://assets/models/level_components/lever/lever.glb" id="1_7rqxw"]
+[ext_resource type="Script" uid="uid://v7ax8o7606lf" path="res://scripts/level_components/Lever.gd" id="2_bsmy2"]
+[ext_resource type="Material" uid="uid://d353brxs70bnx" path="res://assets/materials/cel_shading.tres" id="2_vv8ox"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vv8ox"]
+size = Vector3(0.84, 0.5, 0.84)
+
+[sub_resource type="Animation" id="Animation_bsmy2"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever:rotation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.9075712, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Lever:instance_shader_parameters/color:r")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Lever:instance_shader_parameters/color:g")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_s6hr8"]
+resource_name = "flip"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lever:rotation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-0.9075712, -0.25, 0, 0.1, 0, 0.9075712, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Lever:instance_shader_parameters/color:r")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.1, 0, 0, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Lever:instance_shader_parameters/color:g")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.1, 0, 1, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_efc24"]
+_data = {
+&"RESET": SubResource("Animation_bsmy2"),
+&"flip": SubResource("Animation_s6hr8")
+}
+
+[node name="Lever" unique_id=470289266 instance=ExtResource("1_7rqxw")]
+script = ExtResource("2_bsmy2")
+interactable = true
+
+[node name="LeverBase" parent="." index="0" unique_id=294089542]
+instance_shader_parameters/color = Color(0.8891468, 0.8891468, 0.88914675, 1)
+surface_material_override/0 = ExtResource("2_vv8ox")
+
+[node name="Lever" parent="." index="1" unique_id=126551393]
+transform = Transform3D(1, 0, 0, 0, 0.6156615, 0.7880107, 0, -0.7880107, 0.6156615, 0, 0.057039, 0)
+instance_shader_parameters/color = Color(1, 0, 0, 1)
+instance_shader_parameters/emission = 3.0
+surface_material_override/0 = ExtResource("2_vv8ox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=918611086]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_vv8ox")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3" unique_id=1038618350]
+libraries/ = SubResource("AnimationLibrary_efc24")

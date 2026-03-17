@@ -21,6 +21,7 @@ var isOnFloorOverride: bool
 
 # onready variables
 @onready var head: Node3D = $Head
+@onready var interactRayCast: RayCast3D = $Head/InteractRayCast
 
 func _init() -> void:
     paused = true
@@ -76,3 +77,11 @@ func getInputDirection() -> Vector2
 func _jump():
     if is_on_floor():
         velocity.y = JUMP_VELOCITY
+
+
+# Do interact
+func _interact():
+    if interactRayCast.is_colliding():
+        var collider: Node = interactRayCast.get_collider()
+        if collider is Activator and collider.interactable:
+            collider.toggleActivate()

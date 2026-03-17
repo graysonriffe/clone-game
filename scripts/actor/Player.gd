@@ -11,21 +11,23 @@ var headBobbingTheta: float
 
 var currentFrameInputDirection: Vector2
 var currentFrameJumpButton: bool
+var currentFrameInteractButton: bool
 
 @onready var eyes: Node3D = $Head/EyesOffset/Eyes
 @onready var viewModel: Node3D = $Head/EyesOffset/Eyes/Camera3D/RemoteViewModel
-
-# Process is used for jump so we can check it every frame instead of when key events happen
-func _process(_delta: float) -> void:
-    if not paused:
-        if getJumpButton():
-            _jump()
-
 
 func _physics_process(delta: float) -> void:
     # Get Player movement inputs
     currentFrameInputDirection = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
     currentFrameJumpButton = Input.is_action_pressed("jump")
+    currentFrameInteractButton = Input.is_action_just_pressed("interact")
+    
+    if not paused:
+        if getJumpButton():
+            _jump()
+        
+        if getInteractButton():
+            _interact()
     
     # Do headbobbing when walking, and reset when not
     if velocity.length() > 2.0 and not paused:
@@ -79,3 +81,6 @@ func getLookVector() -> Vector2:
 
 func getJumpButton() -> bool:
     return currentFrameJumpButton
+
+func getInteractButton() -> bool:
+    return currentFrameInteractButton

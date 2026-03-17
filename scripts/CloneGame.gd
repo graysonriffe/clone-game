@@ -329,3 +329,4 @@ func _recordCloneData():
     currentCloneData.pushBackMovementVector(timeIndex, player.getInputDirection())
     currentCloneData.pushBackLookVector(timeIndex, player.getLookVector())
     currentCloneData.pushBackJump(timeIndex, player.getJumpButton())
+    currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())

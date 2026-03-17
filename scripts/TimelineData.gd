@@ -10,7 +10,9 @@ extends Resource
 const CLASS_RECORDED_PROPERTIES: Dictionary = {
     "Actor":            [":global_transform", "/Head:global_transform", ":velocity", ":movementDirectionSmoothed", ":isOnFloor"],
     "PhysicsObject":    [":global_transform", ":linear_velocity", ":angular_velocity"],
+    
     "WeightButton":     [":activated", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"],
+    "Lever":            [":activated", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"],
     "Door":             [":open", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"]
 }
 

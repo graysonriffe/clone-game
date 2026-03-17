@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cjvv6we487mkl" path="res://assets/models/level_components/door/door.glb" id="1_p3yxh"]
 [ext_resource type="Script" uid="uid://bcremcadfeudw" path="res://scripts/level_components/Door.gd" id="2_o6sp2"]
+[ext_resource type="Material" uid="uid://d353brxs70bnx" path="res://assets/materials/cel_shading.tres" id="3_glk4a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p3yxh"]
 size = Vector3(4, 4, 0.1)
@@ -65,8 +66,13 @@ _data = {
 
 [node name="Door" type="Node3D" unique_id=712969499]
 script = ExtResource("2_o6sp2")
+metadata/_edit_group_ = true
 
 [node name="Door" parent="." unique_id=1030310965 instance=ExtResource("1_p3yxh")]
+
+[node name="Door" parent="Door" index="0" unique_id=1288980360]
+instance_shader_parameters/color = Color(0.8175212, 0.81752133, 0.8175211, 1)
+surface_material_override/0 = ExtResource("3_glk4a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Door" unique_id=1407061539]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.05)
