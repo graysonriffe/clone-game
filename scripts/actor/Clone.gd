@@ -54,6 +54,12 @@ func _physics_process(delta: float) -> void:
             _interact()
     
     super(delta)
+    
+    if isOnFloor and not crouching and velocity.length() < 0.1:
+        if not animationPlayer.is_playing():
+            animationPlayer.play("idle")
+    elif animationPlayer.current_animation == "idle":
+        animationPlayer.stop()
 
 
 func getInputDirection() -> Vector2:
