@@ -49,7 +49,7 @@ func _ready() -> void:
     
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
-    player.unpause()
+    player.pause(false) # Unpause
     tempRemoteLabel.text = "Level Name and Info"
 
 
@@ -67,14 +67,14 @@ func _unhandled_input(event: InputEvent) -> void:
         if event.keycode == KEY_P and not event.pressed and gamestate == Gamestate.Playing:
             _changeLevel(2)
     
-    if event.is_action_released("time_pause_unpause"):
+    if event.is_action_released("pauseUnpause"):
         _attemptTogglePause()
     
-    if event.is_action("time_forward") and event.is_pressed():
+    if event.is_action("timelineScrubForward") and event.is_pressed():
         if gamestate == Gamestate.Paused:
             timelineSlider.value = timelineSlider.value + 5
     
-    if event.is_action("time_backward") and event.is_pressed():
+    if event.is_action("timelineScrubBackward") and event.is_pressed():
         if gamestate == Gamestate.Paused:
             timelineSlider.value = timelineSlider.value - 5
     
@@ -171,7 +171,7 @@ func _doUnpause():
     
     timeIndex = int(timelineSlider.value) + 1 # Resume recording on the next timeIndex, not the one paused on
     
-    player.unpause()
+    player.pause(false) # Unpause
     _disableHiddenClones()
     _pauseClones(false) # Unpause
     _pausePhysicsObjects(false) # Unpause
@@ -185,10 +185,7 @@ func _doUnpause():
 
 func _pauseClones(pause: bool = true):
     for clone: Clone in cloneContainer.get_children():
-        if pause:
-            clone.pause()
-        else:
-            clone.unpause()
+        clone.pause(pause)
 
 
 func _pausePhysicsObjects(pause: bool = true):
@@ -251,6 +248,10 @@ func _doBranch():
     
     var newClone: Clone = CLONE_SCENE.instantiate()
     
+    # TODO: Remove this later
+    newClone.get_node("BodyCollision").shape = newClone.get_node("BodyCollision").shape.duplicate()
+    newClone.get_node("BodyMesh").mesh = newClone.get_node("BodyMesh").mesh.duplicate()
+    
     newClone.initialPosition = player.position
     newClone.initialLookVector = player.getLookVector()
     newClone.initialVelocity = player.velocity
@@ -266,7 +267,7 @@ func _doBranch():
     cloneContainer.add_child(newClone)
     timelineData.registerActor(newClone)
     
-    newClone.unpause()
+    newClone.pause(false) # Unpause
     
     # Update Clone parents
     for clone: Clone in cloneContainer.get_children():
@@ -329,4 +330,5 @@ func _recordCloneData():
     currentCloneData.pushBackMovementVector(timeIndex, player.getInputDirection())
     currentCloneData.pushBackLookVector(timeIndex, player.getLookVector())
     currentCloneData.pushBackJump(timeIndex, player.getJumpButton())
+    currentCloneData.pushBackCrouch(timeIndex, player.getCrouchButton())
     currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())

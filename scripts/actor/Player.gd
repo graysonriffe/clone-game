@@ -11,32 +11,55 @@ var headBobbingTheta: float
 
 var currentFrameInputDirection: Vector2
 var currentFrameJumpButton: bool
+var currentFrameCrouchButton: bool
 var currentFrameInteractButton: bool
 
 @onready var eyes: Node3D = $Head/EyesOffset/Eyes
 @onready var viewModel: Node3D = $Head/EyesOffset/Eyes/Camera3D/RemoteViewModel
 
+func _ready() -> void:
+    super()
+
+
 func _physics_process(delta: float) -> void:
     # Get Player movement inputs
-    currentFrameInputDirection = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+    currentFrameInputDirection = Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
     currentFrameJumpButton = Input.is_action_pressed("jump")
+    currentFrameCrouchButton = Input.is_action_pressed("crouch")
     currentFrameInteractButton = Input.is_action_just_pressed("interact")
     
     if not paused:
         if getJumpButton():
             _jump()
         
+        if getCrouchButton() and not crouching:
+            _crouch()
+        elif not getCrouchButton() and crouching:
+            _uncrouch()
+            
         if getInteractButton():
             _interact()
     
-    # Do headbobbing when walking, and reset when not
-    if velocity.length() > 2.0 and not paused:
-        headBobbingTheta += 14.0 * delta
+    # Do headbobbing when walking on a floor, and reset when not
+    if not paused and (velocity.length() > 2.0 and isOnFloor) or velocity.length() > WALKING_SPEED * 2:
+        var thetaDelta: float
+        var eyesAmplitude: float
+        var viewModelAmplitude: float
+        if not crouching:
+            thetaDelta = 14.0
+            eyesAmplitude = 0.1
+            viewModelAmplitude = 0.01
+        elif crouching:
+            thetaDelta = 8.0
+            eyesAmplitude = 0.05
+            viewModelAmplitude = 0.005
+        
+        headBobbingTheta += thetaDelta * delta
         headBobbingVector = Vector2(sin(headBobbingTheta / 2) + 0.5, sin(headBobbingTheta))
-        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * 0.1, 10.0 * delta)
-        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * 0.05, 10.0 * delta)
-        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * 0.01, 10.0 * delta)
-        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * 0.005, 10.0 * delta)
+        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * eyesAmplitude, 10.0 * delta)
+        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * eyesAmplitude / 2.0, 10.0 * delta)
+        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * viewModelAmplitude, 10.0 * delta)
+        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * viewModelAmplitude / 2.0, 10.0 * delta)
     else:
         eyes.position.x = lerp(eyes.position.x, 0.0, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, 0.0, 10.0 * delta)
@@ -68,6 +91,8 @@ func teleport(newTransform: Transform3D):
     head.rotation = Vector3.ZERO
     velocity = Vector3.ZERO
     movementDirectionSmoothed = Vector3.ZERO
+    eyes.position = Vector3.ZERO
+    viewModel.position = Vector3.ZERO
     reset_physics_interpolation()
 
 
@@ -81,6 +106,11 @@ func getLookVector() -> Vector2:
 
 func getJumpButton() -> bool:
     return currentFrameJumpButton
+
+
+func getCrouchButton() -> bool:
+    return currentFrameCrouchButton
+
 
 func getInteractButton() -> bool:
     return currentFrameInteractButton

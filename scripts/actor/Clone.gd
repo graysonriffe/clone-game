@@ -15,14 +15,15 @@ var parentActor: Actor
 # If a clone is disabled, it is invisible and does not process (happens before it exists in the timeline)
 var enabled: bool
 
-@onready var collisionDetector: Area3D = $CollisionDetector
-
 # The CloneData that describes the clone's movements
 var cloneData: CloneData
 
 @onready var cloneGame: CloneGame = get_tree().root.find_child("CloneGame", true, false)
 
+@onready var collisionDetector: Area3D = $CollisionDetector
+
 func _ready() -> void:
+    super()
     collisionDetector.body_exited.connect(_collisionDetectorExited)
     
     paused = true
@@ -43,6 +44,11 @@ func _physics_process(delta: float) -> void:
         
         if cloneData.getJumpButton(cloneGame.getTimeIndex()):
             _jump()
+        
+        if cloneData.getCrouchButton(cloneGame.getTimeIndex()) and not crouching:
+            _crouch()
+        elif not cloneData.getCrouchButton(cloneGame.getTimeIndex()) and crouching:
+            _uncrouch()
         
         if cloneData.getInteractButton(cloneGame.getTimeIndex()):
             _interact()

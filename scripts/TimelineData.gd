@@ -8,7 +8,8 @@ extends Resource
 
 # Predefined recorded properties of various classes
 const CLASS_RECORDED_PROPERTIES: Dictionary = {
-    "Actor":            [":global_transform", "/Head:global_transform", ":velocity", ":movementDirectionSmoothed", ":isOnFloor"],
+    "Actor":            [":global_transform", "/Head:rotation", ":velocity", ":movementDirectionSmoothed", ":isOnFloor",
+                        "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"],
     "PhysicsObject":    [":global_transform", ":linear_velocity", ":angular_velocity"],
     
     "WeightButton":     [":activated", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"],
