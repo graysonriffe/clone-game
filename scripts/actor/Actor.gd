@@ -78,6 +78,9 @@ func _physics_process(delta: float) -> void:
     velocity.x = movementDirectionSmoothed.x * speed
     velocity.z = movementDirectionSmoothed.z * speed
     
+    if not crouching and crouchRayCast.is_colliding() and crouchRayCast.get_collider() is not Actor:
+        _crouch()
+    
     # Apply collision forces to physics objects
     for i in get_slide_collision_count():
         var collision = get_slide_collision(i)
@@ -113,7 +116,7 @@ func _crouch():
 func _uncrouch():
     # TODO: You can currently get stuck when uncrouching after quickly going under something
     # Also, add an exception for other actors, for boosting
-    if not crouchRayCast.is_colliding():
+    if not crouchRayCast.is_colliding() or (crouchRayCast.get_collider() is Actor):
         crouching = false
         animationPlayer.play("uncrouch")
 
