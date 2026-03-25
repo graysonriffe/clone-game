@@ -8,7 +8,7 @@ const CLASS_NAME = "Actor"
 # Constants
 const WALKING_SPEED = 5.0
 const CROUCHING_SPEED = 3.0
-const JUMP_VELOCITY = 5.5
+const JUMP_VELOCITY = 6.7
 
 # Variables
 var movementDirectionSmoothed: Vector3
@@ -61,7 +61,7 @@ func _physics_process(delta: float) -> void:
     
     # Add the gravity.
     if not is_on_floor() or isOnFloorOverride:
-        velocity += get_gravity() * delta
+        velocity += get_gravity() * 1.5 * delta
     
     # Get direction vector from either the Player or Clone
     var inputDirection: Vector2 = getInputDirection()
@@ -77,6 +77,9 @@ func _physics_process(delta: float) -> void:
     var speed: float = WALKING_SPEED if not crouching else CROUCHING_SPEED
     velocity.x = movementDirectionSmoothed.x * speed
     velocity.z = movementDirectionSmoothed.z * speed
+    
+    if not crouching and crouchRayCast.is_colliding() and crouchRayCast.get_collider() is not Actor:
+        _crouch()
     
     # Apply collision forces to physics objects
     for i in get_slide_collision_count():
@@ -105,18 +108,18 @@ func _jump():
 
 
 func _crouch():
-    crouching = true
-    animationPlayer.speed_scale = 1.0
-    animationPlayer.play("crouch")
+    if is_on_floor():
+        crouching = true
+        animationPlayer.play("crouch")
+        animationPlayer.queue("crouchHold")
 
 
 func _uncrouch():
     # TODO: You can currently get stuck when uncrouching after quickly going under something
     # Also, add an exception for other actors, for boosting
-    if not crouchRayCast.is_colliding():
+    if not crouchRayCast.is_colliding() or (crouchRayCast.get_collider() is Actor):
         crouching = false
-        animationPlayer.speed_scale = -1.0
-        animationPlayer.play("crouch", -1.0, 1.0, true)
+        animationPlayer.play("uncrouch")
 
 
 func _interact():
