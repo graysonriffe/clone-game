@@ -9,6 +9,7 @@ uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear_
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, repeat_disable, filter_nearest;
 
 uniform bool edge_only = true;
+uniform bool pause_effect = false;
 
 const float edge_threshold = 1.5;
 uniform vec3 line_color: source_color = vec3(0.0, 0.0, 0.0);
@@ -99,7 +100,9 @@ void fragment() {
     vec2 uvnoise = vec2(uv2.x * cos(t) - uv2.y * sin(t), uv2.x * sin(t) + uv2.y * cos(t));
     vec4 noise = texture(noise_texture, uvnoise);
     
-    ALBEDO *= (dist + 0.4) * ((ins*0.25)+1.0) * (noise.r * 0.75 + 0.25);
+    if (pause_effect) {
+        ALBEDO *= (dist + 0.4) * ((ins*0.25)+1.0) * (noise.r * 0.75 + 0.25);
+    }
 	
 	if (max(edge * 1.5, final_depth_edge * 2.0) > edge_threshold) {
 		ALBEDO *= line_color;

@@ -9,37 +9,57 @@ const MOUSE_SENSITIVITY = 0.3
 var headBobbingVector: Vector2
 var headBobbingTheta: float
 
-# Recording variables
-# TODO: Maybe move recording logic to CloneGame, but it makes sense to be here for now
-var recordingCurrently: bool
-var recordingCloneData: CloneData
+var currentFrameInputDirection: Vector2
+var currentFrameJumpButton: bool
+var currentFrameCrouchButton: bool
+var currentFrameInteractButton: bool
 
-@onready var eyes: Node3D = $Head/Eyes
-@onready var viewModel: Node3D = $Head/Eyes/Camera3D/RemoteViewModel
+@onready var eyes: Node3D = $Head/EyesOffset/Eyes
+@onready var viewModel: Node3D = $Head/EyesOffset/Eyes/Camera3D/RemoteViewModel
 
 func _ready() -> void:
-    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-    
-    recordingCurrently = false
-    recordingCloneData = CloneData.new()
+    super()
 
 
 func _physics_process(delta: float) -> void:
-    # Record input_dir if recording is enabled
-    if recordingCurrently:
-        recordingCloneData.pushBackMovementVector(_getInputDirection())
-        var currentLookVector = Vector2(head.global_rotation.x, global_rotation.y)
-        recordingCloneData.pushBackLookVector(currentLookVector)
-        recordingCloneData.pushBackJump(Input.is_action_pressed("jump"))
+    # Get Player movement inputs
+    currentFrameInputDirection = Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
+    currentFrameJumpButton = Input.is_action_pressed("jump")
+    currentFrameCrouchButton = Input.is_action_pressed("crouch")
+    currentFrameInteractButton = Input.is_action_just_pressed("interact")
     
-    # Do headbobbing when walking, and reset when not
-    if velocity.length() > 2.0:
-        headBobbingTheta += 14.0 * delta
+    if not paused:
+        if getJumpButton():
+            _jump()
+        
+        if getCrouchButton() and not crouching:
+            _crouch()
+        elif not getCrouchButton() and crouching:
+            _uncrouch()
+            
+        if getInteractButton():
+            _interact()
+    
+    # Do headbobbing when walking on a floor, and reset when not
+    if not paused and (velocity.length() > 2.0 and isOnFloor) or velocity.length() > WALKING_SPEED * 2:
+        var thetaDelta: float
+        var eyesAmplitude: float
+        var viewModelAmplitude: float
+        if not crouching:
+            thetaDelta = 14.0
+            eyesAmplitude = 0.1
+            viewModelAmplitude = 0.01
+        elif crouching:
+            thetaDelta = 8.0
+            eyesAmplitude = 0.05
+            viewModelAmplitude = 0.005
+        
+        headBobbingTheta += thetaDelta * delta
         headBobbingVector = Vector2(sin(headBobbingTheta / 2) + 0.5, sin(headBobbingTheta))
-        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * 0.1, 10.0 * delta)
-        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * 0.05, 10.0 * delta)
-        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * 0.01, 10.0 * delta)
-        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * 0.005, 10.0 * delta)
+        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * eyesAmplitude, 10.0 * delta)
+        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * eyesAmplitude / 2.0, 10.0 * delta)
+        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * viewModelAmplitude, 10.0 * delta)
+        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * viewModelAmplitude / 2.0, 10.0 * delta)
     else:
         eyes.position.x = lerp(eyes.position.x, 0.0, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, 0.0, 10.0 * delta)
@@ -52,16 +72,8 @@ func _physics_process(delta: float) -> void:
     super(delta)
 
 
-# Handle all other inputs
+# Handle mouse
 func _unhandled_input(event: InputEvent) -> void:
-    if event.is_action_released("pause"):
-        Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-    
-    # Click -> capture mouse
-    if event is InputEventMouseButton:
-        if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-            Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-    
     # When mouse is captured, mouse movement -> FPS head movement
     if event is InputEventMouseMotion:
         if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -72,16 +84,33 @@ func _unhandled_input(event: InputEvent) -> void:
             # View model sway
             viewModel.position.x -= event.relative.x * 1e-4
             viewModel.position.y += event.relative.y * 1e-4
-    
-    if event.is_action_pressed("jump"):
-        jump()
 
 
 func teleport(newTransform: Transform3D):
     global_transform = newTransform
     head.rotation = Vector3.ZERO
+    velocity = Vector3.ZERO
+    movementDirectionSmoothed = Vector3.ZERO
+    eyes.position = Vector3.ZERO
+    viewModel.position = Vector3.ZERO
     reset_physics_interpolation()
 
 
-func _getInputDirection() -> Vector2:
-    return Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+func getInputDirection() -> Vector2:
+    return currentFrameInputDirection
+
+
+func getLookVector() -> Vector2:
+    return Vector2(head.global_rotation.x, global_rotation.y)
+
+
+func getJumpButton() -> bool:
+    return currentFrameJumpButton
+
+
+func getCrouchButton() -> bool:
+    return currentFrameCrouchButton
+
+
+func getInteractButton() -> bool:
+    return currentFrameInteractButton
