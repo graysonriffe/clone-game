@@ -268,7 +268,7 @@ func _doBranch():
     var newClone: Clone = CLONE_SCENE.instantiate()
     
     # TODO: Remove this later with new crouching animations
-    newClone.get_node("BodyCollision").shape = newClone.get_node("BodyCollision").shape.duplicate()
+    newClone.get_node("BodyCollision1").shape = newClone.get_node("BodyCollision1").shape.duplicate()
     newClone.get_node("BodyMesh").mesh = newClone.get_node("BodyMesh").mesh.duplicate()
     
     # TODO: Initial conditions might be better to be inherited from the parent in real time

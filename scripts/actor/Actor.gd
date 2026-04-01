@@ -15,7 +15,8 @@ enum ActorColor {
 # Constants
 const WALKING_SPEED = 5.0
 const CROUCHING_SPEED = 3.0
-const JUMP_VELOCITY = 6.7
+const JUMP_VELOCITY = 7.0
+const BOOST_VELOCITY = 11.5
 
 # Variables
 var movementDirectionSmoothed: Vector3
@@ -66,6 +67,7 @@ var animationTime: float:
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 @onready var bodyMesh: MeshInstance3D = $BodyMesh
 @onready var headMesh: MeshInstance3D = $Head/HeadMesh
+@onready var crouchActorDetector: Area3D = $CrouchActorDectector
 
 func _ready() -> void:
     paused = true
@@ -130,6 +132,10 @@ func getColor() -> ActorColor:
     return color
 
 
+func boost():
+    velocity.y = BOOST_VELOCITY
+
+
 @abstract
 func getInputDirection() -> Vector2
 
@@ -147,11 +153,24 @@ func _crouch():
 
 
 func _uncrouch():
-    # TODO: You can currently get stuck when uncrouching after quickly going under something
-    # Also, add an exception for other actors, for boosting
-    if not crouchRayCast.is_colliding() or (crouchRayCast.get_collider() is Actor):
+    var collidingWith: Node = crouchRayCast.get_collider()
+    
+    var detectedActor: Actor
+    
+    for body: Node in crouchActorDetector.get_overlapping_bodies():
+        if body == self:
+            continue
+        
+        if body is Actor:
+            detectedActor = body
+            break
+    
+    if not collidingWith or (collidingWith is Actor):
         crouching = false
         animationPlayer.play("uncrouch")
+        
+        if detectedActor: # Crouch boost
+            detectedActor.boost()
 
 
 func _interact():
