@@ -142,13 +142,12 @@ func _togglePause():
     if gamestate == Gamestate.Playing:
         _doPause()
     elif gamestate == Gamestate.Paused:
-        _doUnpause()
-        
-        # Exception for unpausing a the beginning of the timeline
-        if timeIndex == 1:
-            _deleteAllClones()
-        else:
-            _deleteDiscardedClones()
+        if _doUnpause():
+            # Exception for unpausing a the beginning of the timeline
+            if timeIndex == 1:
+                _deleteAllClones()
+            else:
+                _deleteDiscardedClones()
 
 
 func _doPause():
@@ -172,11 +171,11 @@ func _doPause():
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
-func _doUnpause():
-    gamestate = Gamestate.Playing
+func _doUnpause() -> bool:
+    if get_tree().get_processed_tweens().size() > 0:
+        return false
     
-    for tween in get_tree().get_processed_tweens():
-        await tween.finished
+    gamestate = Gamestate.Playing
     
     timeIndex = int(timelineSlider.value) + 1 # Resume recording on the next timeIndex, not the one paused on
     
@@ -190,6 +189,8 @@ func _doUnpause():
     _updateRemoteLabel()
     
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
+    return true
 
 
 func _pauseClones(pause: bool = true):
@@ -261,7 +262,8 @@ func _playerIsNotRed():
 
 
 func _doBranch():
-    _doUnpause()
+    if not _doUnpause():
+        return
     
     var newClone: Clone = CLONE_SCENE.instantiate()
     

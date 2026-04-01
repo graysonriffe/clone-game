@@ -67,6 +67,9 @@ func recordData(timeIndex: int):
 
 
 func setData(timeIndex: int):
+    for tween: Tween in sceneTree.get_processed_tweens():
+        tween.kill()
+    
     var tween: Tween = sceneTree.create_tween()
     tween.set_trans(Tween.TRANS_SINE)
     tween.set_parallel()
@@ -91,10 +94,9 @@ func setData(timeIndex: int):
         if dataAfter != null:
             if property == "current_animation":
                 var animationPlayer: AnimationPlayer = node as AnimationPlayer
-                var dataBefore: StringName = animationPlayer.current_animation
                 # Reset when no animation is playing
                 if node.get_parent() is Actor:
-                    if dataAfter == &"" and dataBefore != dataAfter:
+                    if dataAfter == &"": # This probably won't work when we have a walking animation
                         node.active = true
                         animationPlayer.play("RESET")
                         animationPlayer.seek(0.0, true)
