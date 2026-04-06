@@ -121,7 +121,9 @@ func _physics_process(delta: float) -> void:
     velocity.x = movementDirectionSmoothed.x * speed
     velocity.z = movementDirectionSmoothed.z * speed
     
-    if not crouching and crouchRayCast.is_colliding() and crouchRayCast.get_collider() is not Actor:
+    if not crouching and crouchRayCast.is_colliding() and \
+    (crouchRayCast.get_collider() is CSGShape3D \
+    or crouchRayCast.get_collider() is GridMap):
         _crouch()
     
     # Apply collision forces to physics objects
