@@ -40,6 +40,8 @@ var scrubTime: float
 @onready var timelineSlider: HSlider = find_child("TimelineSlider", true, false)
 @onready var timelineTimeLabel: Label = find_child("TimelineTimeLabel", true, false)
 
+var noBranchZone: Area3D
+
 func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
     # Load main menu level
@@ -72,7 +74,7 @@ func _handleInput(delta: float):
     
     if Input.is_action_just_pressed("tempLoadLevel2"):
         if gamestate == Gamestate.Playing:
-            _changeLevel(2)
+            _changeLevel(4)
     
     if Input.is_action_just_released("pauseUnpause"):
         _attemptTogglePause()
@@ -122,6 +124,8 @@ func _changeLevel(newLevelNumber: int):
     gamestate = Gamestate.Playing
     
     _updateRemoteLabel()
+    
+    noBranchZone = find_child("NoBranchZone", true, false)
 
 
 func getTimeIndex() -> int:
@@ -250,7 +254,12 @@ func _deleteCloneAndChildren(clone: Clone):
 
 func _attemptBranch():
     if gamestate == Gamestate.Paused:
-        if _playerIsNotRed():
+        var inNoBranchZone: bool = false
+        if noBranchZone and noBranchZone.get_overlapping_bodies().find(player) != -1:
+            inNoBranchZone = true
+            print("In no branch zone!")
+        
+        if _playerIsNotRed() and not inNoBranchZone:
             _doBranch()
         else:
             # Some sort of feedback

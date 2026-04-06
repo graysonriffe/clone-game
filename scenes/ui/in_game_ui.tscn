@@ -147,3 +147,17 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "00:00"
 horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="." unique_id=700179901]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 676.0
+offset_right = 713.0
+offset_bottom = 913.0
+theme_override_font_sizes/font_size = 36
+text = "WASD - Move
+Space 	            - Jump
+Ctrl              - Crouch
+F                 - Pause / Unpause
+A and D (Paused)  - Scrub Timeline
+Q (Paused)        - Branch"
