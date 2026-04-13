@@ -11,6 +11,8 @@ const CLASS_RECORDED_PROPERTIES: Dictionary = {
     "Actor":            [":global_transform", "/Head:rotation", ":velocity", ":movementDirectionSmoothed", ":isOnFloor",
                         ":crouching", "/AnimationPlayer:current_animation", ":animationTime", ":color"],
     
+    "Clone":            [":collisionsEnabled"],
+    
     "PhysicsObject":    [":global_transform", ":linear_velocity", ":angular_velocity"],
     
     "WeightButton":     [":activated", "/AnimationPlayer:current_animation", ":animationTime", "/AnimationPlayer:speed_scale"],
@@ -48,6 +50,10 @@ func registerObjects(levelContainer: Node):
 func deregisterActor(actor: Actor):
     var nodePath: String = actor.get_path()
     var propertyArray: Array = CLASS_RECORDED_PROPERTIES["Actor"]
+    
+    if actor is Clone:
+        propertyArray = propertyArray.duplicate(true)
+        propertyArray.append_array(CLASS_RECORDED_PROPERTIES["Clone"])
     
     for property: String in propertyArray:
         var fullPropertyPath = "%s%s" % [nodePath, property]
@@ -133,6 +139,10 @@ func _getAllChildren(node: Node, array: Array[Node] = []) -> Array[Node]:
 func _registerNode(node: Node, className: String):
     var nodePath: String = node.get_path()
     var propertyArray: Array = CLASS_RECORDED_PROPERTIES[className]
+    
+    if node is Clone:
+        propertyArray = propertyArray.duplicate(true)
+        propertyArray.append_array(CLASS_RECORDED_PROPERTIES["Clone"])
     
     for property: String in propertyArray:
         var fullPropertyPath = "%s%s" % [nodePath, property]
