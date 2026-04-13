@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dy14p8seqt285" path="res://scripts/actor/Clone.gd" id="2_7cu5i"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7cu5i"]
-radius = 0.34
+radius = 0.4
 height = 2.35
 
 [node name="Clone" unique_id=2013142565 instance=ExtResource("1_u05yx")]

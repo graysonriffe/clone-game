@@ -10,6 +10,7 @@ var headBobbingVector: Vector2
 var headBobbingTheta: float
 
 var currentFrameInputDirection: Vector2
+var currentFrameLookVector: Vector2
 var currentFrameJumpButton: bool
 var currentFrameCrouchButton: bool
 var currentFrameInteractButton: bool
@@ -24,6 +25,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
     # Get Player movement inputs
     currentFrameInputDirection = Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
+    currentFrameLookVector = Vector2(head.global_rotation.x, global_rotation.y)
     currentFrameJumpButton = Input.is_action_pressed("jump")
     currentFrameCrouchButton = Input.is_action_pressed("crouch")
     currentFrameInteractButton = Input.is_action_just_pressed("interact")
@@ -104,7 +106,7 @@ func getInputDirection() -> Vector2:
 
 
 func getLookVector() -> Vector2:
-    return Vector2(head.global_rotation.x, global_rotation.y)
+    return currentFrameLookVector
 
 
 func getJumpButton() -> bool:

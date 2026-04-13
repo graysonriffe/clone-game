@@ -15,10 +15,8 @@ extends Resource
 # A boolean of the state of the jump button on physics frames
 @export var recordedJumpButton: Dictionary[int, bool]
 
-
 # A boolean of the state of the crouch button on physics frames
 @export var recordedCrouchButton: Dictionary[int, bool]
-
 
 # A boolean of the state of the interact button on physics frames
 @export var recordedInteractButton: Dictionary[int, bool]
