@@ -55,13 +55,13 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-    _handleInput(delta)
-    
     if gamestate == Gamestate.Playing:
         _enableNewClones() # Clones spawned by other clones, if any
         _record()
         
         timeIndex += 1
+    
+    _handleInput(delta)
 
 
 # Non-player action inputs

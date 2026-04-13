@@ -81,6 +81,7 @@ var animationTime: float:
 @onready var bodyMesh: MeshInstance3D = $BodyMesh
 @onready var headMesh: MeshInstance3D = $Head/HeadMesh
 @onready var crouchActorDetector: Area3D = $CrouchActorDectector
+@onready var collisionDetector: Area3D = $CollisionDetector
 
 func _ready() -> void:
     paused = true
@@ -121,7 +122,9 @@ func _physics_process(delta: float) -> void:
     velocity.x = movementDirectionSmoothed.x * speed
     velocity.z = movementDirectionSmoothed.z * speed
     
-    if not crouching and crouchRayCast.is_colliding() and crouchRayCast.get_collider() is not Actor:
+    if not crouching and crouchRayCast.is_colliding() and \
+    (crouchRayCast.get_collider() is CSGShape3D \
+    or crouchRayCast.get_collider() is GridMap):
         _crouch()
     
     # Apply collision forces to physics objects
