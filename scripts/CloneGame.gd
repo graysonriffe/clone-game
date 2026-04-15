@@ -278,10 +278,10 @@ func _doBranch():
     currentCloneData.setStartingTimeIndex(timeIndex)
     newClone.cloneData = currentCloneData.duplicate(true)
     
-    cloneContainer.add_child(newClone)
-    
     var playerColor: Actor.ActorColor = player.getColor()
-    newClone.color = playerColor
+    newClone.defaultColor = playerColor
+    
+    cloneContainer.add_child(newClone)
     
     timelineData.registerActor(newClone)
     

@@ -31,6 +31,7 @@ var movementDirectionSmoothed: Vector3
 # Pauses and unpauses the actor
 var paused: bool
 
+# The active color of the Actor
 var color: ActorColor:
     set(value):
         color = value

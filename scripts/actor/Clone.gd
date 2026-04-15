@@ -16,6 +16,9 @@ var collisionsEnabled: bool:
         collisionsEnabled = value
         _enableCollisions(value)
 
+# The color that should be set when the clone is reset
+var defaultColor: ActorColor
+
 # If a clone is disabled, it is invisible and does not process (happens before it exists in the timeline)
 var enabled: bool
 
@@ -86,6 +89,7 @@ func reset():
     velocity = parentActor.velocity
     movementDirectionSmoothed = parentActor.movementDirectionSmoothed
     isOnFloorOverride = parentActor.isOnFloor
+    color = defaultColor
     
     collisionsEnabled = false
 
