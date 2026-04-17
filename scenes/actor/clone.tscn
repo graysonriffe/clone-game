@@ -2,6 +2,15 @@
 
 [ext_resource type="PackedScene" uid="uid://gccqsvfgoywy" path="res://scenes/actor/actor.tscn" id="1_u05yx"]
 [ext_resource type="Script" uid="uid://dy14p8seqt285" path="res://scripts/actor/Clone.gd" id="2_7cu5i"]
+[ext_resource type="Script" uid="uid://dy5p0uqwuuqu4" path="res://scripts/audio/Footsteps.gd" id="3_gtkh0"]
 
 [node name="Clone" unique_id=2013142565 instance=ExtResource("1_u05yx")]
 script = ExtResource("2_7cu5i")
+
+[node name="FootstepSFX" type="AudioStreamPlayer3D" parent="." index="8" unique_id=1342631226]
+attenuation_model = 2
+bus = &"SFX"
+script = ExtResource("3_gtkh0")
+
+[node name="GroundRay" type="RayCast3D" parent="." index="9" unique_id=1793025581]
+target_position = Vector3(0, -1.2, 0)

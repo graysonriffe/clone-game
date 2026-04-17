@@ -631,7 +631,7 @@ collision_layer = 6
 collision_mask = 5
 
 [node name="BodyCollision1" type="CollisionShape3D" parent="." unique_id=1399796085]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.2)
 shape = SubResource("CapsuleShape3D_u4npu")
 
 [node name="BodyCollision2" type="CollisionShape3D" parent="." unique_id=561620975]
