@@ -1,0 +1,25 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://dc0aidllfka5q"]
+
+[ext_resource type="AudioStream" uid="uid://cojnmetn7sg8i" path="res://assets/Audio/sfx/steps/metal_steps_one.mp3" id="1_cv3mi"]
+[ext_resource type="AudioStream" uid="uid://bu1tkt3v8tyo" path="res://assets/Audio/sfx/steps/metal_steps_ten.mp3" id="2_krcg0"]
+[ext_resource type="AudioStream" uid="uid://b07unn0fhjvs7" path="res://assets/Audio/sfx/steps/metal_steps_twelve.mp3" id="3_3j6bv"]
+[ext_resource type="AudioStream" uid="uid://c1ty7mrpoedn4" path="res://assets/Audio/sfx/steps/metal_steps_four.mp3" id="4_opg52"]
+[ext_resource type="AudioStream" uid="uid://dqio38d80t55u" path="res://assets/Audio/sfx/steps/metal_steps_two.mp3" id="5_jndb6"]
+[ext_resource type="AudioStream" uid="uid://nbbfhcxt856g" path="res://assets/Audio/sfx/steps/metal_steps_five.mp3" id="6_86ow3"]
+[ext_resource type="AudioStream" uid="uid://dut2w1mpw2qyl" path="res://assets/Audio/sfx/steps/metal_deep_steps_seven.mp3" id="7_in74a"]
+[ext_resource type="AudioStream" uid="uid://clsj8sgt62wf6" path="res://assets/Audio/sfx/steps/metal_deep_steps_eight.mp3" id="8_iwphj"]
+[ext_resource type="AudioStream" uid="uid://b0rummlplcjfe" path="res://assets/Audio/sfx/steps/metal_deep_steps_ten.mp3" id="9_el2jm"]
+[ext_resource type="AudioStream" uid="uid://nbyosngu2ahb" path="res://assets/Audio/sfx/steps/metal_deep_steps_six.mp3" id="10_2tifk"]
+
+[resource]
+streams_count = 10
+stream_0/stream = ExtResource("1_cv3mi")
+stream_1/stream = ExtResource("2_krcg0")
+stream_2/stream = ExtResource("3_3j6bv")
+stream_3/stream = ExtResource("4_opg52")
+stream_4/stream = ExtResource("5_jndb6")
+stream_5/stream = ExtResource("6_86ow3")
+stream_6/stream = ExtResource("7_in74a")
+stream_7/stream = ExtResource("8_iwphj")
+stream_8/stream = ExtResource("9_el2jm")
+stream_9/stream = ExtResource("10_2tifk")
