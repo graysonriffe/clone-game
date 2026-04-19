@@ -159,6 +159,8 @@ func _togglePause():
 func _doPause():
     gamestate = Gamestate.Paused
     
+    RenderingServer.global_shader_parameter_set("pause_effect", true);
+    
     player.pause()
     _pauseClones()
     _pausePhysicsObjects()
@@ -181,6 +183,8 @@ func _doUnpause() -> bool:
         return false
     
     gamestate = Gamestate.Playing
+    
+    RenderingServer.global_shader_parameter_set("pause_effect", false);
     
     timeIndex = int(timelineSlider.value) + 1 # Resume recording on the next timeIndex, not the one paused on
     
