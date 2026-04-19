@@ -127,3 +127,7 @@ pause_effect={
 "type": "bool",
 "value": false
 }
+remote_bulb_color={
+"type": "color",
+"value": Color(1, 1, 1, 1)
+}

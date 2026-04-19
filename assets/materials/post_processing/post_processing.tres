@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://yo4jwmmtbef0" path="res://assets/materials/post_processing/white-noise.png" id="2_ehttt"]
 
 [resource]
-render_priority = 1
+render_priority = 0
 shader = ExtResource("1_ehttt")
 shader_parameter/edge_only = true
 shader_parameter/edge_threshold = 1.5

@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
     
     _handleInput(delta)
     
-    _updateRemoteLabel()
+    _updateRemote()
 
 
 # Non-player action inputs
@@ -170,7 +170,6 @@ func _doPause():
     currentCloneData.setEndingTimeIndex(lastTimeIndex)
     timelineSlider.max_value = lastTimeIndex
     timelineSlider.set_value_no_signal(lastTimeIndex)
-    timelineSlider.grab_focus()
     _setTimelineTimeLabel(lastTimeIndex)
     
     pauseUI.show()
@@ -440,22 +439,22 @@ func _recordCloneData():
     currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())
 
 
-func _updateRemoteLabel():
+func _updateRemote():
     match gamestate:
         Gamestate.Playing, Gamestate.Paused:
             var playerColor: Actor.ActorColor = player.getColor()
-            var colorString: String
+            var bulbColor: Color
             match playerColor:
                 Actor.ActorColor.White:
-                    colorString = "[color=white]WHITE[/color]"
+                    bulbColor = Color.WHITE
                 Actor.ActorColor.Green:
-                    colorString = "[color=green]GREEN[/color]"
+                    bulbColor = Color.GREEN
                 Actor.ActorColor.Yellow:
-                    colorString = "[color=yellow]YELLOW[/color]"
+                    bulbColor = Color.YELLOW
                 Actor.ActorColor.Red:
-                    colorString = "[color=red]RED[/color]"
+                    bulbColor = Color.RED
             
-            remoteLabel.text = "You are:\n" + colorString
+            RenderingServer.global_shader_parameter_set("remote_bulb_color", bulbColor)
             
             var sourceTimeIndex: int = timeIndex if gamestate == Gamestate.Playing else (timelineSlider.value as int)
-            remoteLabel.text += "\n\n%d\nAvailable Clones" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
+            remoteLabel.text = "%d\nAvailable Clones" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
