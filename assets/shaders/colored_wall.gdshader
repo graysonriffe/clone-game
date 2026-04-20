@@ -6,19 +6,19 @@ instance uniform vec3 color: source_color = vec3(0.0);
 varying vec3 worldPosition;
 
 vec4 mod289(vec4 x) {
-	return x - floor(x * (1.0 / 289.0)) * 289.0;
+    return x - floor(x * (1.0 / 289.0)) * 289.0;
 }
 
 vec4 permute(vec4 x) {
-	return mod289(((x*34.0)+1.0)*x);
+    return mod289(((x*34.0)+1.0)*x);
 }
 
 vec4 taylorInvSqrt(vec4 r) {
-	return 1.79284291400159 - 0.85373472095314 * r;
+    return 1.79284291400159 - 0.85373472095314 * r;
 }
 
 vec4 fade(vec4 t) {
-	return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
+    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
 }
 
 float cnoise(vec4 P) {
@@ -155,11 +155,11 @@ float cnoise(vec4 P) {
 }
 
 void vertex() {
-	worldPosition = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+    worldPosition = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {
-	float noise = sin(max(pow(cnoise(vec4(worldPosition * 1.2, TIME/5.0)) * 2.0, 2.0), 0.025) * PI);
+    float noise = sin(max(pow(cnoise(vec4(worldPosition * 1.2, TIME/5.0)) * 2.0, 2.0), 0.025) * PI);
     ALBEDO = max(0.5, noise) * mix(color, vec3(1,1,1), pow(noise,4.0) * 0.4);
     EMISSION = color * 25.0;
     ALPHA = max(pow(noise, 2.0) * 0.15, 0.1);

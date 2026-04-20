@@ -26,25 +26,25 @@ uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
 
 void vertex() {
-	UV = UV * uv1_scale.xy + uv1_offset.xy;
+    UV = UV * uv1_scale.xy + uv1_offset.xy;
 }
 
 void fragment() {
-	vec2 base_uv = UV;
+    vec2 base_uv = UV;
 
-	vec4 albedo_tex = texture(texture_albedo, base_uv);
-	ALBEDO = albedo.rgb * albedo_tex.rgb;
-
-	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
-	METALLIC = metallic_tex * metallic;
-	SPECULAR = specular;
-
-	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
-	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
-	ROUGHNESS = roughness_tex * roughness;
-
-	// Emission: Enabled
-	vec3 emission_tex = texture(texture_emission, base_uv).rgb;
-	// Emission Operator: Add
-	EMISSION = (remote_bulb_color.rgb + emission_tex) * emission_energy;
+    vec4 albedo_tex = texture(texture_albedo, base_uv);
+    ALBEDO = albedo.rgb * albedo_tex.rgb;
+    
+    float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+    METALLIC = metallic_tex * metallic;
+    SPECULAR = specular;
+    
+    vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+    float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+    ROUGHNESS = roughness_tex * roughness;
+    
+    // Emission: Enabled
+    vec3 emission_tex = texture(texture_emission, base_uv).rgb;
+    // Emission Operator: Add
+    EMISSION = (remote_bulb_color.rgb + emission_tex) * emission_energy;
 }

@@ -33,6 +33,9 @@ var scrubTime: float
 # Keeps track of available clones of each clone
 var availableClonesHistory: Dictionary[int, int]
 
+# All NoBranchZones in the current level
+var noBranchZones: Array[Area3D]
+
 # onready variables
 @onready var player: Player = $Player
 @onready var levelContainer: Node = $Level
@@ -41,7 +44,6 @@ var availableClonesHistory: Dictionary[int, int]
 @onready var pauseUI: Control = find_child("PauseUI", true, false)
 @onready var remoteLabel: RichTextLabel = find_child("ScreenLabel", true, false)
 @onready var timelineSlider: HSlider = find_child("TimelineSlider", true, false)
-@onready var timelineTimeLabel: Label = find_child("TimelineTimeLabel", true, false)
 
 func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
@@ -127,7 +129,17 @@ func _changeLevel(newLevelNumber: int):
     availableClonesHistory.clear()
     availableClonesHistory[0] = 2
     
+    # Get all NoBranchZones
+    noBranchZones.clear()
+    var allNodes: Array[Node] = _getAllChildren(levelContainer)
+    
+    for node: Node in allNodes:
+        if node is Area3D and node.get("CLASS_NAME") == "NoBranchZone":
+            noBranchZones.append(node)
+    
     gamestate = Gamestate.Playing
+    
+    _updateRemote()
 
 
 func getTimeIndex() -> int:
@@ -170,7 +182,6 @@ func _doPause():
     currentCloneData.setEndingTimeIndex(lastTimeIndex)
     timelineSlider.max_value = lastTimeIndex
     timelineSlider.set_value_no_signal(lastTimeIndex)
-    _setTimelineTimeLabel(lastTimeIndex)
     
     pauseUI.show()
     
@@ -260,7 +271,7 @@ func _deleteCloneAndChildren(clone: Clone):
 
 func _attemptBranch():
     if gamestate == Gamestate.Paused:
-        if _clonesAvailable():
+        if _clonesAvailable() and not _inNoBranchZone():
             _doBranch()
         else:
             # Some sort of feedback
@@ -282,6 +293,14 @@ func _getCurrentCloneIndex(currentTimeIndex: int) -> int:
             returnVal = index
     
     return returnVal
+
+
+func _inNoBranchZone() -> bool:
+    for noBranchZone: Area3D in noBranchZones:
+        if noBranchZone.get_overlapping_bodies().find(player) != -1:
+            return true
+    
+    return false
 
 
 func _doBranch():
@@ -384,8 +403,6 @@ func _timelineSliderChanged(value: float):
     timelineData.setData(int(previewTimeIndex))
     
     _showOrHideClonesInPreview(previewTimeIndex)
-    
-    _setTimelineTimeLabel(value)
 
 
 func _showOrHideClonesInPreview(previewTimeIndex: int):
@@ -424,11 +441,11 @@ func _enableNewClones():
             clone.reset_physics_interpolation()
 
 
-func _setTimelineTimeLabel(value: float):
+func _getTimeString(value: float) -> String:
     var physicsTicksPerSecond: float = ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
     var minutes: int = int(value / (60 * physicsTicksPerSecond))
     var seconds: int = int(float(int(value) % int(60 * physicsTicksPerSecond)) / physicsTicksPerSecond)
-    timelineTimeLabel.text = "%d:%02d" % [minutes, seconds]
+    return "%d:%02d" % [minutes, seconds]
 
 
 func _recordCloneData():
@@ -457,4 +474,11 @@ func _updateRemote():
             RenderingServer.global_shader_parameter_set("remote_bulb_color", bulbColor)
             
             var sourceTimeIndex: int = timeIndex if gamestate == Gamestate.Playing else (timelineSlider.value as int)
-            remoteLabel.text = "%d\nAvailable Clones" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
+            
+            remoteLabel.text = _getTimeString(sourceTimeIndex)
+            
+            remoteLabel.text += "\n\n%d\nAvailable Clones\n\n\n\n" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
+            
+            if _inNoBranchZone():
+                remoteLabel.text = remoteLabel.text.substr(0, remoteLabel.text.length() - 2)
+                remoteLabel.text += "In No-Branch\nZone!"

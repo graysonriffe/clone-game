@@ -123,28 +123,3 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Timeline"
 horizontal_alignment = 1
-
-[node name="TimelineTimePanel" type="PanelContainer" parent="PauseUI" unique_id=199142920]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 801.0
-offset_top = -134.0
-offset_right = 880.0
-offset_bottom = -99.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_uyty4")
-
-[node name="TimelineTimeMargin" type="MarginContainer" parent="PauseUI/TimelineTimePanel" unique_id=222627881]
-layout_mode = 2
-theme_override_constants/margin_bottom = 4
-
-[node name="TimelineTimeLabel" type="Label" parent="PauseUI/TimelineTimePanel/TimelineTimeMargin" unique_id=687939072]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "00:00"
-horizontal_alignment = 1
