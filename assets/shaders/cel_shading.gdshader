@@ -15,9 +15,9 @@ void vertex() {
 
 void fragment() {
 	// Called for every pixel the material is visible on.
-    ALBEDO = texture(albedo, UV).rgb * material_color * color * lighting_multiplier;
+    ALBEDO = pow(texture(albedo, UV).rgb, vec3(2)) * material_color * color * lighting_multiplier;
     //EMISSION = vec3(0);
-    EMISSION = texture(albedo, UV).rgb * material_color * color * emission;
+    EMISSION = pow(texture(albedo, UV).rgb, vec3(2)) * material_color * color * emission;
 }
 
 void light() {

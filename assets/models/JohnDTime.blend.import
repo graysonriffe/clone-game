@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cq6b80ialg3l0"
-path="res://.godot/imported/JohnDTime.blend-207aa7f48bbcd908a7eaad7152c2926e.scn"
+valid=false
 
 [deps]
 
 source_file="res://assets/models/JohnDTime.blend"
-dest_files=["res://.godot/imported/JohnDTime.blend-207aa7f48bbcd908a7eaad7152c2926e.scn"]
 
 [params]
 

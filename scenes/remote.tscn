@@ -13,6 +13,7 @@ resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_g6wd6")
 shader_parameter/albedo = SubResource("ViewportTexture_g6wd6")
+shader_parameter/material_color = Color(1, 1, 1, 1)
 shader_parameter/specular_strength = 1.0
 shader_parameter/shininess = 50.0
 
@@ -24,7 +25,8 @@ instance_shader_parameters/emission = 0.1
 surface_material_override/0 = ExtResource("2_c5mex")
 
 [node name="Plane" parent="." index="2" unique_id=788533735]
-instance_shader_parameters/emission = 0.8
+instance_shader_parameters/color = Color(1, 1, 1, 1)
+instance_shader_parameters/emission = 0.4
 instance_shader_parameters/lighting_multiplier = 0.2
 surface_material_override/0 = SubResource("ShaderMaterial_v1tst")
 

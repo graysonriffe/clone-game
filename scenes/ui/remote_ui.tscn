@@ -1,16 +1,51 @@
 [gd_scene format=3 uid="uid://kawmhhp1i5k0"]
 
+[ext_resource type="Texture2D" uid="uid://bdtiy6lbp1scy" path="res://assets/ui_textures/battery.png" id="1_f8v7o"]
+[ext_resource type="Texture2D" uid="uid://cosc1f20a5wtq" path="res://assets/ui_textures/play.png" id="2_wg4ti"]
+
 [sub_resource type="Gradient" id="Gradient_wg4ti"]
-offsets = PackedFloat32Array(0.955, 0.96462715, 1)
-colors = PackedColorArray(0.68646336, 0.6140178, 0.54267275, 1, 0, 0, 0, 1, 0, 0, 0, 0)
+colors = PackedColorArray(1, 1, 1, 1, 0.918091, 0.91809106, 0.91809094, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_gtj3a"]
 gradient = SubResource("Gradient_wg4ti")
 width = 400
 height = 230
-fill = 2
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 1)
+fill = 1
+fill_from = Vector2(0.51602566, 1)
+fill_to = Vector2(0.49636754, 0)
+
+[sub_resource type="Gradient" id="Gradient_gtj3a"]
+interpolation_mode = 2
+colors = PackedColorArray(0.4838006, 0.5941804, 0.6497515, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_towdo"]
+gradient = SubResource("Gradient_gtj3a")
+fill_from = Vector2(0.4900285, 1)
+fill_to = Vector2(0.4985755, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_765k3"]
+font_size = 64
+font_color = Color(0, 0, 0, 0.7058824)
+shadow_size = 16
+shadow_color = Color(0.845205, 0.87, 0.8439, 0.27058825)
+shadow_offset = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_towdo"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.77935946, 1)
+colors = PackedColorArray(8.1822276e-07, 0.34999117, 0.4767037, 1, 0, 0.5335649, 0.94732934, 1, 0, 0.5255764, 0.9337251, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_765k3"]
+gradient = SubResource("Gradient_towdo")
+fill_from = Vector2(0.4900285, 1)
+fill_to = Vector2(0.4985755, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_kvwjo"]
+font_size = 56
+
+[sub_resource type="LabelSettings" id="LabelSettings_ac3g4"]
+font_size = 56
+font_color = Color(0.34407577, 0.34407574, 0.34407574, 1)
 
 [node name="RemoteUI" type="Control" unique_id=685619501]
 layout_mode = 3
@@ -26,7 +61,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.16685298, 0.16685283, 0.1668528, 1)
+color = Color(0, 0, 0, 1)
 
 [node name="ScreenTexture" type="TextureRect" parent="." unique_id=1600317344]
 layout_mode = 1
@@ -57,3 +92,85 @@ Color[/font_size]"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TopBar" type="TextureRect" parent="ScreenTexture" unique_id=875558784]
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 93.0
+texture = SubResource("GradientTexture2D_towdo")
+
+[node name="Battery" type="TextureRect" parent="ScreenTexture/TopBar" unique_id=1385340557]
+layout_mode = 0
+offset_left = 869.0
+offset_top = 17.0
+offset_right = 1019.0
+offset_bottom = 113.0
+scale = Vector2(0.8, 0.60000026)
+texture = ExtResource("1_f8v7o")
+
+[node name="Time" type="Label" parent="ScreenTexture/TopBar" unique_id=738073245]
+layout_mode = 0
+offset_left = 341.0
+offset_top = 5.0
+offset_right = 704.0
+offset_bottom = 93.0
+text = "Time: 0:00"
+label_settings = SubResource("LabelSettings_765k3")
+
+[node name="Status" type="TextureRect" parent="ScreenTexture/TopBar" unique_id=1174169277]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 128.0
+scale = Vector2(0.7418391, 0.7418391)
+texture = ExtResource("2_wg4ti")
+
+[node name="MenuItem" type="TextureRect" parent="ScreenTexture" unique_id=1743556110]
+layout_mode = 0
+offset_top = 93.0
+offset_right = 1000.0
+offset_bottom = 186.0
+texture = SubResource("GradientTexture2D_765k3")
+
+[node name="Text" type="Label" parent="ScreenTexture/MenuItem" unique_id=1043800940]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 8.0
+offset_right = 555.0
+offset_bottom = 96.0
+text = "Branch Timelines"
+label_settings = SubResource("LabelSettings_kvwjo")
+
+[node name="Arrow" type="Label" parent="ScreenTexture/MenuItem" unique_id=667443381]
+layout_mode = 0
+offset_left = 939.0
+offset_top = -21.0
+offset_right = 1010.00006
+offset_bottom = 67.0
+scale = Vector2(1.2799975, 1.7199988)
+text = ">"
+label_settings = SubResource("LabelSettings_kvwjo")
+
+[node name="MenuItem2" type="TextureRect" parent="ScreenTexture" unique_id=870748919]
+layout_mode = 0
+offset_top = 186.0
+offset_right = 1000.0
+offset_bottom = 279.0
+
+[node name="Text" type="Label" parent="ScreenTexture/MenuItem2" unique_id=797339712]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 8.0
+offset_right = 555.0
+offset_bottom = 96.0
+text = "Pause Time"
+label_settings = SubResource("LabelSettings_ac3g4")
+
+[node name="Arrow" type="Label" parent="ScreenTexture/MenuItem2" unique_id=1216125529]
+layout_mode = 0
+offset_left = 939.0
+offset_top = -21.0
+offset_right = 1010.00006
+offset_bottom = 67.0
+scale = Vector2(1.2799975, 1.7199988)
+text = ">"
+label_settings = SubResource("LabelSettings_ac3g4")

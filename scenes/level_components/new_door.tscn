@@ -1,0 +1,172 @@
+[gd_scene format=3 uid="uid://cxnq573frbue5"]
+
+[ext_resource type="PackedScene" uid="uid://cq7wp7o5uo68l" path="res://assets/models/level_components/new_door/door.blend" id="1_n46gr"]
+[ext_resource type="Shader" uid="uid://cia180g1ko22l" path="res://assets/shaders/cel_shading.gdshader" id="2_fgyr4"]
+[ext_resource type="Script" uid="uid://cjrofc23aefqc" path="res://scripts/level_components/NewDoor.gd" id="2_flhm1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flhm1"]
+render_priority = 0
+shader = ExtResource("2_fgyr4")
+shader_parameter/material_color = Color(0.68841606, 0.6740364, 0.74613905, 1)
+shader_parameter/specular_strength = 0.2
+shader_parameter/shininess = 15.0
+
+[sub_resource type="Shader" id="Shader_fgyr4"]
+code = "shader_type spatial;
+render_mode ambient_light_disabled;
+
+uniform sampler2D albedo : hint_default_white;
+uniform vec3 material_color : source_color = vec3(1,1,1);
+instance uniform vec3 color : source_color = vec3(1,1,1);
+instance uniform float lighting_multiplier = 1.0;
+instance uniform float emission = 0.0;
+uniform float specular_strength = 1.0;
+uniform float shininess = 50.0;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	// Called for every pixel the material is visible on.
+    ALBEDO = texture(albedo, UV).rgb * material_color * color * lighting_multiplier;
+    //EMISSION = vec3(0);
+    EMISSION = texture(albedo, UV).rgb * material_color * color * emission;
+}
+
+void light() {
+    // Called for every pixel for every light affecting the material.
+    // Uncomment to replace the default light processing function with this one.
+    if (dot(NORMAL, LIGHT) > 0.1) {
+        // This creates the \"steps\"
+        float step_factor = ceil(16.0 / length(LIGHT_COLOR));
+        DIFFUSE_LIGHT += (floor(dot(NORMAL, LIGHT) * (ATTENUATION/PI) * length(LIGHT_COLOR) * step_factor) / step_factor) * normalize(LIGHT_COLOR) * ALBEDO;
+        // Apply a little bit of a gredient
+        DIFFUSE_LIGHT += (mod(dot(NORMAL, LIGHT) * (ATTENUATION/PI) * length(LIGHT_COLOR) * step_factor, 1.0) / (step_factor * 2.5)) * normalize(LIGHT_COLOR) * ALBEDO;;
+    }
+
+    vec3 reflection_vector = (2.0 * dot(LIGHT, NORMAL) * NORMAL) - LIGHT;
+
+    float spec_dot = max(0.0, dot(reflection_vector, VIEW));
+    float specular_intensity = pow(spec_dot, shininess);
+
+    // Applying ATTENUATION ensures the highlight respects shadows and light distance
+    SPECULAR_LIGHT += SPECULAR_AMOUNT * specular_strength * step(0.5, specular_intensity) * (ATTENUATION/PI) * LIGHT_COLOR * 0.5 * ALBEDO;
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_de5sy"]
+render_priority = 0
+shader = SubResource("Shader_fgyr4")
+shader_parameter/material_color = Color(1, 1, 1, 1)
+shader_parameter/specular_strength = 0.1
+shader_parameter/shininess = 500.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_heeja"]
+render_priority = 0
+shader = SubResource("Shader_fgyr4")
+shader_parameter/material_color = Color(1, 1, 1, 1)
+shader_parameter/specular_strength = 0.1
+shader_parameter/shininess = 500.0
+
+[sub_resource type="Animation" id="Animation_poewu"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder_001:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-2.1572838, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Cylinder_001:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.9125746, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Cylinder_001:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.29079628, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_40y5o"]
+resource_name = "door_open"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder_001:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-2.1572838, -0.25, 0, 0.25, 0, -3.237876, -0.26666665, 1.0109158, 0, 0),
+"times": PackedFloat32Array(0.001, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Cylinder_001:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.9125746, -0.25, 0, 0.25, 0, 0.9125746, -0.1665, 0, 0, 0),
+"times": PackedFloat32Array(0.001, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Cylinder_001:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-0.29079628, -0.25, 0, 0.25, 0, -0.29079628, -0.1665, 0, 0, 0),
+"times": PackedFloat32Array(0.001, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qvk32"]
+_data = {
+&"RESET": SubResource("Animation_poewu"),
+&"door_open": SubResource("Animation_40y5o")
+}
+
+[node name="door" unique_id=661583134 instance=ExtResource("1_n46gr")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+script = ExtResource("2_flhm1")
+
+[node name="Cylinder" parent="." index="0" unique_id=112971380]
+surface_material_override/0 = SubResource("ShaderMaterial_flhm1")
+
+[node name="Cylinder_001" parent="." index="1" unique_id=1394286967]
+transform = Transform3D(-0.92718387, -3.2782555e-07, 0.3746066, 0.3746066, -1.1920929e-07, 0.9271839, -2.8312206e-07, 1.0000001, 1.1920929e-07, -2.1572838, 0.9125746, -0.29079628)
+surface_material_override/0 = SubResource("ShaderMaterial_flhm1")
+
+[node name="Cube" parent="." index="2" unique_id=620391291]
+surface_material_override/0 = SubResource("ShaderMaterial_de5sy")
+
+[node name="Cube_001" parent="." index="3" unique_id=1085926578]
+surface_material_override/0 = SubResource("ShaderMaterial_de5sy")
+
+[node name="Cube_002" parent="." index="4" unique_id=1405739424]
+surface_material_override/0 = SubResource("ShaderMaterial_heeja")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6" unique_id=489037449]
+libraries/ = SubResource("AnimationLibrary_qvk32")
