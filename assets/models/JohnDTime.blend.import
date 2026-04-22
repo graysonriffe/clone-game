@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cq6b80ialg3l0"
-valid=false
+path="res://.godot/imported/JohnDTime.blend-207aa7f48bbcd908a7eaad7152c2926e.scn"
 
 [deps]
 
 source_file="res://assets/models/JohnDTime.blend"
+dest_files=["res://.godot/imported/JohnDTime.blend-207aa7f48bbcd908a7eaad7152c2926e.scn"]
 
 [params]
 
@@ -36,16 +37,10 @@ import_script/path=""
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
-_subresources={
-"nodes": {
-"PATH:Plane": {
-"import/skip_import": true
-}
-}
-}
+_subresources={}
 blender/nodes/visible=0
 blender/nodes/active_collection_only=false
-blender/nodes/punctual_lights=false
+blender/nodes/punctual_lights=true
 blender/nodes/cameras=true
 blender/nodes/custom_properties=true
 blender/nodes/modifiers=1

@@ -15,17 +15,17 @@
 [ext_resource type="Texture2D" uid="uid://bgtvdtbw13l27" path="res://assets/textures/white-noise.png" id="15_sy45w"]
 [ext_resource type="PackedScene" uid="uid://cctgtoi6i6d8k" path="res://scenes/level_components/time_wall_cube_green.tscn" id="16_8ls8d"]
 [ext_resource type="Texture2D" uid="uid://bheob0ydaj6rk" path="res://assets/textures/Hex_Grate_Wall_basecolor.png" id="17_1k160"]
-[ext_resource type="Material" uid="uid://rww82eiyjstt" path="res://assets/materials/hex_grate/hex_grate.tres" id="17_e83kc"]
 [ext_resource type="PackedScene" uid="uid://ccs8aird717jx" path="res://scenes/level_components/time_wall_cube_red.tscn" id="17_f5wmt"]
 [ext_resource type="PackedScene" uid="uid://ciu1pf6bx4jin" path="res://assets/remote.blend" id="18_0ri0e"]
-[ext_resource type="Texture2D" uid="uid://cw8y8k4wif01o" path="res://assets/textures/Hex_Grate_Wall_normal.png" id="18_e83kc"]
+[ext_resource type="Texture2D" uid="uid://cu5h0syhpst2l" path="res://assets/materials/hex_grate/Hex_Grate_Wall_normal.png" id="18_wx50g"]
 [ext_resource type="Texture2D" uid="uid://lvpdxatfbmxv" path="res://assets/textures/Hex_Grate_Wall_roughness.png" id="19_7xxbd"]
 [ext_resource type="Material" uid="uid://fsecspfnyg2i" path="res://assets/materials/crt_shader.tres" id="21_7xxbd"]
+[ext_resource type="Texture2D" uid="uid://doqquoymhaqvy" path="res://assets/textures/Metal_Sheet_Copper_basecolor.png" id="22_asapa"]
 [ext_resource type="Shader" uid="uid://n0o3iki4ol2y" path="res://assets/shaders/laser.gdshader" id="22_pyq47"]
+[ext_resource type="Texture2D" uid="uid://cybe6446t7qwx" path="res://assets/textures/Metal_Sheet_Copper_normal.png" id="23_bngwf"]
 [ext_resource type="Texture2D" uid="uid://6h4wmegtidog" path="res://assets/materials/laser_spots/Laser_Spots_basecolor.png" id="23_ndqaf"]
-[ext_resource type="Texture2D" uid="uid://b3kyhum6swu3c" path="res://assets/materials/concrete/Concrete_basecolor.png" id="24_kg5qj"]
-[ext_resource type="Texture2D" uid="uid://b3m83dqdbouvs" path="res://assets/materials/concrete/Concrete_normal.png" id="25_yw3qn"]
-[ext_resource type="Texture2D" uid="uid://b3bo8oekhcohj" path="res://assets/materials/concrete/Concrete_roughness.png" id="26_wx50g"]
+[ext_resource type="Texture2D" uid="uid://cgu4u0i576omw" path="res://assets/textures/Metal_Sheet_Copper_roughness.png" id="24_ipy7d"]
+[ext_resource type="Material" uid="uid://b5y7t5ra1rw08" path="res://assets/materials/concrete.tres" id="25_4fr1e"]
 [ext_resource type="PackedScene" uid="uid://n2hagxwm1nmd" path="res://scenes/actor/john_d_time.tscn" id="27_yw3qn"]
 [ext_resource type="PackedScene" uid="uid://d3q2whq45hq2q" path="res://scenes/actor/warden.tscn" id="28_wx50g"]
 [ext_resource type="PackedScene" uid="uid://bs2dxj4eo0uue" path="res://scenes/level_components/no_branch_box.tscn" id="29_wx50g"]
@@ -111,23 +111,19 @@ shader_parameter/noise_texture = ExtResource("15_sy45w")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x01qd"]
 transparency = 2
-alpha_scissor_threshold = 0.05
+alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 albedo_texture = ExtResource("17_1k160")
 roughness_texture = ExtResource("19_7xxbd")
 normal_enabled = true
-normal_texture = ExtResource("18_e83kc")
+normal_texture = ExtResource("18_wx50g")
 uv1_scale = Vector3(3, 3, 3)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bngwf"]
-albedo_texture = ExtResource("24_kg5qj")
-roughness = 0.9
-roughness_texture = ExtResource("26_wx50g")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_53jat"]
+albedo_texture = ExtResource("22_asapa")
+roughness_texture = ExtResource("24_ipy7d")
 normal_enabled = true
-normal_texture = ExtResource("25_yw3qn")
-uv1_scale = Vector3(0.3, 0.3, 0.3)
-uv1_triplanar = true
-uv1_world_triplanar = true
+normal_texture = ExtResource("23_bngwf")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_am6tk"]
 render_priority = 0
@@ -198,7 +194,7 @@ light_energy = 2.0
 light_bake_mode = 1
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="." index="9" unique_id=725372562]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0576451, 2.9635909, 1.2333394)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2007356, 2.5837271, 1.2665628)
 light_energy = 3.0
 shadow_enabled = true
 omni_range = 20.0
@@ -366,12 +362,11 @@ transform = Transform3D(-17.241673, 0, 8.772926e-07, 0, 10.752518, 0, -1.5073148
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92730665, 1.6337522, 0.66264844)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="." index="27" unique_id=1749622690]
-transform = Transform3D(3.9351532, 0, 0.9096787, 0, 9.475161, 0, -8.619352, 0, 0.41531253, 6.3346386, 1.2244666, 5.5929527)
-material_override = ExtResource("17_e83kc")
+transform = Transform3D(3.9351532, 0, 0.9096787, 0, 9.475161, 0, -8.619352, 0, 0.41531253, 2.449505, -1.961232, 7.264819)
 material = SubResource("StandardMaterial3D_x01qd")
 
 [node name="OmniLight3D3" type="OmniLight3D" parent="." index="28" unique_id=529985850]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.6649046, 2.6675756, 5.605979)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3015705, 2.415401, 8.181155)
 light_energy = 3.0
 shadow_enabled = true
 omni_range = 20.0
@@ -382,12 +377,12 @@ material_override = ExtResource("21_7xxbd")
 instance_shader_parameters/color = Color(0, 0.44, 0.4106667, 0.4509804)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="." index="30" unique_id=901391118]
-transform = Transform3D(11.006969, 0, 0, 0, 1, 0, 0, 0, 9.282129, -0.92641497, -0.25114465, 6.5181136)
-material = SubResource("StandardMaterial3D_bngwf")
+transform = Transform3D(11.006969, 0, 0, 0, 1, 0, 0, 0, 9.282129, -0.92641497, 0.897583, 6.5181136)
+material = SubResource("StandardMaterial3D_53jat")
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="." index="31" unique_id=868559592]
 transform = Transform3D(-7.5581074, 0, 0, 0, 3.422939, 0, 0, 0, 9.288317, -2.2400558, -0.3215344, 2.915159)
-material = SubResource("StandardMaterial3D_bngwf")
+material = ExtResource("25_4fr1e")
 
 [node name="Lasers" type="Node3D" parent="." index="32" unique_id=1800229592]
 

@@ -8,19 +8,21 @@ instance uniform vec4 color : source_color = vec4(1,1,1,1);
 uniform bool vignette = true;
 uniform sampler2D noise_texture;
 
+varying vec3 position;
 varying vec3 worldPosition;
 
 void vertex() {
-	// Called for every vertex the material is visible on.
+    // Called for every vertex the material is visible on.
+    position = (vec4(VERTEX, 1.0)).xyz;
     worldPosition = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {
     float ins = sin(mod(UV.y * lines, 1.0)*PI) - (pow(sin(mod(UV.y * 1.0 - TIME / 10.0, 1.0) * PI), 20.0) * 2.75);
     float dist = 1.0 - length((UV - vec2(0.5)) * 2.0);
-	ALBEDO = mix(vec3(0.8), vec3(1.0), ins) * color.rgb * texture(laser_spots, vec2(UV.x * 0.2, UV.y * 0.1 + worldPosition.y + (TIME * 0.2))).rgb;
+	ALBEDO = mix(vec3(0.8), vec3(1.0), ins) * color.rgb * texture(laser_spots, vec2(position.z * 0.2, UV.y * 0.1 + length(MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)) + (TIME * 0.2))).rgb;
     float t = TIME * 25.0;
-    vec2 uv = worldPosition.xz + vec2(0.5, 0.5);
+    vec2 uv = worldPosition.yz + vec2(0.5, 0.5);
     vec2 uvnoise = vec2(uv.x * cos(t) - uv.y * sin(t), uv.x * sin(t) + uv.y * cos(t));
     vec4 noise = texture(noise_texture, uvnoise);
     if (vignette) {

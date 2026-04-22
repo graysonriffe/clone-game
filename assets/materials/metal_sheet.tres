@@ -2,13 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://cs5nqyqguw1d4" path="res://assets/textures/Metal_Sheet_basecolor.png" id="1_we6ya"]
 [ext_resource type="Texture2D" uid="uid://cg01owys03b1q" path="res://assets/textures/Metal_Sheet_normal.png" id="2_vatfw"]
-[ext_resource type="Texture2D" uid="uid://5tgwxmwihrmk" path="res://assets/textures/Metal_Sheet_roughness.png" id="3_5alhu"]
+[ext_resource type="Texture2D" uid="uid://bnm7m0hvvu4vy" path="res://assets/materials/metal_sheet/Metal_Sheet_roughness.png" id="3_we6ya"]
 
 [resource]
 albedo_texture = ExtResource("1_we6ya")
 metallic = 0.4
-roughness = 0.5
-roughness_texture = ExtResource("3_5alhu")
+roughness_texture = ExtResource("3_we6ya")
 normal_enabled = true
 normal_texture = ExtResource("2_vatfw")
 uv1_scale = Vector3(0.1, 0.1, 0.1)
