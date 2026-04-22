@@ -3,7 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://bwc4qx6iq4vyg" path="res://assets/models/remote.glb" id="1_2ubl6"]
 [ext_resource type="PackedScene" uid="uid://kawmhhp1i5k0" path="res://scenes/ui/remote_ui.tscn" id="2_acnp3"]
 [ext_resource type="Material" uid="uid://c05li443wa151" path="res://assets/materials/remote/cel_shading_remote.tres" id="2_s038d"]
+[ext_resource type="Texture2D" uid="uid://boltecjlqbyix" path="res://assets/ui_textures/branch.png" id="3_o5mf1"]
 [ext_resource type="Shader" uid="uid://3o3iooil1ctu" path="res://assets/materials/remote/bulb.gdshader" id="4_jxh4g"]
+[ext_resource type="Texture2D" uid="uid://cv36lv7bjn1e3" path="res://assets/ui_textures/remote_forward.png" id="4_o5mf1"]
+[ext_resource type="Texture2D" uid="uid://bqwuyyjho23lt" path="res://assets/ui_textures/remote_pause.png" id="4_s038d"]
+[ext_resource type="Texture2D" uid="uid://byqvct2wm5epa" path="res://assets/ui_textures/remote_play.png" id="7_1ut60"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s038d"]
 render_priority = 6
@@ -21,61 +25,89 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(0, 0, 0)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_s038d"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_o5mf1"]
 viewport_path = NodePath("../SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o5mf1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ut60"]
 resource_local_to_scene = true
 render_priority = 7
 no_depth_test = true
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_s038d")
+albedo_texture = SubResource("ViewportTexture_o5mf1")
 
 [node name="RemoteViewModel" type="Node3D" unique_id=1236516252]
 
 [node name="Remote" parent="." unique_id=829241162 instance=ExtResource("1_2ubl6")]
 transform = Transform3D(0.960958, 0, -0.27669415, 0, 1, 0, 0.27669415, 0, 0.960958, 0.24106646, -0.20374486, -0.31154835)
 
-[node name="Remote" parent="Remote" index="0" unique_id=1324354556]
+[node name="Remote" parent="Remote" index="0" unique_id=1485427860]
 layers = 2
 instance_shader_parameters/color = Color(0.5686275, 0.7058824, 0.70980394, 1)
 instance_shader_parameters/emission = 0.1
 surface_material_override/0 = ExtResource("2_s038d")
 
-[node name="Antenna" parent="Remote/Remote" index="0" unique_id=627975218]
+[node name="Antenna" parent="Remote/Remote" index="0" unique_id=248668679]
 layers = 2
 instance_shader_parameters/color = Color(0.5330367, 0.5330367, 0.5330367, 1)
 surface_material_override/0 = ExtResource("2_s038d")
 
-[node name="BranchButton" parent="Remote/Remote" index="1" unique_id=2072051897]
+[node name="BranchButton" parent="Remote/Remote" index="1" unique_id=1037146107]
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 surface_material_override/0 = ExtResource("2_s038d")
 
-[node name="Bulb" parent="Remote/Remote" index="2" unique_id=984203544]
+[node name="BranchSprite" type="Sprite3D" parent="Remote/Remote/BranchButton" index="0" unique_id=665137955]
+transform = Transform3D(0.295, 2.4815418e-24, -1.3504177e-08, 0, 5.6365215e-16, -0.2949999, 0, 0.295, 5.6365225e-16, 0, -2.322, 0)
+flip_h = true
+flip_v = true
+render_priority = 100
+texture = ExtResource("3_o5mf1")
+
+[node name="Bulb" parent="Remote/Remote" index="2" unique_id=735049154]
 layers = 2
 instance_shader_parameters/color = Color(0.47788018, 0.47788012, 0.47788012, 1)
 surface_material_override/0 = ExtResource("2_s038d")
 surface_material_override/1 = SubResource("ShaderMaterial_s038d")
 
-[node name="ForwardButton" parent="Remote/Remote" index="3" unique_id=1002017018]
+[node name="ForwardButton" parent="Remote/Remote" index="3" unique_id=890800915]
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 surface_material_override/0 = ExtResource("2_s038d")
 
-[node name="PausePlayButton" parent="Remote/Remote" index="4" unique_id=1554427214]
+[node name="ForwardSprite" type="Sprite3D" parent="Remote/Remote/ForwardButton" index="0" unique_id=1729940755]
+transform = Transform3D(0.295, 1.6543612e-24, -1.2572855e-08, 0, 5.6365215e-16, -0.29499993, 0, 0.295, 5.6365225e-16, 0.07, -2.322, 0)
+render_priority = 100
+texture = ExtResource("4_o5mf1")
+
+[node name="PausePlayButton" parent="Remote/Remote" index="4" unique_id=1036526280]
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 surface_material_override/0 = ExtResource("2_s038d")
 
-[node name="ReverseButton" parent="Remote/Remote" index="5" unique_id=1154947501]
+[node name="PauseSprite" type="Sprite3D" parent="Remote/Remote/PausePlayButton" index="0" unique_id=1984584886]
+transform = Transform3D(0.295, 8.271806e-25, -1.2572855e-08, 0, 5.6365215e-16, -0.29499996, 0, 0.295, 5.6365225e-16, 0, -2.322, 0)
+render_priority = 100
+texture = ExtResource("4_s038d")
+
+[node name="PlaySprite" type="Sprite3D" parent="Remote/Remote/PausePlayButton" index="1" unique_id=1486051527]
+transform = Transform3D(0.295, 8.271806e-25, -1.2572855e-08, 0, 5.6365215e-16, -0.29499996, 0, 0.295, 5.6365225e-16, 0.07, -2.322, 0)
+render_priority = 100
+texture = ExtResource("7_1ut60")
+
+[node name="ReverseButton" parent="Remote/Remote" index="5" unique_id=370206292]
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 surface_material_override/0 = ExtResource("2_s038d")
 
-[node name="Screen" parent="Remote/Remote" index="6" unique_id=1252234344]
+[node name="ReverseSprite" type="Sprite3D" parent="Remote/Remote/ReverseButton" index="0" unique_id=2082207876]
+transform = Transform3D(0.295, 2.4815418e-24, -1.3038516e-08, 0, 5.6365215e-16, -0.2949999, 0, 0.295, 5.6365225e-16, -0.07, -2.322, 0)
+flip_h = true
+render_priority = 100
+texture = ExtResource("4_o5mf1")
+
+[node name="Screen" parent="Remote/Remote" index="6" unique_id=52383535]
 layers = 2
-surface_material_override/0 = SubResource("StandardMaterial3D_o5mf1")
+surface_material_override/0 = SubResource("StandardMaterial3D_1ut60")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=773644612]
 size = Vector2i(1000, 1000)

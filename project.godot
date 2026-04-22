@@ -18,6 +18,14 @@ config/use_custom_user_dir=true
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://b8dufx07d2y3d"
+
+[autoload]
+
+MusicPlayer="*uid://e07415mkurns"
+
 [display]
 
 window/size/viewport_width=1920

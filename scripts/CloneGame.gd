@@ -42,8 +42,14 @@ var noBranchZones: Array[Area3D]
 @onready var cloneContainer: Node = $Clones
 
 @onready var pauseUI: Control = find_child("PauseUI", true, false)
-@onready var remoteLabel: RichTextLabel = find_child("ScreenLabel", true, false)
 @onready var timelineSlider: HSlider = find_child("TimelineSlider", true, false)
+
+@onready var remoteTimeLabel: RichTextLabel = find_child("RemoteTimeLabel", true, false)
+@onready var remotePaused: PanelContainer = find_child("RemotePaused", true, false)
+@onready var remoteAvailableClonesLabel: RichTextLabel = find_child("AvailableClonesLabel", true, false)
+@onready var remoteNoBranch: PanelContainer = find_child("NoBranch", true, false)
+@onready var remotePlaySprite: Sprite3D = find_child("PlaySprite", true, false)
+@onready var remotePauseSprite: Sprite3D = find_child("PauseSprite", true, false)
 
 func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
@@ -71,7 +77,7 @@ func _physics_process(delta: float) -> void:
     _updateRemote()
 
 
-# Non-player action inputs
+# Non-player movement inputs
 func _handleInput(delta: float):
     if Input.is_action_just_pressed("tempLoadLevel1"):
         if gamestate == Gamestate.Playing:
@@ -172,6 +178,7 @@ func _doPause():
     gamestate = Gamestate.Paused
     
     RenderingServer.global_shader_parameter_set("pause_effect", true);
+    MusicPlayer.pauseEffect()
     
     player.pause()
     _pauseClones()
@@ -190,11 +197,15 @@ func _doPause():
 
 func _doUnpause() -> bool:
     if get_tree().get_processed_tweens().size() > 0:
-        return false
+        if get_tree().get_processed_tweens().size() == 1 and get_tree().get_processed_tweens()[0] == MusicPlayer.pauseTween:
+            pass
+        else:
+            return false
     
     gamestate = Gamestate.Playing
     
     RenderingServer.global_shader_parameter_set("pause_effect", false);
+    MusicPlayer.pauseEffect(false) # Unpause
     
     timeIndex = int(timelineSlider.value) + 1 # Resume recording on the next timeIndex, not the one paused on
     
@@ -445,7 +456,7 @@ func _getTimeString(value: float) -> String:
     var physicsTicksPerSecond: float = ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
     var minutes: int = int(value / (60 * physicsTicksPerSecond))
     var seconds: int = int(float(int(value) % int(60 * physicsTicksPerSecond)) / physicsTicksPerSecond)
-    return "%d:%02d" % [minutes, seconds]
+    return "%02d:%02d" % [minutes, seconds]
 
 
 func _recordCloneData():
@@ -457,28 +468,52 @@ func _recordCloneData():
 
 
 func _updateRemote():
-    match gamestate:
-        Gamestate.Playing, Gamestate.Paused:
-            var playerColor: Actor.ActorColor = player.getColor()
-            var bulbColor: Color
-            match playerColor:
-                Actor.ActorColor.White:
-                    bulbColor = Color.WHITE
-                Actor.ActorColor.Green:
-                    bulbColor = Color.GREEN
-                Actor.ActorColor.Yellow:
-                    bulbColor = Color.YELLOW
-                Actor.ActorColor.Red:
-                    bulbColor = Color.RED
-            
-            RenderingServer.global_shader_parameter_set("remote_bulb_color", bulbColor)
-            
-            var sourceTimeIndex: int = timeIndex if gamestate == Gamestate.Playing else (timelineSlider.value as int)
-            
-            remoteLabel.text = _getTimeString(sourceTimeIndex)
-            
-            remoteLabel.text += "\n\n%d\nAvailable Clones\n\n\n\n" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
-            
-            if _inNoBranchZone():
-                remoteLabel.text = remoteLabel.text.substr(0, remoteLabel.text.length() - 2)
-                remoteLabel.text += "In No-Branch\nZone!"
+    if gamestate == Gamestate.Loading:
+        return
+    
+    var sourceTimeIndex: int = timeIndex if gamestate == Gamestate.Playing else (timelineSlider.value as int)
+    
+    var playerColor: Actor.ActorColor = player.getColor()
+    var numAvailableClones: int = availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
+    
+    var availableClonesString: String = ""
+    
+    match numAvailableClones:
+        1:
+            availableClonesString = "☺[/color]"
+        2:
+            availableClonesString = "☺☺[/color]"
+    
+    var bulbColor: Color
+    match playerColor:
+        Actor.ActorColor.White:
+            availableClonesString = availableClonesString.insert(0, "[color=green]")
+            bulbColor = Color.WHITE
+        Actor.ActorColor.Green:
+            availableClonesString = availableClonesString.insert(0, "[color=yellow]")
+            bulbColor = Color.GREEN
+        Actor.ActorColor.Yellow:
+            availableClonesString = availableClonesString.insert(0, "[color=red]")
+            bulbColor = Color.YELLOW
+        Actor.ActorColor.Red:
+            bulbColor = Color.RED
+    
+    RenderingServer.global_shader_parameter_set("remote_bulb_color", bulbColor)
+    
+    remoteAvailableClonesLabel.text = availableClonesString
+    
+    remoteTimeLabel.text = _getTimeString(sourceTimeIndex)
+    
+    if _inNoBranchZone():
+        remoteNoBranch.show()
+    else:
+        remoteNoBranch.hide()
+    
+    if gamestate == Gamestate.Paused:
+        remotePaused.show()
+        remotePlaySprite.show()
+        remotePauseSprite.hide()
+    else:
+        remotePaused.hide()
+        remotePlaySprite.hide()
+        remotePauseSprite.show()
