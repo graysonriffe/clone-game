@@ -4,9 +4,9 @@ extends Node
 
 # Enums
 enum Gamestate {
-	Playing, # Time is passing, player is moving
-	Paused, # Time is paused, player is moving timeline or in the menu
-	Loading # Level is changing
+    Playing, # Time is passing, player is moving
+    Paused, # Time is paused, player is moving timeline or in the menu
+    Loading # Level is changing
 }
 
 # Constants
@@ -44,415 +44,415 @@ var availableClonesHistory: Dictionary[int, int]
 @onready var timelineTimeLabel: Label = find_child("TimelineTimeLabel", true, false)
 
 func _ready() -> void:
-	process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
-	# Load main menu level
-	_changeLevel(99)
-	
-	# Show main menu UI
-	pauseUI.hide()
-	timelineSlider.value_changed.connect(_timelineSliderChanged)
-	
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
-	player.add_to_group("Player")
-	player.pause(false) # Unpause
+    process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
+    # Load main menu level
+    _changeLevel(99)
+    
+    # Show main menu UI
+    pauseUI.hide()
+    timelineSlider.value_changed.connect(_timelineSliderChanged)
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
+    player.add_to_group("Player")
+    player.pause(false) # Unpause
 
 
 func _physics_process(delta: float) -> void:
-	if gamestate == Gamestate.Playing:
-		_enableNewClones() # Clones spawned by other clones, if any
-		_record()
-		
-		timeIndex += 1
-	
-	_handleInput(delta)
-	
-	_updateRemoteLabel()
+    if gamestate == Gamestate.Playing:
+        _enableNewClones() # Clones spawned by other clones, if any
+        _record()
+        
+        timeIndex += 1
+    
+    _handleInput(delta)
+    
+    _updateRemoteLabel()
 
 
 # Non-player action inputs
 func _handleInput(delta: float):
-	if Input.is_action_just_pressed("tempLoadLevel1"):
-		if gamestate == Gamestate.Playing:
-			_changeLevel(1)
-	
-	if Input.is_action_just_pressed("tempLoadLevel2"):
-		if gamestate == Gamestate.Playing:
-			_changeLevel(2)
-	
-	if Input.is_action_just_released("pauseUnpause"):
-		_attemptTogglePause()
-	
-	var shouldScrubForward: bool = Input.is_action_pressed("timelineScrubForward")
-	var shouldScrubBackward: bool = Input.is_action_pressed("timelineScrubBackward")
-	
-	_handleScrub(shouldScrubForward, shouldScrubBackward, delta)
-	
-	if Input.is_action_just_released("branch"):
-		_attemptBranch()
+    if Input.is_action_just_pressed("tempLoadLevel1"):
+        if gamestate == Gamestate.Playing:
+            _changeLevel(1)
+    
+    if Input.is_action_just_pressed("tempLoadLevel2"):
+        if gamestate == Gamestate.Playing:
+            _changeLevel(2)
+    
+    if Input.is_action_just_released("pauseUnpause"):
+        _attemptTogglePause()
+    
+    var shouldScrubForward: bool = Input.is_action_pressed("timelineScrubForward")
+    var shouldScrubBackward: bool = Input.is_action_pressed("timelineScrubBackward")
+    
+    _handleScrub(shouldScrubForward, shouldScrubBackward, delta)
+    
+    if Input.is_action_just_released("branch"):
+        _attemptBranch()
 
 
 # Unloads current level and loads new level
 func _changeLevel(newLevelNumber: int):
-	gamestate = Gamestate.Loading
-	
-	# TODO: Move clone deletion somewhere else later
-	_deleteAllClones()
-	
-	var levelScene: PackedScene = load(LEVEL_PATH + "level_" + str(newLevelNumber) + ".tscn")
-	
-	# Unload current level
-	for child in levelContainer.get_children():
-		child.queue_free()
-		await child.tree_exited
-	
-	# Instantiate new level scene and add it to the level container node
-	var levelSceneInstance: Level = levelScene.instantiate()
-	levelContainer.add_child(levelSceneInstance)
-	
-	# Teleport player to PlayerStart marker
-	# TODO: Probably move this later to another function
-	var playerStart: Node3D = levelSceneInstance.find_child("PlayerStart")
-	player.reset(playerStart.global_transform)
-	
-	timeIndex = 0
-	timelineData = TimelineData.new()
-	timelineData.registerActor(player)
-	timelineData.registerObjects(levelContainer)
-	
-	currentCloneData = CloneData.new()
-	
-	# Record timeIndex = 0 as the initial state of the level
-	_record()
-	
-	availableClonesHistory.clear()
-	availableClonesHistory[0] = 2
-	
-	gamestate = Gamestate.Playing
+    gamestate = Gamestate.Loading
+    
+    # TODO: Move clone deletion somewhere else later
+    _deleteAllClones()
+    
+    var levelScene: PackedScene = load(LEVEL_PATH + "level_" + str(newLevelNumber) + ".tscn")
+    
+    # Unload current level
+    for child in levelContainer.get_children():
+        child.queue_free()
+        await child.tree_exited
+    
+    # Instantiate new level scene and add it to the level container node
+    var levelSceneInstance: Level = levelScene.instantiate()
+    levelContainer.add_child(levelSceneInstance)
+    
+    # Teleport player to PlayerStart marker
+    # TODO: Probably move this later to another function
+    var playerStart: Node3D = levelSceneInstance.find_child("PlayerStart")
+    player.reset(playerStart.global_transform)
+    
+    timeIndex = 0
+    timelineData = TimelineData.new()
+    timelineData.registerActor(player)
+    timelineData.registerObjects(levelContainer)
+    
+    currentCloneData = CloneData.new()
+    
+    # Record timeIndex = 0 as the initial state of the level
+    _record()
+    
+    availableClonesHistory.clear()
+    availableClonesHistory[0] = 2
+    
+    gamestate = Gamestate.Playing
 
 
 func getTimeIndex() -> int:
-	return timeIndex
+    return timeIndex
 
 
 func _record():
-	timelineData.recordData(timeIndex)
-	_recordCloneData()
+    timelineData.recordData(timeIndex)
+    _recordCloneData()
 
 
 func _attemptTogglePause():
-	if gamestate == Gamestate.Playing or gamestate == Gamestate.Paused:
-		_togglePause()
+    if gamestate == Gamestate.Playing or gamestate == Gamestate.Paused:
+        _togglePause()
 
 
 func _togglePause():
-	if gamestate == Gamestate.Playing:
-		_doPause()
-	elif gamestate == Gamestate.Paused:
-		if _doUnpause():
-			# Exception for unpausing a the beginning of the timeline
-			if timeIndex == 1:
-				_deleteAllClones()
-			else:
-				_deleteDiscardedClones()
+    if gamestate == Gamestate.Playing:
+        _doPause()
+    elif gamestate == Gamestate.Paused:
+        if _doUnpause():
+            # Exception for unpausing a the beginning of the timeline
+            if timeIndex == 1:
+                _deleteAllClones()
+            else:
+                _deleteDiscardedClones()
 
 
 func _doPause():
-	gamestate = Gamestate.Paused
-	
-	player.pause()
-	_pauseClones()
-	_pausePhysicsObjects()
-	_pauseAnimations()
-	
-	var lastTimeIndex: int = timeIndex - 1 # Current timeIndex doesn't have data yet
-	currentCloneData.setEndingTimeIndex(lastTimeIndex)
-	timelineSlider.max_value = lastTimeIndex
-	timelineSlider.set_value_no_signal(lastTimeIndex)
-	timelineSlider.grab_focus()
-	_setTimelineTimeLabel(lastTimeIndex)
-	
-	pauseUI.show()
-	
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+    gamestate = Gamestate.Paused
+    
+    player.pause()
+    _pauseClones()
+    _pausePhysicsObjects()
+    _pauseAnimations()
+    
+    var lastTimeIndex: int = timeIndex - 1 # Current timeIndex doesn't have data yet
+    currentCloneData.setEndingTimeIndex(lastTimeIndex)
+    timelineSlider.max_value = lastTimeIndex
+    timelineSlider.set_value_no_signal(lastTimeIndex)
+    timelineSlider.grab_focus()
+    _setTimelineTimeLabel(lastTimeIndex)
+    
+    pauseUI.show()
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _doUnpause() -> bool:
-	if get_tree().get_processed_tweens().size() > 0:
-		return false
-	
-	gamestate = Gamestate.Playing
-	
-	timeIndex = int(timelineSlider.value) + 1 # Resume recording on the next timeIndex, not the one paused on
-	
-	player.pause(false) # Unpause
-	_disableHiddenClones()
-	_pauseClones(false) # Unpause
-	_pausePhysicsObjects(false) # Unpause
-	_pauseAnimations(false) # Unpause
-	
-	pauseUI.hide()
-	
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
-	return true
+    if get_tree().get_processed_tweens().size() > 0:
+        return false
+    
+    gamestate = Gamestate.Playing
+    
+    timeIndex = int(timelineSlider.value) + 1 # Resume recording on the next timeIndex, not the one paused on
+    
+    player.pause(false) # Unpause
+    _disableHiddenClones()
+    _pauseClones(false) # Unpause
+    _pausePhysicsObjects(false) # Unpause
+    _pauseAnimations(false) # Unpause
+    
+    pauseUI.hide()
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
+    return true
 
 
 func _pauseClones(pause: bool = true):
-	for clone: Clone in cloneContainer.get_children():
-		clone.pause(pause)
+    for clone: Clone in cloneContainer.get_children():
+        clone.pause(pause)
 
 
 func _pausePhysicsObjects(pause: bool = true):
-	var levelNodes: Array[Node] = _getAllChildren(levelContainer)
-	
-	for node: Node in levelNodes:
-		if node is RigidBody3D:
-			node.process_mode = Node.PROCESS_MODE_DISABLED if pause else Node.PROCESS_MODE_INHERIT
+    var levelNodes: Array[Node] = _getAllChildren(levelContainer)
+    
+    for node: Node in levelNodes:
+        if node is RigidBody3D:
+            node.process_mode = Node.PROCESS_MODE_DISABLED if pause else Node.PROCESS_MODE_INHERIT
 
 
 func _getAllChildren(node: Node, array: Array[Node] = []) -> Array[Node]:
-	for child in node.get_children():
-		array.append(child)
-		
-		if child.get_child_count() > 0:
-			array = _getAllChildren(child, array)
-	
-	return array
+    for child in node.get_children():
+        array.append(child)
+        
+        if child.get_child_count() > 0:
+            array = _getAllChildren(child, array)
+    
+    return array
 
 
 func _pauseAnimations(pause: bool = true):
-	var levelNodes: Array[Node] = _getAllChildren(levelContainer)
-	
-	for node: Node in levelNodes:
-		if node is AnimationPlayer:
-			node.active = not pause
+    var levelNodes: Array[Node] = _getAllChildren(levelContainer)
+    
+    for node: Node in levelNodes:
+        if node is AnimationPlayer:
+            node.active = not pause
 
 
 func _deleteClone(clone: Clone):
-	clone.queue_free()
-	timelineData.deregisterActor(clone)
+    clone.queue_free()
+    timelineData.deregisterActor(clone)
 
 
 func _deleteAllClones():
-	for clone: Clone in cloneContainer.get_children():
-		_deleteClone(clone)
+    for clone: Clone in cloneContainer.get_children():
+        _deleteClone(clone)
 
 
 func _deleteDiscardedClones():
-	for clone: Clone in cloneContainer.get_children():
-		if not clone.enabled and clone.parentActor == player:
-			_deleteCloneAndChildren(clone)
-			
-			availableClonesHistory[_getCurrentCloneIndex(timeIndex)] = 2
-			_removeFutureAvailableCloneEntries()
+    for clone: Clone in cloneContainer.get_children():
+        if not clone.enabled and clone.parentActor == player:
+            _deleteCloneAndChildren(clone)
+            
+            availableClonesHistory[_getCurrentCloneIndex(timeIndex)] = 2
+            _removeFutureAvailableCloneEntries()
 
 
 func _deleteCloneAndChildren(clone: Clone):
-	for eachClone: Clone in cloneContainer.get_children():
-		if not eachClone.enabled and eachClone.parentActor == clone:
-			_deleteCloneAndChildren(eachClone)
-		
-		_deleteClone(clone)
+    for eachClone: Clone in cloneContainer.get_children():
+        if not eachClone.enabled and eachClone.parentActor == clone:
+            _deleteCloneAndChildren(eachClone)
+        
+        _deleteClone(clone)
 
 
 func _attemptBranch():
-	if gamestate == Gamestate.Paused:
-		if _clonesAvailable():
-			_doBranch()
-		else:
-			# Some sort of feedback
-			pass
+    if gamestate == Gamestate.Paused:
+        if _clonesAvailable():
+            _doBranch()
+        else:
+            # Some sort of feedback
+            pass
 
 
 func _clonesAvailable():
-	var timelineTimeIndex = timelineSlider.value # + 1?
-	
-	var currentClone: int = _getCurrentCloneIndex(timelineTimeIndex)
-	
-	return availableClonesHistory.get(currentClone, 0) > 0
+    var timelineTimeIndex = timelineSlider.value # + 1?
+    
+    var currentClone: int = _getCurrentCloneIndex(timelineTimeIndex)
+    
+    return availableClonesHistory.get(currentClone, 0) > 0
 
 
 func _getCurrentCloneIndex(currentTimeIndex: int) -> int:
-	var returnVal: int = -1
-	for index in availableClonesHistory.keys():
-		if index <= currentTimeIndex:
-			returnVal = index
-	
-	return returnVal
+    var returnVal: int = -1
+    for index in availableClonesHistory.keys():
+        if index <= currentTimeIndex:
+            returnVal = index
+    
+    return returnVal
 
 
 func _doBranch():
-	if not _doUnpause():
-		return
-	
-	var newClone: Clone = CLONE_SCENE.instantiate()
-	
-	# TODO: Remove this later with new crouching animations
-	newClone.get_node("BodyCollision1").shape = newClone.get_node("BodyCollision1").shape.duplicate()
-	newClone.get_node("BodyMesh").mesh = newClone.get_node("BodyMesh").mesh.duplicate()
-	
-	newClone.parentActor = player
-	
-	currentCloneData.setStartingTimeIndex(timeIndex)
-	newClone.cloneData = currentCloneData.duplicate(true)
-	
-	var playerColor: Actor.ActorColor = player.getColor()
-	newClone.defaultColor = playerColor
-	
-	cloneContainer.add_child(newClone)
-	
-	timelineData.registerActor(newClone)
-	
-	newClone.pause(false) # Unpause
-	
-	# Update Clone parents
-	for clone: Clone in cloneContainer.get_children():
-		if clone.parentActor == player and timeIndex < clone.cloneData.startingTimeIndex:
-			clone.parentActor = newClone
-	
-	_incrementColor(player)
-	
-	_updateAvailableCloneHistory()
+    if not _doUnpause():
+        return
+    
+    var newClone: Clone = CLONE_SCENE.instantiate()
+    
+    # TODO: Remove this later with new crouching animations
+    newClone.get_node("BodyCollision1").shape = newClone.get_node("BodyCollision1").shape.duplicate()
+    newClone.get_node("BodyMesh").mesh = newClone.get_node("BodyMesh").mesh.duplicate()
+    
+    newClone.parentActor = player
+    
+    currentCloneData.setStartingTimeIndex(timeIndex)
+    newClone.cloneData = currentCloneData.duplicate(true)
+    
+    var playerColor: Actor.ActorColor = player.getColor()
+    newClone.defaultColor = playerColor
+    
+    cloneContainer.add_child(newClone)
+    
+    timelineData.registerActor(newClone)
+    
+    newClone.pause(false) # Unpause
+    
+    # Update Clone parents
+    for clone: Clone in cloneContainer.get_children():
+        if clone.parentActor == player and timeIndex < clone.cloneData.startingTimeIndex:
+            clone.parentActor = newClone
+    
+    _incrementColor(player)
+    
+    _updateAvailableCloneHistory()
 
 
 func _incrementColor(actor: Actor):
-	match actor.color:
-		Actor.ActorColor.White:
-			actor.color = Actor.ActorColor.Green
-		Actor.ActorColor.Green:
-			actor.color = Actor.ActorColor.Yellow
-		Actor.ActorColor.Yellow:
-			actor.color = Actor.ActorColor.Red
+    match actor.color:
+        Actor.ActorColor.White:
+            actor.color = Actor.ActorColor.Green
+        Actor.ActorColor.Green:
+            actor.color = Actor.ActorColor.Yellow
+        Actor.ActorColor.Yellow:
+            actor.color = Actor.ActorColor.Red
 
 
 func _updateAvailableCloneHistory():
-	# Subtract 1 from current clone
-	# Add new clone to history with 2
-	# Remove all future entries
-	var currentClone: int = _getCurrentCloneIndex(timeIndex)
-	
-	availableClonesHistory[currentClone] -= 1
-	
-	if not _isPlayerRed():
-		availableClonesHistory[timeIndex] = 2
-	else:
-		availableClonesHistory[timeIndex] = 0
-	
-	_removeFutureAvailableCloneEntries()
+    # Subtract 1 from current clone
+    # Add new clone to history with 2
+    # Remove all future entries
+    var currentClone: int = _getCurrentCloneIndex(timeIndex)
+    
+    availableClonesHistory[currentClone] -= 1
+    
+    if not _isPlayerRed():
+        availableClonesHistory[timeIndex] = 2
+    else:
+        availableClonesHistory[timeIndex] = 0
+    
+    _removeFutureAvailableCloneEntries()
 
 
 func _removeFutureAvailableCloneEntries():
-	for index in availableClonesHistory.keys():
-		if index > timeIndex:
-			availableClonesHistory.erase(index)
+    for index in availableClonesHistory.keys():
+        if index > timeIndex:
+            availableClonesHistory.erase(index)
 
 
 func _isPlayerRed() -> bool:
-	return player.getColor() == Actor.ActorColor.Red
+    return player.getColor() == Actor.ActorColor.Red
 
 
 func _handleScrub(shouldScrubForward: bool, shouldScrubBackward: bool, delta: float):
-	if shouldScrubForward:
-		if gamestate == Gamestate.Paused:
-			_scrub(true)
-	
-	if shouldScrubBackward:
-		if gamestate == Gamestate.Paused:
-			_scrub(false)
-	
-	if (shouldScrubForward or shouldScrubBackward) and gamestate == Gamestate.Paused:
-		scrubTime += delta
-	elif ((not shouldScrubForward) and (not shouldScrubBackward)) or gamestate == Gamestate.Playing:
-		scrubTime = 0
+    if shouldScrubForward:
+        if gamestate == Gamestate.Paused:
+            _scrub(true)
+    
+    if shouldScrubBackward:
+        if gamestate == Gamestate.Paused:
+            _scrub(false)
+    
+    if (shouldScrubForward or shouldScrubBackward) and gamestate == Gamestate.Paused:
+        scrubTime += delta
+    elif ((not shouldScrubForward) and (not shouldScrubBackward)) or gamestate == Gamestate.Playing:
+        scrubTime = 0
 
 
 func _scrub(forward: bool):
-	var scrubDelta: int = 2
-	
-	if scrubTime > 1.5:
-		scrubDelta *= 5
-	
-	timelineSlider.value += scrubDelta if forward else -scrubDelta
+    var scrubDelta: int = 2
+    
+    if scrubTime > 1.5:
+        scrubDelta *= 5
+    
+    timelineSlider.value += scrubDelta if forward else -scrubDelta
 
 
 func _timelineSliderChanged(value: float):
-	var previewTimeIndex = int(value)
-	
-	timelineData.setData(int(previewTimeIndex))
-	
-	_showOrHideClonesInPreview(previewTimeIndex)
-	
-	_setTimelineTimeLabel(value)
+    var previewTimeIndex = int(value)
+    
+    timelineData.setData(int(previewTimeIndex))
+    
+    _showOrHideClonesInPreview(previewTimeIndex)
+    
+    _setTimelineTimeLabel(value)
 
 
 func _showOrHideClonesInPreview(previewTimeIndex: int):
-	for clone: Clone in cloneContainer.get_children():
-		if previewTimeIndex < clone.cloneData.startingTimeIndex - 1:
-			clone.hide()
-		elif previewTimeIndex >= clone.cloneData.startingTimeIndex:
-			clone.show()
+    for clone: Clone in cloneContainer.get_children():
+        if previewTimeIndex < clone.cloneData.startingTimeIndex - 1:
+            clone.hide()
+        elif previewTimeIndex >= clone.cloneData.startingTimeIndex:
+            clone.show()
 
 
 func _disableClone(clone: Clone):
-	clone.process_mode = Node.PROCESS_MODE_DISABLED
-	timelineData.deregisterActor(clone)
-	clone.enabled = false
+    clone.process_mode = Node.PROCESS_MODE_DISABLED
+    timelineData.deregisterActor(clone)
+    clone.enabled = false
 
 
 func _enableClone(clone: Clone):
-	clone.reset()
-	clone.show()
-	clone.process_mode = Node.PROCESS_MODE_INHERIT
-	timelineData.registerActor(clone)
-	clone.enabled = true
+    clone.reset()
+    clone.show()
+    clone.process_mode = Node.PROCESS_MODE_INHERIT
+    timelineData.registerActor(clone)
+    clone.enabled = true
 
 
 func _disableHiddenClones():
-	for clone: Clone in cloneContainer.get_children():
-		if not clone.visible:
-			_disableClone(clone)
+    for clone: Clone in cloneContainer.get_children():
+        if not clone.visible:
+            _disableClone(clone)
 
 
 func _enableNewClones():
-	for clone: Clone in cloneContainer.get_children():
-		if not clone.enabled and timeIndex >= clone.cloneData.startingTimeIndex - 1:
-			_incrementColor(clone.parentActor)
-			_enableClone(clone)
-			clone.reset_physics_interpolation()
+    for clone: Clone in cloneContainer.get_children():
+        if not clone.enabled and timeIndex >= clone.cloneData.startingTimeIndex - 1:
+            _incrementColor(clone.parentActor)
+            _enableClone(clone)
+            clone.reset_physics_interpolation()
 
 
 func _setTimelineTimeLabel(value: float):
-	var physicsTicksPerSecond: float = ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
-	var minutes: int = int(value / (60 * physicsTicksPerSecond))
-	var seconds: int = int(float(int(value) % int(60 * physicsTicksPerSecond)) / physicsTicksPerSecond)
-	timelineTimeLabel.text = "%d:%02d" % [minutes, seconds]
+    var physicsTicksPerSecond: float = ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
+    var minutes: int = int(value / (60 * physicsTicksPerSecond))
+    var seconds: int = int(float(int(value) % int(60 * physicsTicksPerSecond)) / physicsTicksPerSecond)
+    timelineTimeLabel.text = "%d:%02d" % [minutes, seconds]
 
 
 func _recordCloneData():
-	currentCloneData.pushBackMovementVector(timeIndex, player.getInputDirection())
-	currentCloneData.pushBackLookVector(timeIndex, player.getLookVector())
-	currentCloneData.pushBackJump(timeIndex, player.getJumpButton())
-	currentCloneData.pushBackCrouch(timeIndex, player.getCrouchButton())
-	currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())
+    currentCloneData.pushBackMovementVector(timeIndex, player.getInputDirection())
+    currentCloneData.pushBackLookVector(timeIndex, player.getLookVector())
+    currentCloneData.pushBackJump(timeIndex, player.getJumpButton())
+    currentCloneData.pushBackCrouch(timeIndex, player.getCrouchButton())
+    currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())
 
 
 func _updateRemoteLabel():
-	match gamestate:
-		Gamestate.Playing, Gamestate.Paused:
-			var playerColor: Actor.ActorColor = player.getColor()
-			var colorString: String
-			match playerColor:
-				Actor.ActorColor.White:
-					colorString = "[color=white]WHITE[/color]"
-				Actor.ActorColor.Green:
-					colorString = "[color=green]GREEN[/color]"
-				Actor.ActorColor.Yellow:
-					colorString = "[color=yellow]YELLOW[/color]"
-				Actor.ActorColor.Red:
-					colorString = "[color=red]RED[/color]"
-			
-			remoteLabel.text = "You are:\n" + colorString
-			
-			var sourceTimeIndex: int = timeIndex if gamestate == Gamestate.Playing else (timelineSlider.value as int)
-			remoteLabel.text += "\n\n%d\nAvailable Clones" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]
+    match gamestate:
+        Gamestate.Playing, Gamestate.Paused:
+            var playerColor: Actor.ActorColor = player.getColor()
+            var colorString: String
+            match playerColor:
+                Actor.ActorColor.White:
+                    colorString = "[color=white]WHITE[/color]"
+                Actor.ActorColor.Green:
+                    colorString = "[color=green]GREEN[/color]"
+                Actor.ActorColor.Yellow:
+                    colorString = "[color=yellow]YELLOW[/color]"
+                Actor.ActorColor.Red:
+                    colorString = "[color=red]RED[/color]"
+            
+            remoteLabel.text = "You are:\n" + colorString
+            
+            var sourceTimeIndex: int = timeIndex if gamestate == Gamestate.Playing else (timelineSlider.value as int)
+            remoteLabel.text += "\n\n%d\nAvailable Clones" % availableClonesHistory[_getCurrentCloneIndex(sourceTimeIndex)]

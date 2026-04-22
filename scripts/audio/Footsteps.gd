@@ -10,36 +10,36 @@ var actor: CharacterBody3D
 @onready var ray: RayCast3D = get_parent().get_node("GroundRay")
 
 func _ready() -> void:
-	actor = get_parent() as CharacterBody3D
-	assert(actor != null, "FootstepSFX must be a child of CharacterBody3D")
-	surface_sounds = {
-		"default": preload("res://assets/Audio/sfx/steps/metal_steps.tres"),
-		"concrete": preload("res://assets/Audio/sfx/steps/concrete_steps.tres"),
-		"metal": preload("res://assets/Audio/sfx/steps/metal_steps.tres"),
-	}
+    actor = get_parent() as CharacterBody3D
+    assert(actor != null, "FootstepSFX must be a child of CharacterBody3D")
+    surface_sounds = {
+        "default": preload("res://assets/Audio/sfx/steps/metal_steps.tres"),
+        "concrete": preload("res://assets/Audio/sfx/steps/concrete_steps.tres"),
+        "metal": preload("res://assets/Audio/sfx/steps/metal_steps.tres"),
+    }
 
 func _physics_process(delta: float) -> void:
-	if actor.getPauseState():
-		step_distance = 0.0
-		return
+    if actor.getPauseState():
+        step_distance = 0.0
+        return
 
-	if actor.is_on_floor() and actor.velocity.length() > 0.1:
-		step_distance += actor.velocity.length() * delta
-		if step_distance >= STEP_INTERVAL:
-			step_distance = 0.0
-			_play_footstep()
-	else:
-		step_distance = 0.0
+    if actor.is_on_floor() and actor.velocity.length() > 0.1:
+        step_distance += actor.velocity.length() * delta
+        if step_distance >= STEP_INTERVAL:
+            step_distance = 0.0
+            _play_footstep()
+    else:
+        step_distance = 0.0
 
 func _get_surface_type() -> String:
-	if ray.is_colliding():
-		var collider := ray.get_collider()
-		if collider.has_meta("surface_type"):
-			return collider.get_meta("surface_type")
-	return "default"
+    if ray.is_colliding():
+        var collider := ray.get_collider()
+        if collider.has_meta("surface_type"):
+            return collider.get_meta("surface_type")
+    return "default"
 
 func _play_footstep() -> void:
-	var surface := _get_surface_type()
-	stream = surface_sounds.get(surface, surface_sounds.get("default"))
-	pitch_scale = randf_range(0.9, 1.1)
-	play()
+    var surface := _get_surface_type()
+    stream = surface_sounds.get(surface, surface_sounds.get("default"))
+    pitch_scale = randf_range(0.9, 1.1)
+    play()
