@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode ambient_light_disabled, depth_prepass_alpha;
+render_mode ambient_light_disabled, depth_test_disabled;
 
 instance uniform vec3 color: source_color;
 instance uniform float emission;
@@ -23,6 +23,4 @@ void light() {
     float specularIntensity = pow(specularDot, 50.0);
     
     SPECULAR_LIGHT += SPECULAR_AMOUNT * step(0.5, specularIntensity) * (ATTENUATION / PI) * LIGHT_COLOR;
-    
-    ALPHA = 1.0;
 }
