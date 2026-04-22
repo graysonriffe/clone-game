@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bjaxi0dg8dxxf"]
+
+[ext_resource type="Script" uid="uid://daw6hn5fc8hja" path="res://scripts/actor/enemy/EnemyFSM.gd" id="1_afbor"]
+[ext_resource type="Script" uid="uid://djja7t5c0triv" path="res://scripts/actor/enemy/Enemy States/IdleState.gd" id="2_8rqgt"]
+[ext_resource type="Script" uid="uid://cmo5uu78bnfm7" path="res://scripts/actor/enemy/Enemy States/AlertState.gd" id="3_mctsl"]
+[ext_resource type="Script" uid="uid://chjvhjduk6f05" path="res://scripts/actor/enemy/Enemy States/SearchState.gd" id="4_j1y8a"]
+[ext_resource type="Script" uid="uid://ch12htaaewy3l" path="res://scripts/actor/enemy/Enemy States/ChaseState.gd" id="5_wqc28"]
+
+[node name="Guard" type="CharacterBody3D" unique_id=1911847143]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1222146312]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1089469585]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1449054447]
+
+[node name="FSM" type="Node" parent="." unique_id=1848156965]
+script = ExtResource("1_afbor")
+
+[node name="IdleState" type="Node" parent="FSM" unique_id=568547320]
+script = ExtResource("2_8rqgt")
+
+[node name="AlertState" type="Node" parent="FSM" unique_id=939742719]
+script = ExtResource("3_mctsl")
+
+[node name="SearchState" type="Node" parent="FSM" unique_id=1710667360]
+script = ExtResource("4_j1y8a")
+
+[node name="ChaseState" type="Node" parent="FSM" unique_id=1909244605]
+script = ExtResource("5_wqc28")
+
+[node name="Hearing Area" type="Area3D" parent="." unique_id=1128601362]
