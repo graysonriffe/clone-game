@@ -23,6 +23,7 @@ const WALKING_SPEED = 6.0
 const CROUCHING_SPEED = 3.0
 const JUMP_VELOCITY = 7.0
 const BOOST_VELOCITY = 11.5
+const STEP_INTERVAL = 2.5
 
 # Variables
 var movementDirectionSmoothed: Vector3
@@ -74,6 +75,8 @@ var animationTime: float:
         animationPlayer.active = false
         animationTime = value
 
+var stepProgress: float
+
 # onready variables
 @onready var head: Node3D = $Head
 @onready var crouchRayCast: RayCast3D = $CrouchRayCast
@@ -83,6 +86,7 @@ var animationTime: float:
 @onready var headMesh: MeshInstance3D = $Head/HeadMesh
 @onready var crouchActorDetector: Area3D = $CrouchActorDectector
 @onready var collisionDetector: Area3D = $CollisionDetector
+@onready var footstepsPlayer: AudioStreamPlayer3D = $FootstepsPlayer
 
 func _ready() -> void:
     paused = true
@@ -93,6 +97,8 @@ func _ready() -> void:
     noSetter = true
     animationTime = 0.0
     noSetter = false
+    
+    stepProgress = 0.0
 
 
 func _physics_process(delta: float) -> void:
@@ -138,6 +144,15 @@ func _physics_process(delta: float) -> void:
     
     isOnFloor = is_on_floor()
     isOnFloorOverride = false
+    
+    # Play footsteps
+    if velocity.length() > 0.1:
+        stepProgress += velocity.length() * delta
+        if stepProgress >= STEP_INTERVAL and is_on_floor():
+            stepProgress = 0.0
+            footstepsPlayer.play()
+    else:
+        stepProgress = STEP_INTERVAL - 0.5
 
 
 func pause(shouldPause: bool = true):

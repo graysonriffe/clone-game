@@ -25,6 +25,6 @@ func pauseEffect(shouldPause: bool = true):
     pauseTween.set_trans(Tween.TRANS_SINE)
     
     if shouldPause:
-        pauseTween.tween_property(lowPass, "cutoff_hz",  300.0, 0.3)
+        pauseTween.tween_property(lowPass, "cutoff_hz",  500.0, 0.3)
     else:
         pauseTween.tween_property(lowPass, "cutoff_hz",  20500.0, 0.5)
