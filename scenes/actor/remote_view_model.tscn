@@ -25,15 +25,18 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(0, 0, 0)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_o5mf1"]
-viewport_path = NodePath("../SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_1ut60"]
+viewport_path = NodePath("../RemoteViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ut60"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_120rq"]
 resource_local_to_scene = true
 render_priority = 7
 no_depth_test = true
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_o5mf1")
+albedo_texture = SubResource("ViewportTexture_1ut60")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5f2kl"]
+size = Vector3(0.122, 0.092, 0.002)
 
 [node name="RemoteViewModel" type="Node3D" unique_id=1236516252]
 
@@ -112,12 +115,17 @@ texture = ExtResource("4_o5mf1")
 
 [node name="Screen" parent="Remote/Remote" index="6" unique_id=52383535]
 layers = 2
-surface_material_override/0 = SubResource("StandardMaterial3D_1ut60")
+surface_material_override/0 = SubResource("StandardMaterial3D_120rq")
 
-[node name="SubViewport" type="SubViewport" parent="." unique_id=773644612]
+[node name="MouseArea" type="Area3D" parent="Remote/Remote/Screen" index="0" unique_id=1134202710]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Remote/Remote/Screen/MouseArea" unique_id=1886720561]
+shape = SubResource("BoxShape3D_5f2kl")
+
+[node name="RemoteViewport" type="SubViewport" parent="." unique_id=773644612]
 size = Vector2i(1000, 1000)
 
-[node name="RemoteUI" parent="SubViewport" unique_id=685619501 instance=ExtResource("2_acnp3")]
+[node name="RemoteUI" parent="RemoteViewport" unique_id=685619501 instance=ExtResource("2_acnp3")]
 
 [node name="RemoteStaticLight" type="OmniLight3D" parent="." unique_id=648314989]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12970805, -0.08814413, 0)

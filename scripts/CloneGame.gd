@@ -36,12 +36,14 @@ var availableClonesHistory: Dictionary[int, int]
 # All NoBranchZones in the current level
 var noBranchZones: Array[Area3D]
 
+var lastMousePosition: Vector2i
+
 # onready variables
 @onready var player: Player = $Player
 @onready var levelContainer: Node = $Level
 @onready var cloneContainer: Node = $Clones
 
-@onready var pauseUI: Control = find_child("PauseUI", true, false)
+@onready var timelineUI: Control = find_child("TimelineUI", true, false)
 @onready var timelineSlider: HSlider = find_child("TimelineSlider", true, false)
 
 @onready var remoteTimeLabel: RichTextLabel = find_child("RemoteTimeLabel", true, false)
@@ -50,6 +52,10 @@ var noBranchZones: Array[Area3D]
 @onready var remoteNoBranch: PanelContainer = find_child("NoBranch", true, false)
 @onready var remotePlaySprite: Sprite3D = find_child("PlaySprite", true, false)
 @onready var remotePauseSprite: Sprite3D = find_child("PauseSprite", true, false)
+@onready var remoteMouseArea: Area3D = find_child("MouseArea", true, false)
+@onready var remoteViewport: SubViewport = find_child("RemoteViewport", true, false)
+@onready var remotePauseMenu: PanelContainer = find_child("PauseMenu", true, false)
+@onready var remotePauseQuitButton: Button = find_child("PauseQuitButton", true, false)
 
 func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
@@ -57,8 +63,17 @@ func _ready() -> void:
     _changeLevel(1)
     
     # Show main menu UI
-    pauseUI.hide()
+    timelineUI.hide()
+    
+    remotePauseMenu.hide()
+    
     timelineSlider.value_changed.connect(_timelineSliderChanged)
+    
+    remoteMouseArea.input_event.connect(_remoteInputEvent)
+    
+    remotePauseQuitButton.pressed.connect(func (): get_tree().quit())
+    
+    lastMousePosition = Vector2i(-1, -1)
     
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
@@ -190,9 +205,15 @@ func _doPause():
     timelineSlider.max_value = lastTimeIndex
     timelineSlider.set_value_no_signal(lastTimeIndex)
     
-    pauseUI.show()
+    timelineUI.show()
+    remotePauseMenu.show()
     
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+    
+    if lastMousePosition == Vector2i(-1, -1):
+        lastMousePosition = get_viewport().get_visible_rect().size / 2
+    
+    get_viewport().warp_mouse(lastMousePosition)
 
 
 func _doUnpause() -> bool:
@@ -215,7 +236,10 @@ func _doUnpause() -> bool:
     _pausePhysicsObjects(false) # Unpause
     _pauseAnimations(false) # Unpause
     
-    pauseUI.hide()
+    timelineUI.hide()
+    remotePauseMenu.hide()
+    
+    lastMousePosition = get_viewport().get_mouse_position()
     
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
@@ -517,3 +541,27 @@ func _updateRemote():
         remotePaused.hide()
         remotePlaySprite.hide()
         remotePauseSprite.show()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+    for eventKind in [InputEventMouseButton, InputEventMouseMotion, InputEventScreenDrag, InputEventScreenTouch]:
+        if is_instance_of(event, eventKind):
+            return
+    
+    remoteViewport.push_input(event)
+
+
+func _remoteInputEvent(_camera: Node, event: InputEvent, eventPosition: Vector3, _normal: Vector3, _shapeIndex: int):
+    var mousePos3D: Vector3 = remoteMouseArea.global_transform.affine_inverse() * eventPosition
+    var mousePos2D: Vector2 = Vector2(mousePos3D.x, -mousePos3D.y)
+    
+    const SCREEN_SIZE: Vector2 = Vector2(0.122, 0.0915)
+    mousePos2D /= SCREEN_SIZE
+    mousePos2D += Vector2(0.5, 0.5)
+    
+    const SCREEN_RESOLUTION: Vector2 = Vector2(1000, 750)
+    mousePos2D = mousePos2D * SCREEN_RESOLUTION
+    
+    event.position = mousePos2D
+    
+    remoteViewport.push_input(event)

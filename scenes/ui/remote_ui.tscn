@@ -8,8 +8,8 @@ colors = PackedColorArray(0.68646336, 0.6140178, 0.54267275, 1, 0, 0, 0, 1, 0.42
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_gtj3a"]
 gradient = SubResource("Gradient_wg4ti")
-width = 400
-height = 230
+width = 500
+height = 375
 fill = 2
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
@@ -24,6 +24,18 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8v7o"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0.3019608)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 corner_detail = 5
 
 [node name="RemoteUI" type="Control" unique_id=685619501]
@@ -42,7 +54,27 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_gtj3a")
 
-[node name="RemoteTime" type="PanelContainer" parent="ScreenTexture" unique_id=865539577]
+[node name="BackgroundLogo" type="Label" parent="." unique_id=1630057739]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -477.0
+offset_top = -280.0
+offset_right = 477.0
+offset_bottom = 331.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.07450981)
+theme_override_constants/line_spacing = -85
+theme_override_font_sizes/font_size = 347
+text = "Doing
+Time"
+horizontal_alignment = 1
+
+[node name="RemoteTime" type="PanelContainer" parent="." unique_id=865539577]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -54,11 +86,11 @@ offset_bottom = 131.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_j64sh")
 
-[node name="RemoteTimeMargin" type="MarginContainer" parent="ScreenTexture/RemoteTime" unique_id=97803938]
+[node name="RemoteTimeMargin" type="MarginContainer" parent="RemoteTime" unique_id=97803938]
 layout_mode = 2
 theme_override_constants/margin_bottom = -10
 
-[node name="RemoteTimeLabel" type="RichTextLabel" parent="ScreenTexture/RemoteTime/RemoteTimeMargin" unique_id=507175261]
+[node name="RemoteTimeLabel" type="RichTextLabel" parent="RemoteTime/RemoteTimeMargin" unique_id=507175261]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 90
 bbcode_enabled = true
@@ -67,7 +99,7 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RemotePaused" type="PanelContainer" parent="ScreenTexture" unique_id=962340493]
+[node name="RemotePaused" type="PanelContainer" parent="." unique_id=962340493]
 layout_mode = 1
 offset_left = 35.0
 offset_top = 30.0
@@ -75,11 +107,11 @@ offset_right = 349.0
 offset_bottom = 131.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_j64sh")
 
-[node name="RemotePausedMargin" type="MarginContainer" parent="ScreenTexture/RemotePaused" unique_id=1403921522]
+[node name="RemotePausedMargin" type="MarginContainer" parent="RemotePaused" unique_id=1403921522]
 layout_mode = 2
 theme_override_constants/margin_bottom = -10
 
-[node name="RemotePausedLabel" type="RichTextLabel" parent="ScreenTexture/RemotePaused/RemotePausedMargin" unique_id=1370869232]
+[node name="RemotePausedLabel" type="RichTextLabel" parent="RemotePaused/RemotePausedMargin" unique_id=1370869232]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 90
 bbcode_enabled = true
@@ -88,7 +120,7 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AvailableClonesContainer" type="PanelContainer" parent="ScreenTexture" unique_id=474306676]
+[node name="AvailableClonesContainer" type="PanelContainer" parent="." unique_id=474306676]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -100,11 +132,11 @@ offset_bottom = -30.0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_j64sh")
 
-[node name="AvailableClonesMargin" type="MarginContainer" parent="ScreenTexture/AvailableClonesContainer" unique_id=304919710]
+[node name="AvailableClonesMargin" type="MarginContainer" parent="AvailableClonesContainer" unique_id=304919710]
 layout_mode = 2
 theme_override_constants/margin_bottom = -10
 
-[node name="AvailableClonesLabel" type="RichTextLabel" parent="ScreenTexture/AvailableClonesContainer/AvailableClonesMargin" unique_id=1721510899]
+[node name="AvailableClonesLabel" type="RichTextLabel" parent="AvailableClonesContainer/AvailableClonesMargin" unique_id=1721510899]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 120
 bbcode_enabled = true
@@ -113,7 +145,7 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NoBranch" type="PanelContainer" parent="ScreenTexture" unique_id=266432615]
+[node name="NoBranch" type="PanelContainer" parent="." unique_id=266432615]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -128,10 +160,36 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_j64sh")
 
-[node name="NoBranchMargin" type="MarginContainer" parent="ScreenTexture/NoBranch" unique_id=1853280204]
+[node name="NoBranchMargin" type="MarginContainer" parent="NoBranch" unique_id=1853280204]
 layout_mode = 2
 
-[node name="NoBranchIcon" type="TextureRect" parent="ScreenTexture/NoBranch/NoBranchMargin" unique_id=238186571]
+[node name="NoBranchIcon" type="TextureRect" parent="NoBranch/NoBranchMargin" unique_id=238186571]
 layout_mode = 2
 texture = ExtResource("1_f8v7o")
 expand_mode = 2
+
+[node name="PauseMenu" type="PanelContainer" parent="." unique_id=702432984]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f8v7o")
+
+[node name="PauseMenuMargin" type="MarginContainer" parent="PauseMenu" unique_id=195604893]
+layout_mode = 2
+
+[node name="PauseMenuVBox" type="VBoxContainer" parent="PauseMenu/PauseMenuMargin" unique_id=504670402]
+layout_mode = 2
+
+[node name="PauseQuitButton" type="Button" parent="PauseMenu/PauseMenuMargin/PauseMenuVBox" unique_id=1746437643]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Quit"
