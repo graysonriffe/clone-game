@@ -681,7 +681,9 @@ target_position = Vector3(0, 0, -1.5)
 
 [node name="FootstepsPlayer" type="AudioStreamPlayer3D" parent="." unique_id=324658176]
 stream = ExtResource("3_7vwln")
+volume_db = -22.0
 max_polyphony = 2
+bus = &"WorldSFX"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1749631694]
 libraries/ = SubResource("AnimationLibrary_7vwln")

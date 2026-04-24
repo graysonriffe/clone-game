@@ -152,7 +152,7 @@ func _physics_process(delta: float) -> void:
             stepProgress = 0.0
             footstepsPlayer.play()
     else:
-        stepProgress = STEP_INTERVAL - 0.5
+        stepProgress = STEP_INTERVAL - 0.1
 
 
 func pause(shouldPause: bool = true):
