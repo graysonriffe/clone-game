@@ -49,7 +49,8 @@ func _physics_process(delta: float) -> void:
             _attemptInteract()
     
     # Do headbobbing when walking on a floor, and reset when not
-    if not paused and (velocity.length() > 2.0 and isOnFloor) or velocity.length() > WALKING_SPEED * 2:
+    if not paused and isOnFloor or velocity.length() > WALKING_SPEED * 2:
+        var slowMultiplier: float = clamp(velocity.length(), 0.0, 1.0)
         var thetaDelta: float
         var eyesAmplitude: float
         var viewModelAmplitude: float
@@ -62,12 +63,14 @@ func _physics_process(delta: float) -> void:
             eyesAmplitude = 0.05
             viewModelAmplitude = 0.005
         
+        thetaDelta *= velocity.length() / (WALKING_SPEED if not crouching else CROUCHING_SPEED)
+        
         headBobbingTheta += thetaDelta * delta
         headBobbingVector = Vector2(sin(headBobbingTheta / 2) + 0.5, sin(headBobbingTheta))
-        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * eyesAmplitude, 10.0 * delta)
-        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * eyesAmplitude / 2.0, 10.0 * delta)
-        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * viewModelAmplitude, 10.0 * delta)
-        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * viewModelAmplitude / 2.0, 10.0 * delta)
+        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * eyesAmplitude * slowMultiplier, 10.0 * delta)
+        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * eyesAmplitude / 2.0 * slowMultiplier, 10.0 * delta)
+        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * viewModelAmplitude * slowMultiplier, 10.0 * delta)
+        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * viewModelAmplitude / 2.0 * slowMultiplier, 10.0 * delta)
     else:
         eyes.position.x = lerp(eyes.position.x, 0.0, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, 0.0, 10.0 * delta)

@@ -234,12 +234,16 @@ func _doPause():
     remotePauseMenu.show()
     remotePauseQuitButton.grab_focus()
     
-    Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-    
     if lastMousePosition == Vector2i(-1, -1):
         lastMousePosition = get_viewport().get_visible_rect().size / 2
     
-    get_viewport().warp_mouse(lastMousePosition)
+    match inputMethod:
+        InputMethod.MouseAndKeyboard:
+            Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+            get_viewport().warp_mouse(lastMousePosition)
+        
+        InputMethod.Gamepad:
+            Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 
 func _doUnpause() -> bool:
@@ -586,8 +590,8 @@ func _updateUI():
     # Interact prompt
     interactPrompt.visible = gamestate == Gamestate.Playing and player.canInteract()
     
-    # Update button hints
-    var shouldShow: bool = gamestate == Gamestate.Paused
+    # Update button hints and cursor state
+    var isPaused: bool = gamestate == Gamestate.Paused
     
     remotePauseUnpauseKeyLabel.hide()
     remoteReverseKeyLabel.hide()
@@ -605,19 +609,25 @@ func _updateUI():
     match inputMethod:
         InputMethod.MouseAndKeyboard:
             remotePauseUnpauseKeyLabel.show()
-            remoteReverseKeyLabel.visible = shouldShow
-            remoteForwardKeyLabel.visible = shouldShow
-            remoteBranchKeyLabel.visible = shouldShow
+            remoteReverseKeyLabel.visible = isPaused
+            remoteForwardKeyLabel.visible = isPaused
+            remoteBranchKeyLabel.visible = isPaused
             
             interactKeyHint.show()
+            
+            if isPaused:
+                Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
         
         InputMethod.Gamepad:
             remotePauseUnpauseGamepadSprite.show()
-            remoteReverseGamepadSprite.visible = shouldShow
-            remoteForwardGamepadSprite.visible = shouldShow
-            remoteBranchGamepadSprite.visible = shouldShow
+            remoteReverseGamepadSprite.visible = isPaused
+            remoteForwardGamepadSprite.visible = isPaused
+            remoteBranchGamepadSprite.visible = isPaused
             
             interactGamepadHint.show()
+            
+            if isPaused:
+                Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 
 func _unhandled_input(event: InputEvent) -> void:

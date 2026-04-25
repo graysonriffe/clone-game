@@ -116,6 +116,7 @@ func _physics_process(delta: float) -> void:
     
     # Get direction vector from either the Player or Clone
     var inputDirection: Vector2 = getInputDirection()
+    var speedMultiplier: float = inputDirection.length()
     var direction: Vector3 = (transform.basis * Vector3(inputDirection.x, 0, inputDirection.y)).normalized()
     
     # Smooth the movement, and differently depending on if the actor is mid-air
@@ -128,6 +129,10 @@ func _physics_process(delta: float) -> void:
     var speed: float = WALKING_SPEED if not crouching else CROUCHING_SPEED
     velocity.x = movementDirectionSmoothed.x * speed
     velocity.z = movementDirectionSmoothed.z * speed
+    
+    if speedMultiplier != 0.0:
+        velocity.x *= speedMultiplier
+        velocity.z *= speedMultiplier
     
     if not crouching and crouchRayCast.is_colliding() and \
     (crouchRayCast.get_collider() is CSGShape3D \
