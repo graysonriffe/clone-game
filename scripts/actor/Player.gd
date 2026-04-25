@@ -4,6 +4,7 @@ extends Actor
 
 # Constants
 const MOUSE_SENSITIVITY = 0.3
+const GAMEPAD_SENSITIVITY = 200
 
 # FPS controller variables
 var headBobbingVector: Vector2
@@ -20,6 +21,11 @@ var currentFrameInteractButton: bool
 
 func _ready() -> void:
     super()
+
+
+func _process(delta: float) -> void:
+    if not paused:
+        _handleGamepadLook(delta)
 
 
 func _physics_process(delta: float) -> void:
@@ -75,18 +81,26 @@ func _physics_process(delta: float) -> void:
     super(delta)
 
 
-# Handle mouse
 func _unhandled_input(event: InputEvent) -> void:
     # When mouse is captured, mouse movement -> FPS head movement
     if event is InputEventMouseMotion:
         if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-            rotate_y(-deg_to_rad(event.relative.x * MOUSE_SENSITIVITY))
-            head.rotate_x(-deg_to_rad(event.relative.y * MOUSE_SENSITIVITY))
-            head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
-            
-            # View model sway
-            viewModel.position.x -= event.relative.x * 1e-4
-            viewModel.position.y += event.relative.y * 1e-4
+            _handleLook(event.relative * MOUSE_SENSITIVITY, 1e-4)
+
+
+func _handleGamepadLook(delta: float):
+    var lookVector: Vector2 = Input.get_vector("lookLeft", "lookRight", "lookUp", "lookDown")
+    _handleLook(lookVector * GAMEPAD_SENSITIVITY * delta, 1e-3)
+
+
+func _handleLook(change: Vector2, swayMultiplier: float):
+    rotate_y(-deg_to_rad(change.x))
+    head.rotate_x(-deg_to_rad(change.y))
+    head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+    
+    # View model sway
+    viewModel.position.x -= change.x * swayMultiplier
+    viewModel.position.y += change.y * swayMultiplier
 
 
 # Called when seting up a new level

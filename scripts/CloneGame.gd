@@ -9,6 +9,11 @@ enum Gamestate {
     Loading # Level is changing
 }
 
+enum InputMethod {
+    MouseAndKeyboard,
+    Gamepad
+}
+
 # Constants
 const NUM_LEVELS: int = 1
 const LEVEL_PATH: String = "res://scenes/levels/"
@@ -38,6 +43,8 @@ var noBranchZones: Array[Area3D]
 
 var lastMousePosition: Vector2i
 
+var inputMethod: InputMethod
+
 # onready variables
 @onready var player: Player = $Player
 @onready var levelContainer: Node = $Level
@@ -57,9 +64,13 @@ var lastMousePosition: Vector2i
 @onready var remotePauseMenu: PanelContainer = find_child("PauseMenu", true, false)
 @onready var remotePauseQuitButton: Button = find_child("PauseQuitButton", true, false)
 @onready var remotePauseUnpauseKeyLabel: Label3D = find_child("PauseUnpauseKeyLabel", true, false)
+@onready var remotePauseUnpauseGamepadSprite: Sprite3D = find_child("PauseUnpauseGamepadSprite", true, false)
 @onready var remoteReverseKeyLabel: Label3D = find_child("ReverseKeyLabel", true, false)
+@onready var remoteReverseGamepadSprite: Sprite3D = find_child("ReverseGamepadSprite", true, false)
 @onready var remoteForwardKeyLabel: Label3D = find_child("ForwardKeyLabel", true, false)
+@onready var remoteForwardGamepadSprite: Sprite3D = find_child("ForwardGamepadSprite", true, false)
 @onready var remoteBranchKeyLabel: Label3D = find_child("BranchKeyLabel", true, false)
+@onready var remoteBranchGamepadSprite: Sprite3D = find_child("BranchGamepadSprite", true, false)
 @onready var remoteAnimationPlayer: AnimationPlayer = find_child("RemoteAnimationPlayer", true, false)
 
 func _ready() -> void:
@@ -75,13 +86,14 @@ func _ready() -> void:
     timelineSlider.value_changed.connect(_timelineSliderChanged)
     
     _setKeyLabels()
-    _showKeyLabels(false) # Hide
     
     remoteMouseArea.input_event.connect(_remoteInputEvent)
     
     remotePauseQuitButton.pressed.connect(func (): get_tree().quit())
     
     lastMousePosition = Vector2i(-1, -1)
+    
+    inputMethod = InputMethod.MouseAndKeyboard
     
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
@@ -217,8 +229,7 @@ func _doPause():
     
     timelineUI.show()
     remotePauseMenu.show()
-    
-    _showKeyLabels()
+    remotePauseQuitButton.grab_focus()
     
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
     
@@ -252,8 +263,6 @@ func _doUnpause() -> bool:
     
     timelineUI.hide()
     remotePauseMenu.hide()
-    
-    _showKeyLabels(false)
     
     lastMousePosition = get_viewport().get_mouse_position()
     
@@ -570,9 +579,43 @@ func _updateRemote():
         remotePaused.hide()
         remotePlaySprite.hide()
         remotePauseSprite.show()
+    
+    # Update button hints
+    var shouldShow: bool = gamestate == Gamestate.Paused
+    
+    remotePauseUnpauseKeyLabel.visible = false
+    remoteReverseKeyLabel.visible = false
+    remoteForwardKeyLabel.visible = false
+    remoteBranchKeyLabel.visible = false
+    
+    remotePauseUnpauseGamepadSprite.visible = false
+    remoteReverseGamepadSprite.visible = false
+    remoteForwardGamepadSprite.visible = false
+    remoteBranchGamepadSprite.visible = false
+    
+    match inputMethod:
+        InputMethod.MouseAndKeyboard:
+            remotePauseUnpauseKeyLabel.visible = true
+            remoteReverseKeyLabel.visible = shouldShow
+            remoteForwardKeyLabel.visible = shouldShow
+            remoteBranchKeyLabel.visible = shouldShow
+        
+        InputMethod.Gamepad:
+            remotePauseUnpauseGamepadSprite.visible = true
+            remoteReverseGamepadSprite.visible = shouldShow
+            remoteForwardGamepadSprite.visible = shouldShow
+            remoteBranchGamepadSprite.visible = shouldShow
 
 
 func _unhandled_input(event: InputEvent) -> void:
+    # Detect mouse and keyboard or gamepad
+    if event is InputEventJoypadButton or (event is InputEventJoypadMotion and abs(event.axis_value) > 0.1):
+        inputMethod = InputMethod.Gamepad
+    
+    if event is InputEventKey or (event is InputEventMouseMotion and gamestate == Gamestate.Playing) or\
+    (event is InputEventMouseButton):
+        inputMethod = InputMethod.MouseAndKeyboard
+    
     for eventKind in [InputEventMouseButton, InputEventMouseMotion, InputEventScreenDrag, InputEventScreenTouch]:
         if is_instance_of(event, eventKind):
             return
@@ -601,9 +644,3 @@ func _setKeyLabels():
     remoteReverseKeyLabel.text = (InputMap.action_get_events("timelineReverse")[0] as InputEventKey).as_text_physical_keycode()
     remoteForwardKeyLabel.text = (InputMap.action_get_events("timelineForward")[0] as InputEventKey).as_text_physical_keycode()
     remoteBranchKeyLabel.text = (InputMap.action_get_events("branch")[0] as InputEventKey).as_text_physical_keycode()
-
-
-func _showKeyLabels(shouldShow: bool = true):
-    remoteReverseKeyLabel.visible = shouldShow
-    remoteForwardKeyLabel.visible = shouldShow
-    remoteBranchKeyLabel.visible = shouldShow
