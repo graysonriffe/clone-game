@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://coyckjen2nwq0"]
+
+[ext_resource type="PackedScene" uid="uid://w5g8m5l4hkbv" path="res://scenes/actor/remote.tscn" id="1_yj20m"]
+[ext_resource type="Texture2D" uid="uid://bci0oj36yaoce" path="res://assets/materials/metal_sheet/Metal_Sheet_basecolor.png" id="2_6ad1t"]
+[ext_resource type="Texture2D" uid="uid://dhn41akbn8mqe" path="res://assets/materials/metal_sheet/Metal_Sheet_normal.png" id="3_wbyn4"]
+[ext_resource type="Texture2D" uid="uid://bnm7m0hvvu4vy" path="res://assets/materials/metal_sheet/Metal_Sheet_roughness.png" id="4_8fdqi"]
+[ext_resource type="Texture2D" uid="uid://cou3fybr2kn1q" path="res://assets/ui_textures/title.png" id="5_ofrqx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vue75"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_2k85p"]
+sky_material = SubResource("ProceduralSkyMaterial_vue75")
+
+[sub_resource type="Environment" id="Environment_l6cm7"]
+background_mode = 1
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_2k85p")
+ambient_light_source = 1
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yj20m"]
+viewport_path = NodePath("Remote/Screen/RemoteViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ad1t"]
+resource_local_to_scene = true
+render_priority = 7
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_yj20m")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbmy8"]
+albedo_texture = ExtResource("2_6ad1t")
+metallic = 1.0
+roughness = 0.8
+roughness_texture = ExtResource("4_8fdqi")
+normal_enabled = true
+normal_texture = ExtResource("3_wbyn4")
+uv1_scale = Vector3(2.65, 2.65, 2.65)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[node name="MainMenuScene" type="Node3D" unique_id=1325184817]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=24459642]
+environment = SubResource("Environment_l6cm7")
+
+[node name="MainMenuCamera" type="Camera3D" parent="." unique_id=241404629]
+
+[node name="Remote" parent="." unique_id=1358912617 instance=ExtResource("1_yj20m")]
+transform = Transform3D(0.95479184, 0, -0.29727483, 0, 1, 0, 0.29727483, 0, 0.95479184, 0.0762136, -0.07747567, -0.14401063)
+
+[node name="BranchKeyLabel" parent="Remote/Remote/Remote/BranchButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 516542695) index="1" unique_id=1485185232]
+visible = false
+
+[node name="BranchGamepadSprite" parent="Remote/Remote/Remote/BranchButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 516542695) index="2" unique_id=1346002764]
+visible = false
+
+[node name="ForwardKeyLabel" parent="Remote/Remote/Remote/ForwardButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1904274767) index="1" unique_id=936068823]
+visible = false
+
+[node name="ForwardGamepadSprite" parent="Remote/Remote/Remote/ForwardButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1904274767) index="2" unique_id=75115878]
+visible = false
+
+[node name="PauseSprite" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 785223156) index="0" unique_id=518008540]
+visible = false
+
+[node name="PauseUnpauseKeyLabel" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 785223156) index="2" unique_id=780736421]
+visible = false
+
+[node name="PauseUnpauseGamepadSprite" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 785223156) index="3" unique_id=1172112823]
+visible = false
+
+[node name="ReverseKeyLabel" parent="Remote/Remote/Remote/ReverseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1188327423) index="1" unique_id=902607029]
+visible = false
+
+[node name="ReverseGamepadSprite" parent="Remote/Remote/Remote/ReverseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1188327423) index="2" unique_id=415173814]
+visible = false
+
+[node name="Screen" parent="Remote/Remote/Remote" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1510074190) index="6" unique_id=1106497483]
+surface_material_override/0 = SubResource("StandardMaterial3D_6ad1t")
+
+[node name="RemoteTime" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="2" unique_id=865539577]
+visible = false
+
+[node name="RemotePaused" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="3" unique_id=962340493]
+visible = false
+
+[node name="AvailableClones" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="4" unique_id=474306676]
+visible = false
+
+[node name="NoBranch" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="5" unique_id=266432615]
+visible = false
+
+[node name="Settings" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="7" unique_id=716135856]
+visible = false
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1616335921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8649873, -0.86423016, 2.5264902)
+light_energy = 0.16
+light_cull_mask = 4293918721
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=1996268489]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28840876, -0.80155313, 1.9842677)
+light_energy = 0.135
+light_cull_mask = 4293918721
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="." unique_id=1568525090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2042166, 1.278971, 2.7439215)
+light_energy = 8.02
+light_cull_mask = 4293918721
+omni_attenuation = 3.49
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1137005791]
+transform = Transform3D(0.97106355, 0, 0.23882163, 0, 1, 0, -0.23882163, 0, 0.97106355, -0.24595082, 0, -0.4104004)
+size = Vector3(2.3457031, 0.9736328, 0.17919922)
+material = SubResource("StandardMaterial3D_tbmy8")
+
+[node name="Decal" type="Decal" parent="CSGBox3D" unique_id=1740185460]
+transform = Transform3D(0.9999997, 0, 0, 0, -4.371139e-08, -0.9999997, 0, 1, -4.3711374e-08, 0.017271169, -0.06084023, 0.13891116)
+size = Vector3(0.327, 0.15, 0.15)
+texture_albedo = ExtResource("5_ofrqx")
+texture_emission = ExtResource("5_ofrqx")
+emission_energy = 3.0
+
+[editable path="Remote"]
+[editable path="Remote/Remote"]
+[editable path="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI"]

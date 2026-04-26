@@ -4,8 +4,9 @@ extends Node
 
 # Enums
 enum Gamestate {
+    MainMenu, # Main menu
     Playing, # Time is passing, player is moving
-    Paused, # Time is paused, player is moving timeline or in the menu
+    Paused, # Time is paused, player is moving timeline or in the pause menu
     Loading # Level is changing
 }
 
@@ -45,9 +46,27 @@ var lastMousePosition: Vector2i
 
 var inputMethod: InputMethod
 
+var mainMenuRemoteMouseArea: Area3D
+var mainMenu: PanelContainer
+var mainMenuPlayButton: Button
+var mainMenuSettingsButton: Button
+var mainMenuCreditsButton: Button
+var mainMenuQuitButton: Button
+
+var credits: PanelContainer
+var creditsBackButton: Button
+
+var settings: PanelContainer
+var settingsDisplayMode: OptionButton
+var settingsMasterVolume: HSlider
+var settingsMusicVolume: HSlider
+var settingsBackButton: Button
+
+var mainMenuPause: PanelContainer
+
 # onready variables
 @onready var player: Player = $Player
-@onready var levelContainer: Node = $Level
+@onready var sceneContainer: Node = $Scene
 @onready var cloneContainer: Node = $Clones
 
 @onready var timelineUI: Control = find_child("TimelineUI", true, false)
@@ -56,17 +75,30 @@ var inputMethod: InputMethod
 @onready var interactKeyHint: MarginContainer = find_child("InteractKeyLabelMargin", true, false)
 @onready var interactGamepadHint: MarginContainer = find_child("InteractGamepadIconMargin", true, false)
 
+@onready var remoteMouseArea: Area3D = find_child("MouseArea", true, false)
+@onready var remoteViewport: SubViewport = find_child("RemoteViewport", true, false)
+
+@onready var remoteMainMenu: PanelContainer = find_child("MainMenu", true, false)
+
+@onready var remoteCredits: PanelContainer = find_child("Credits", true, false)
+
+@onready var remotePauseMenu: PanelContainer = find_child("PauseMenu", true, false)
+@onready var remotePauseSettingsButton: Button = find_child("PauseSettingsButton", true, false)
+@onready var remotePauseExitButton: Button = find_child("PauseExitButton", true, false)
+
+@onready var remoteSettings: PanelContainer = find_child("Settings", true, false)
+@onready var remoteSettingsDisplayMode: OptionButton = find_child("DisplayModeSelector", true, false)
+@onready var remoteSettingsMasterVolume: HSlider = find_child("MasterVolumeSlider", true, false)
+@onready var remoteSettingsMusicVolume: HSlider = find_child("MusicVolumeSlider", true, false)
+@onready var remoteSettingsBackButton: Button = find_child("SettingsBackButton", true, false)
 
 @onready var remoteTimeLabel: RichTextLabel = find_child("RemoteTimeLabel", true, false)
 @onready var remotePaused: PanelContainer = find_child("RemotePaused", true, false)
 @onready var remoteAvailableClonesLabel: RichTextLabel = find_child("AvailableClonesLabel", true, false)
 @onready var remoteNoBranch: PanelContainer = find_child("NoBranch", true, false)
+
 @onready var remotePlaySprite: Sprite3D = find_child("PlaySprite", true, false)
 @onready var remotePauseSprite: Sprite3D = find_child("PauseSprite", true, false)
-@onready var remoteMouseArea: Area3D = find_child("MouseArea", true, false)
-@onready var remoteViewport: SubViewport = find_child("RemoteViewport", true, false)
-@onready var remotePauseMenu: PanelContainer = find_child("PauseMenu", true, false)
-@onready var remotePauseQuitButton: Button = find_child("PauseQuitButton", true, false)
 @onready var remotePauseUnpauseKeyLabel: Label3D = find_child("PauseUnpauseKeyLabel", true, false)
 @onready var remotePauseUnpauseGamepadSprite: Sprite3D = find_child("PauseUnpauseGamepadSprite", true, false)
 @onready var remoteReverseKeyLabel: Label3D = find_child("ReverseKeyLabel", true, false)
@@ -79,13 +111,23 @@ var inputMethod: InputMethod
 
 func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
-    # Load main menu level
-    _changeLevel(1)
     
-    # Show main menu UI
     timelineUI.hide()
     
+    remoteMainMenu.hide()
     remotePauseMenu.hide()
+    remoteCredits.hide()
+    remoteSettings.hide()
+    
+    # Remote pause menu setup
+    remotePauseSettingsButton.pressed.connect(_remoteSettingsButtonPressed)
+    remotePauseExitButton.pressed.connect(_setupMainMenu)
+    
+    # Remote settings menu setup
+    remoteSettingsDisplayMode.item_selected.connect(_displayModeChanged)
+    remoteSettingsMasterVolume.value_changed.connect(_masterVolumeChanged)
+    remoteSettingsMusicVolume.value_changed.connect(_musicVolumeChanged)
+    remoteSettingsBackButton.pressed.connect(_remoteSettingsBackButtonPressed)
     
     timelineSlider.value_changed.connect(_timelineSliderChanged)
     
@@ -93,15 +135,11 @@ func _ready() -> void:
     
     remoteMouseArea.input_event.connect(_remoteInputEvent)
     
-    remotePauseQuitButton.pressed.connect(func (): get_tree().quit())
-    
     lastMousePosition = Vector2i(-1, -1)
     
     inputMethod = InputMethod.MouseAndKeyboard
     
-    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-    
-    player.pause(false) # Unpause
+    await _setupMainMenu()
 
 
 func _physics_process(delta: float) -> void:
@@ -113,20 +151,83 @@ func _physics_process(delta: float) -> void:
     
     _handleInput(delta)
     
-    _updateUI()
+    _checkInputMethod()
+    
+    if gamestate != Gamestate.MainMenu:
+        _updateUI()
 
+
+func _setupMainMenu():
+    if gamestate == Gamestate.Paused:
+        RenderingServer.global_shader_parameter_set("pause_effect", false);
+        MusicPlayer.pauseEffect(false) # Unpause
+        timelineUI.hide()
+    
+    gamestate = Gamestate.MainMenu
+    
+    player.process_mode = Node.PROCESS_MODE_DISABLED
+    
+    await _changeScene("res://scenes/main_menu_scene.tscn")
+    
+    var mainMenuCamera: Camera3D = sceneContainer.find_child("MainMenuCamera", true, false)
+    
+    mainMenuCamera.current = true
+    
+    interactPrompt.hide()
+    
+    remoteViewport = sceneContainer.find_child("RemoteViewport", true, false)
+    mainMenuRemoteMouseArea = sceneContainer.find_child("MouseArea", true, false)
+    mainMenuRemoteMouseArea.input_event.connect(_mainMenuRemoteInputEvent)
+    
+    mainMenu = sceneContainer.find_child("MainMenu", true, false)
+    
+    mainMenu.show()
+    
+    mainMenuPlayButton = sceneContainer.find_child("MainPlayButton", true, false)
+    mainMenuPlayButton.pressed.connect(_play)
+    
+    mainMenuSettingsButton = sceneContainer.find_child("MainSettingsButton", true, false)
+    mainMenuSettingsButton.pressed.connect(_mainSettingsButtonPressed)
+    
+    mainMenuCreditsButton = sceneContainer.find_child("MainCreditsButton", true, false)
+    mainMenuCreditsButton.pressed.connect(_creditsButtonPressed)
+    
+    mainMenuQuitButton = sceneContainer.find_child("MainQuitButton", true, false)
+    mainMenuQuitButton.pressed.connect(func (): get_tree().quit())
+    
+    settings = sceneContainer.find_child("Settings", true, false)
+    settings.hide()
+    
+    settingsDisplayMode = sceneContainer.find_child("DisplayModeSelector", true, false)
+    settingsDisplayMode.item_selected.connect(_displayModeChanged)
+    
+    settingsMasterVolume = sceneContainer.find_child("MasterVolumeSlider", true, false)
+    settingsMasterVolume.value_changed.connect(_masterVolumeChanged)
+    
+    settingsMusicVolume = sceneContainer.find_child("MusicVolumeSlider", true, false)
+    settingsMusicVolume.value_changed.connect(_musicVolumeChanged)
+    
+    settingsBackButton = sceneContainer.find_child("SettingsBackButton", true, false)
+    settingsBackButton.pressed.connect(_mainSettingsBackButtonPressed)
+    
+    credits = sceneContainer.find_child("Credits", true, false)
+    credits.hide()
+    
+    creditsBackButton = sceneContainer.find_child("CreditsBackButton", true, false)
+    creditsBackButton.pressed.connect(_creditsBackButtonPressed)
+    
+    mainMenuPause = sceneContainer.find_child("PauseMenu", true, false)
+    mainMenuPause.hide()
+    
+    settingsDisplayMode.selected = get_window().mode == Window.MODE_FULLSCREEN
+    settingsMasterVolume.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master"))
+    settingsMusicVolume.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music")) * 4
+    
+    mainMenuPlayButton.grab_focus()
 
 
 # Non-player movement inputs
 func _handleInput(delta: float):
-    if Input.is_action_just_pressed("tempLoadLevel1"):
-        if gamestate == Gamestate.Playing:
-            _changeLevel(1)
-    
-    if Input.is_action_just_pressed("tempLoadLevel2"):
-        if gamestate == Gamestate.Playing:
-            _changeLevel(2)
-    
     if Input.is_action_just_released("pauseUnpause"):
         _attemptTogglePause()
     
@@ -139,33 +240,24 @@ func _handleInput(delta: float):
         _attemptBranch()
 
 
-# Unloads current level and loads new level
-func _changeLevel(newLevelNumber: int):
+# Changes levels and resets state variables
+func _setupLevel(newLevelNumber: int):
     gamestate = Gamestate.Loading
     
     # TODO: Move clone deletion somewhere else later
     _deleteAllClones()
     
-    var levelScene: PackedScene = load(LEVEL_PATH + "level_" + str(newLevelNumber) + ".tscn")
-    
-    # Unload current level
-    for child in levelContainer.get_children():
-        child.queue_free()
-        await child.tree_exited
-    
-    # Instantiate new level scene and add it to the level container node
-    var levelSceneInstance: Level = levelScene.instantiate()
-    levelContainer.add_child(levelSceneInstance)
+    await _changeScene(LEVEL_PATH + "level_" + str(newLevelNumber) + ".tscn")
     
     # Teleport player to PlayerStart marker
     # TODO: Probably move this later to another function
-    var playerStart: Node3D = levelSceneInstance.find_child("PlayerStart")
+    var playerStart: Node3D = sceneContainer.find_child("PlayerStart", true, false)
     player.reset(playerStart.global_transform)
     
     timeIndex = 0
     timelineData = TimelineData.new()
     timelineData.registerActor(player)
-    timelineData.registerObjects(levelContainer)
+    timelineData.registerObjects(sceneContainer)
     
     currentCloneData = CloneData.new()
     
@@ -177,13 +269,34 @@ func _changeLevel(newLevelNumber: int):
     
     # Get all NoBranchZones
     noBranchZones.clear()
-    var allNodes: Array[Node] = _getAllChildren(levelContainer)
+    var allNodes: Array[Node] = _getAllChildren(sceneContainer)
     
     for node: Node in allNodes:
         if node is Area3D and node.get("CLASS_NAME") == "NoBranchZone":
             noBranchZones.append(node)
     
+    remoteViewport = player.find_child("RemoteViewport", true, false)
+    
+    remotePauseMenu.hide()
+    
+    remoteSettingsDisplayMode.selected = get_window().mode == Window.MODE_FULLSCREEN
+    remoteSettingsMasterVolume.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master"))
+    remoteSettingsMusicVolume.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music")) * 4
+    
     gamestate = Gamestate.Playing
+
+
+func _changeScene(scene: String):
+    var levelScene: PackedScene = load(scene)
+    
+    # Unload current level
+    for child in sceneContainer.get_children():
+        child.queue_free()
+        await child.tree_exited
+    
+    # Instantiate new level scene and add it to the level container node
+    var levelSceneInstance: Node = levelScene.instantiate()
+    sceneContainer.add_child(levelSceneInstance)
 
 
 func getTimeIndex() -> int:
@@ -232,7 +345,7 @@ func _doPause():
     
     timelineUI.show()
     remotePauseMenu.show()
-    remotePauseQuitButton.grab_focus()
+    remotePauseSettingsButton.grab_focus()
     
     if lastMousePosition == Vector2i(-1, -1):
         lastMousePosition = get_viewport().get_visible_rect().size / 2
@@ -270,6 +383,7 @@ func _doUnpause() -> bool:
     
     timelineUI.hide()
     remotePauseMenu.hide()
+    remoteSettings.hide()
     
     lastMousePosition = get_viewport().get_mouse_position()
     
@@ -284,7 +398,7 @@ func _pauseClones(pause: bool = true):
 
 
 func _pausePhysicsObjects(pause: bool = true):
-    var levelNodes: Array[Node] = _getAllChildren(levelContainer)
+    var levelNodes: Array[Node] = _getAllChildren(sceneContainer)
     
     for node: Node in levelNodes:
         if node is RigidBody3D:
@@ -302,7 +416,7 @@ func _getAllChildren(node: Node, array: Array[Node] = []) -> Array[Node]:
 
 
 func _pauseAnimations(pause: bool = true):
-    var levelNodes: Array[Node] = _getAllChildren(levelContainer)
+    var levelNodes: Array[Node] = _getAllChildren(sceneContainer)
     
     for node: Node in levelNodes:
         if node is AnimationPlayer:
@@ -536,6 +650,18 @@ func _recordCloneData():
     currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())
 
 
+func _checkInputMethod():
+    if not (gamestate != Gamestate.Playing and gamestate != Gamestate.Loading):
+        return
+    
+    match inputMethod:
+        InputMethod.MouseAndKeyboard:
+                Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+        
+        InputMethod.Gamepad:
+                Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+
+
 func _updateUI():
     if gamestate == Gamestate.Loading:
         return
@@ -614,9 +740,6 @@ func _updateUI():
             remoteBranchKeyLabel.visible = isPaused
             
             interactKeyHint.show()
-            
-            if isPaused:
-                Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
         
         InputMethod.Gamepad:
             remotePauseUnpauseGamepadSprite.show()
@@ -625,9 +748,6 @@ func _updateUI():
             remoteBranchGamepadSprite.visible = isPaused
             
             interactGamepadHint.show()
-            
-            if isPaused:
-                Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -646,8 +766,23 @@ func _unhandled_input(event: InputEvent) -> void:
     remoteViewport.push_input(event)
 
 
+func _mainMenuRemoteInputEvent(_camera: Node, event: InputEvent, eventPosition: Vector3, _normal: Vector3, _shapeIndex: int):
+    var mousePos3D: Vector3 = mainMenuRemoteMouseArea.global_transform.affine_inverse() * eventPosition
+    
+    event.position = _calculateMouse(mousePos3D)
+    
+    remoteViewport.push_input(event)
+
+
 func _remoteInputEvent(_camera: Node, event: InputEvent, eventPosition: Vector3, _normal: Vector3, _shapeIndex: int):
     var mousePos3D: Vector3 = remoteMouseArea.global_transform.affine_inverse() * eventPosition
+    
+    event.position = _calculateMouse(mousePos3D)
+    
+    remoteViewport.push_input(event)
+
+
+func _calculateMouse(mousePos3D: Vector3) -> Vector2:
     var mousePos2D: Vector2 = Vector2(mousePos3D.x, -mousePos3D.y)
     
     const SCREEN_SIZE: Vector2 = Vector2(0.122, 0.0915)
@@ -657,9 +792,7 @@ func _remoteInputEvent(_camera: Node, event: InputEvent, eventPosition: Vector3,
     const SCREEN_RESOLUTION: Vector2 = Vector2(1000, 750)
     mousePos2D = mousePos2D * SCREEN_RESOLUTION
     
-    event.position = mousePos2D
-    
-    remoteViewport.push_input(event)
+    return mousePos2D
 
 
 func _setKeyLabels():
@@ -669,3 +802,72 @@ func _setKeyLabels():
     remoteBranchKeyLabel.text = (InputMap.action_get_events("branch")[0] as InputEventKey).as_text_physical_keycode()
     
     interactKeyHint.get_child(0).text =(InputMap.action_get_events("interact")[0] as InputEventKey).as_text_physical_keycode()
+
+
+# UI Functions
+func _play():
+    player.process_mode = Node.PROCESS_MODE_INHERIT
+    _setupLevel(1)
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
+    player.pause(false) # Unpause
+
+
+func _mainSettingsButtonPressed():
+    mainMenu.hide()
+    settings.show()
+    
+    settingsBackButton.grab_focus()
+
+
+func _displayModeChanged(index: int):
+    match index:
+        0:
+            get_window().mode = Window.MODE_WINDOWED
+        
+        1:
+            get_window().mode = Window.MODE_FULLSCREEN
+
+
+func _masterVolumeChanged(value: float):
+    AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("Master"), value)
+
+
+func _musicVolumeChanged(value: float):
+    AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("Music"), value / 4)
+
+
+func _mainSettingsBackButtonPressed():
+    mainMenu.show()
+    settings.hide()
+    
+    mainMenuSettingsButton.grab_focus()
+
+
+func _creditsButtonPressed():
+    mainMenu.hide()
+    credits.show()
+    
+    creditsBackButton.grab_focus()
+
+
+func _creditsBackButtonPressed():
+    mainMenu.show()
+    credits.hide()
+    
+    mainMenuCreditsButton.grab_focus()
+
+
+func _remoteSettingsButtonPressed():
+    remotePauseMenu.hide()
+    remoteSettings.show()
+    
+    remoteSettingsBackButton.grab_focus()
+
+
+func _remoteSettingsBackButtonPressed():
+    remotePauseMenu.show()
+    remoteSettings.hide()
+    
+    remotePauseSettingsButton.grab_focus()

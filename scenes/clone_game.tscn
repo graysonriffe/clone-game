@@ -9,7 +9,7 @@ script = ExtResource("1_iok6x")
 
 [node name="Player" parent="." unique_id=2013142565 instance=ExtResource("2_0ik2x")]
 
-[node name="Level" type="Node" parent="." unique_id=246810065]
+[node name="Scene" type="Node" parent="." unique_id=246810065]
 
 [node name="Clones" type="Node" parent="." unique_id=1757488074]
 
