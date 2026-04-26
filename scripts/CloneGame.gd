@@ -238,6 +238,9 @@ func _handleInput(delta: float):
     
     if Input.is_action_just_released("branch"):
         _attemptBranch()
+    
+    if Input.is_action_just_pressed("ui_cancel") and gamestate == Gamestate.MainMenu:
+        _handleBackButton()
 
 
 # Changes levels and resets state variables
@@ -871,3 +874,11 @@ func _remoteSettingsBackButtonPressed():
     remoteSettings.hide()
     
     remotePauseSettingsButton.grab_focus()
+
+
+func _handleBackButton():
+    if settings.is_visible_in_tree():
+        _mainSettingsBackButtonPressed()
+    
+    if credits.is_visible_in_tree():
+        _creditsBackButtonPressed()
