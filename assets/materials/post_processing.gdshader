@@ -98,7 +98,7 @@ void fragment() {
         vec2 uv2 = UV + vec2(0.5, 0.5);
         vec2 uvnoise = vec2(uv2.x * cos(t) - uv2.y * sin(t), uv2.x * sin(t) + uv2.y * cos(t));
         vec4 noise = texture(noise_texture, uvnoise);
-        ALBEDO *= (dist + 0.7) * ((ins * 0.30) + 1.0) * (noise.r * 0.55 + 0.35);
+        ALBEDO *= (dist + 0.4) * ((ins * 0.30) + 1.0) * (noise.r * 1.0 + 0.35);
     }
     
     if (max(edge * 1.5, final_depth_edge * 2.0) > edge_threshold) {

@@ -3,15 +3,30 @@
 [ext_resource type="Script" uid="uid://cu7qupncvc5ym" path="res://scripts/CloneGame.gd" id="1_iok6x"]
 [ext_resource type="PackedScene" uid="uid://dxtr6nj2d74pw" path="res://scenes/actor/player.tscn" id="2_0ik2x"]
 [ext_resource type="PackedScene" uid="uid://dmgudqgytltyu" path="res://scenes/ui/in_game_ui.tscn" id="2_2rhh6"]
+[ext_resource type="AudioStream" uid="uid://d11jwmurguced" path="res://assets/audio/sfx/no_branch_zone.mp3" id="3_i8lm2"]
 
 [node name="CloneGame" type="Node" unique_id=1202883684]
 script = ExtResource("1_iok6x")
 
 [node name="Player" parent="." unique_id=2013142565 instance=ExtResource("2_0ik2x")]
 
-[node name="Level" type="Node" parent="." unique_id=246810065]
+[node name="Scene" type="Node" parent="." unique_id=246810065]
 
 [node name="Clones" type="Node" parent="." unique_id=1757488074]
+
+[node name="Audio" type="Node" parent="." unique_id=1712040948]
+
+[node name="RemoteSFXPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=247208584]
+volume_db = -8.0
+
+[node name="NoBranchZoneSFXPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=217125702]
+stream = ExtResource("3_i8lm2")
+volume_db = -15.0
+bus = &"WorldSFX"
+
+[node name="WinSFXPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=423431351]
+stream = ExtResource("3_i8lm2")
+volume_db = -8.0
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1472167567]
 

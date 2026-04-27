@@ -25,8 +25,6 @@ var enabled: bool
 # The CloneData that describes the clone's movements
 var cloneData: CloneData
 
-@onready var cloneGame: CloneGame = get_tree().root.find_child("CloneGame", true, false)
-
 func _ready() -> void:
     super()
     
@@ -53,7 +51,7 @@ func _physics_process(delta: float) -> void:
         _uncrouch()
     
     if cloneData.getInteractButton(cloneGame.getTimeIndex()):
-        _interact()
+        _attemptInteract()
     
     super(delta)
     

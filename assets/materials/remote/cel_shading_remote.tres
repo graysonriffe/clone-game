@@ -3,5 +3,5 @@
 [ext_resource type="Shader" uid="uid://diq0bqe1otgkj" path="res://assets/materials/remote/cel_shading_remote.gdshader" id="1_q85do"]
 
 [resource]
-render_priority = 6
+render_priority = 7
 shader = ExtResource("1_q85do")

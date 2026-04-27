@@ -23,6 +23,7 @@ const WALKING_SPEED = 6.0
 const CROUCHING_SPEED = 3.0
 const JUMP_VELOCITY = 7.0
 const BOOST_VELOCITY = 11.5
+const STEP_INTERVAL = 2.5
 
 # Variables
 var movementDirectionSmoothed: Vector3
@@ -50,12 +51,12 @@ var color: ActorColor:
         bodyMesh.set_instance_shader_parameter("outline_color", outlineColor)
         headMesh.set_instance_shader_parameter("outline_color", outlineColor)
         
-        set_collision_mask_value(COLOR_COLLISION_LAYERS[ActorColor.Green], false)
-        set_collision_mask_value(COLOR_COLLISION_LAYERS[ActorColor.Yellow], false)
-        set_collision_mask_value(COLOR_COLLISION_LAYERS[ActorColor.Red], false)
+        set_collision_mask_value(COLOR_COLLISION_LAYERS[ActorColor.Green], true)
+        set_collision_mask_value(COLOR_COLLISION_LAYERS[ActorColor.Yellow], true)
+        set_collision_mask_value(COLOR_COLLISION_LAYERS[ActorColor.Red], true)
         
         if color != ActorColor.White:
-            set_collision_mask_value(COLOR_COLLISION_LAYERS[color], true)
+            set_collision_mask_value(COLOR_COLLISION_LAYERS[color], false)
 
 var isOnFloor: bool
 var isOnFloorOverride: bool
@@ -74,6 +75,8 @@ var animationTime: float:
         animationPlayer.active = false
         animationTime = value
 
+var stepProgress: float
+
 # onready variables
 @onready var head: Node3D = $Head
 @onready var crouchRayCast: RayCast3D = $CrouchRayCast
@@ -83,6 +86,10 @@ var animationTime: float:
 @onready var headMesh: MeshInstance3D = $Head/HeadMesh
 @onready var crouchActorDetector: Area3D = $CrouchActorDectector
 @onready var collisionDetector: Area3D = $CollisionDetector
+@onready var footstepsPlayer: AudioStreamPlayer3D = $FootstepsPlayer
+@onready var branchPlayer: AudioStreamPlayer3D = $BranchPlayer
+
+@onready var cloneGame: CloneGame = get_tree().root.find_child("CloneGame", true, false)
 
 func _ready() -> void:
     paused = true
@@ -93,6 +100,8 @@ func _ready() -> void:
     noSetter = true
     animationTime = 0.0
     noSetter = false
+    
+    stepProgress = 0.0
 
 
 func _physics_process(delta: float) -> void:
@@ -110,6 +119,7 @@ func _physics_process(delta: float) -> void:
     
     # Get direction vector from either the Player or Clone
     var inputDirection: Vector2 = getInputDirection()
+    var speedMultiplier: float = inputDirection.length()
     var direction: Vector3 = (transform.basis * Vector3(inputDirection.x, 0, inputDirection.y)).normalized()
     
     # Smooth the movement, and differently depending on if the actor is mid-air
@@ -122,6 +132,10 @@ func _physics_process(delta: float) -> void:
     var speed: float = WALKING_SPEED if not crouching else CROUCHING_SPEED
     velocity.x = movementDirectionSmoothed.x * speed
     velocity.z = movementDirectionSmoothed.z * speed
+    
+    if speedMultiplier != 0.0:
+        velocity.x *= speedMultiplier
+        velocity.z *= speedMultiplier
     
     if not crouching and crouchRayCast.is_colliding() and \
     (crouchRayCast.get_collider() is CSGShape3D \
@@ -138,6 +152,15 @@ func _physics_process(delta: float) -> void:
     
     isOnFloor = is_on_floor()
     isOnFloorOverride = false
+    
+    # Play footsteps
+    if velocity.length() > 0.1:
+        stepProgress += velocity.length() * delta
+        if stepProgress >= STEP_INTERVAL and is_on_floor():
+            stepProgress = 0.0
+            footstepsPlayer.play()
+    else:
+        stepProgress = STEP_INTERVAL - 0.1
 
 
 func pause(shouldPause: bool = true):
@@ -164,6 +187,7 @@ func getLookVector() -> Vector2
 func _jump():
     if is_on_floor() and not crouching:
         velocity.y = JUMP_VELOCITY
+        footstepsPlayer.play()
 
 
 func _crouch():
@@ -194,8 +218,16 @@ func _uncrouch():
             detectedActor.boost()
 
 
-func _interact():
+func canInteract():
     if interactRayCast.is_colliding():
         var collider: Node = interactRayCast.get_collider()
         if collider is Activator and collider.interactable:
-            collider.toggleActivate()
+            return true
+    
+    return false
+
+
+func _attemptInteract():
+    if canInteract():
+        var collider: Node = interactRayCast.get_collider()
+        collider.toggleActivate()

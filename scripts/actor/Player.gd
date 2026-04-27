@@ -4,6 +4,7 @@ extends Actor
 
 # Constants
 const MOUSE_SENSITIVITY = 0.3
+const GAMEPAD_SENSITIVITY = 200
 
 # FPS controller variables
 var headBobbingVector: Vector2
@@ -20,6 +21,11 @@ var currentFrameInteractButton: bool
 
 func _ready() -> void:
     super()
+
+
+func _process(delta: float) -> void:
+    if not paused:
+        _handleGamepadLook(delta)
 
 
 func _physics_process(delta: float) -> void:
@@ -40,10 +46,11 @@ func _physics_process(delta: float) -> void:
             _uncrouch()
             
         if getInteractButton():
-            _interact()
+            _attemptInteract()
     
     # Do headbobbing when walking on a floor, and reset when not
-    if not paused and (velocity.length() > 2.0 and isOnFloor) or velocity.length() > WALKING_SPEED * 2:
+    if not paused and isOnFloor or velocity.length() > WALKING_SPEED * 2:
+        var slowMultiplier: float = clamp(velocity.length(), 0.0, 1.0)
         var thetaDelta: float
         var eyesAmplitude: float
         var viewModelAmplitude: float
@@ -56,36 +63,50 @@ func _physics_process(delta: float) -> void:
             eyesAmplitude = 0.05
             viewModelAmplitude = 0.005
         
+        thetaDelta *= velocity.length() / (WALKING_SPEED if not crouching else CROUCHING_SPEED)
+        
         headBobbingTheta += thetaDelta * delta
         headBobbingVector = Vector2(sin(headBobbingTheta / 2) + 0.5, sin(headBobbingTheta))
-        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * eyesAmplitude, 10.0 * delta)
-        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * eyesAmplitude / 2.0, 10.0 * delta)
-        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * viewModelAmplitude, 10.0 * delta)
-        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * viewModelAmplitude / 2.0, 10.0 * delta)
+        eyes.position.x = lerp(eyes.position.x, headBobbingVector.x * eyesAmplitude * slowMultiplier, 10.0 * delta)
+        eyes.position.y = lerp(eyes.position.y, headBobbingVector.y * eyesAmplitude / 2.0 * slowMultiplier, 10.0 * delta)
+        viewModel.position.x = lerp(viewModel.position.x, headBobbingVector.x * viewModelAmplitude * slowMultiplier, 10.0 * delta)
+        viewModel.position.y = lerp(viewModel.position.y, headBobbingVector.y * viewModelAmplitude / 2.0 * slowMultiplier, 10.0 * delta)
     else:
         eyes.position.x = lerp(eyes.position.x, 0.0, 10.0 * delta)
         eyes.position.y = lerp(eyes.position.y, 0.0, 10.0 * delta)
         headBobbingTheta = 0.0
     
     # View model bobbing and sway - always tend toward home position
+    var viewModelHomeY: float = 0.0
+    if paused and cloneGame.gamestate != CloneGame.Gamestate.Transition:
+        viewModelHomeY = 0.04
+    
     viewModel.position.x = lerp(viewModel.position.x, 0.0, 5.0 * delta)
-    viewModel.position.y = lerp(viewModel.position.y, 0.0, 5.0 * delta)
+    viewModel.position.y = lerp(viewModel.position.y, viewModelHomeY, 5.0 * delta)
     
     super(delta)
 
 
-# Handle mouse
 func _unhandled_input(event: InputEvent) -> void:
     # When mouse is captured, mouse movement -> FPS head movement
     if event is InputEventMouseMotion:
         if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-            rotate_y(-deg_to_rad(event.relative.x * MOUSE_SENSITIVITY))
-            head.rotate_x(-deg_to_rad(event.relative.y * MOUSE_SENSITIVITY))
-            head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
-            
-            # View model sway
-            viewModel.position.x -= event.relative.x * 1e-4
-            viewModel.position.y += event.relative.y * 1e-4
+            _handleLook(event.relative * MOUSE_SENSITIVITY, 1e-4)
+
+
+func _handleGamepadLook(delta: float):
+    var lookVector: Vector2 = Input.get_vector("lookLeft", "lookRight", "lookUp", "lookDown")
+    _handleLook(lookVector * GAMEPAD_SENSITIVITY * delta, 1e-3)
+
+
+func _handleLook(change: Vector2, swayMultiplier: float):
+    rotate_y(-deg_to_rad(change.x))
+    head.rotate_x(-deg_to_rad(change.y))
+    head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+    
+    # View model sway
+    viewModel.position.x -= change.x * swayMultiplier
+    viewModel.position.y += change.y * swayMultiplier
 
 
 # Called when seting up a new level

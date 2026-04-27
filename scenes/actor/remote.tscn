@@ -1,0 +1,422 @@
+[gd_scene format=3 uid="uid://w5g8m5l4hkbv"]
+
+[ext_resource type="PackedScene" uid="uid://bwc4qx6iq4vyg" path="res://assets/models/remote.glb" id="1_6k5q6"]
+[ext_resource type="Texture2D" uid="uid://boltecjlqbyix" path="res://assets/textures/branch.png" id="2_iss42"]
+[ext_resource type="Material" uid="uid://c05li443wa151" path="res://assets/materials/remote/cel_shading_remote.tres" id="2_sxhsy"]
+[ext_resource type="Texture2D" uid="uid://b6v1pefmln3gq" path="res://assets/textures/gamepad_button_left.png" id="3_sxhsy"]
+[ext_resource type="Texture2D" uid="uid://cv36lv7bjn1e3" path="res://assets/textures/remote_forward.png" id="4_n054j"]
+[ext_resource type="Texture2D" uid="uid://dhbdknhk074hj" path="res://assets/textures/gamepad_left_stick_right.png" id="5_gy1m2"]
+[ext_resource type="Shader" uid="uid://3o3iooil1ctu" path="res://assets/materials/remote/bulb.gdshader" id="5_n054j"]
+[ext_resource type="Texture2D" uid="uid://bqwuyyjho23lt" path="res://assets/textures/remote_pause.png" id="6_n0ev1"]
+[ext_resource type="Texture2D" uid="uid://byqvct2wm5epa" path="res://assets/textures/remote_play.png" id="7_4qv8s"]
+[ext_resource type="Texture2D" uid="uid://d2ve2ume1eqcp" path="res://assets/textures/gamepad_button_right.png" id="8_qtct0"]
+[ext_resource type="Texture2D" uid="uid://74o483t8jq0g" path="res://assets/textures/gamepad_left_stick_left.png" id="9_dni0q"]
+[ext_resource type="PackedScene" uid="uid://kawmhhp1i5k0" path="res://scenes/ui/remote_ui.tscn" id="10_5c5oo"]
+
+[sub_resource type="SystemFont" id="SystemFont_1ut60"]
+font_names = PackedStringArray("Consolas")
+subpixel_positioning = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s038d"]
+render_priority = 7
+shader = ExtResource("5_n054j")
+shader_parameter/albedo = Color(0.34781694, 0.34781697, 0.3478169, 1)
+shader_parameter/albedo_texture_size = Vector2i(0, 0)
+shader_parameter/point_size = 0.0
+shader_parameter/roughness = 0.454000021565
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/specular = 1.0
+shader_parameter/metallic = 0.0
+shader_parameter/emission_energy = 2.999999932944
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_sxhsy"]
+viewport_path = NodePath("Remote/Screen/RemoteViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n054j"]
+resource_local_to_scene = true
+render_priority = 8
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_sxhsy")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5f2kl"]
+size = Vector3(0.122, 0.092, 0.002)
+
+[sub_resource type="Animation" id="Animation_1ut60"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/PauseUnpauseButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.014, -0.1, 0, 0.1, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Remote/Remote/BranchButton:position:z")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.015, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Remote/Remote/ReverseButton:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.014, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Remote/Remote/ForwardButton:position:z")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.014, -0.25, 0, 0.05, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_5f2kl"]
+resource_name = "branchPress"
+length = 0.4
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/BranchButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(0.014, -0.25, 0, 0.05, 0, 0.011, -0.033, 0, 0, 0, 0.014, -0.05, 0, 0.05, 0),
+"times": PackedFloat32Array(0, 0.2, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_02umy"]
+resource_name = "forwardHold"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/ForwardButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.011, -0.033, 0, 0, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_tr6ul"]
+resource_name = "forwardPress"
+length = 0.2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/ForwardButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.014, -0.25, 0, 0.05, 0, 0.011, -0.033, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+
+[sub_resource type="Animation" id="Animation_k75a7"]
+resource_name = "forwardRelease"
+length = 0.2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/ForwardButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.0111313, -0.25, 0, 0.05, 0, 0.014, -0.033, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+
+[sub_resource type="Animation" id="Animation_120rq"]
+resource_name = "pauseUnpausePress"
+length = 0.4
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/PauseUnpauseButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(0.014, -0.1, 0, 0.05, 0, 0.011, -0.033333335, 0.0002044843, 0, 0, 0.014, -0.1, 0, 0.05, 0),
+"times": PackedFloat32Array(0, 0.2, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_rc65i"]
+resource_name = "reverseHold"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/ReverseButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.011, -0.033, 0, 0, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_frayc"]
+resource_name = "reversePress"
+length = 0.2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/ReverseButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.014, -0.25, 0, 0.05, 0, 0.011, -0.033, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+
+[sub_resource type="Animation" id="Animation_hrccq"]
+resource_name = "reverseRelease"
+length = 0.2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Remote/Remote/ReverseButton:position:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.011, -0.25, 0, 0.05, 0, 0.014, -0.033, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sxhsy"]
+_data = {
+&"RESET": SubResource("Animation_1ut60"),
+&"branchPress": SubResource("Animation_5f2kl"),
+&"forwardHold": SubResource("Animation_02umy"),
+&"forwardPress": SubResource("Animation_tr6ul"),
+&"forwardRelease": SubResource("Animation_k75a7"),
+&"pauseUnpausePress": SubResource("Animation_120rq"),
+&"reverseHold": SubResource("Animation_rc65i"),
+&"reversePress": SubResource("Animation_frayc"),
+&"reverseRelease": SubResource("Animation_hrccq")
+}
+
+[node name="Remote" type="Node3D" unique_id=1358912617]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
+
+[node name="Remote" parent="." unique_id=1028460440 instance=ExtResource("1_6k5q6")]
+transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 0, 0, 0)
+
+[node name="Remote" parent="Remote" index="0" unique_id=1123459916]
+layers = 2
+instance_shader_parameters/color = Color(0.5686275, 0.7058824, 0.70980394, 1)
+instance_shader_parameters/emission = 0.1
+surface_material_override/0 = ExtResource("2_sxhsy")
+
+[node name="Antenna" parent="Remote/Remote" index="0" unique_id=471497360]
+layers = 2
+instance_shader_parameters/color = Color(0.5330367, 0.5330367, 0.5330367, 1)
+surface_material_override/0 = ExtResource("2_sxhsy")
+
+[node name="BranchButton" parent="Remote/Remote" index="1" unique_id=921044645]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.0024936008, 0.015)
+layers = 2
+instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
+surface_material_override/0 = ExtResource("2_sxhsy")
+
+[node name="BranchSprite" type="Sprite3D" parent="Remote/Remote/BranchButton" index="0" unique_id=264272920]
+transform = Transform3D(0.004, 0, 0, 0, -1.7484555e-10, -0.004, 0, 0.004, -1.7484555e-10, 0.00029478967, 0.0010237992, 0)
+flip_h = true
+flip_v = true
+no_depth_test = true
+render_priority = 7
+texture = ExtResource("2_iss42")
+
+[node name="BranchKeyLabel" type="Label3D" parent="Remote/Remote/BranchButton" index="1" unique_id=1485185232]
+transform = Transform3D(1, 2.4868996e-14, 0, 0, -4.371139e-08, 1, 2.084321e-14, -1, -4.371139e-08, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 9
+outline_render_priority = 8
+text = "?"
+font = SubResource("SystemFont_1ut60")
+font_size = 70
+outline_size = 20
+
+[node name="BranchGamepadSprite" type="Sprite3D" parent="Remote/Remote/BranchButton" index="2" unique_id=1346002764]
+transform = Transform3D(0.0040000007, 0, 0, 0, -1.7484555e-10, -0.0040000007, 0, 0.004, -1.7484558e-10, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.15
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 8
+texture = ExtResource("3_sxhsy")
+
+[node name="Bulb" parent="Remote/Remote" index="2" unique_id=1031719691]
+layers = 2
+instance_shader_parameters/color = Color(0.47788018, 0.47788012, 0.47788012, 1)
+surface_material_override/0 = ExtResource("2_sxhsy")
+surface_material_override/1 = SubResource("ShaderMaterial_s038d")
+
+[node name="ForwardButton" parent="Remote/Remote" index="3" unique_id=671586722]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.04, 0.03563255, 0.014)
+layers = 2
+instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
+surface_material_override/0 = ExtResource("2_sxhsy")
+
+[node name="ForwardSprite" type="Sprite3D" parent="Remote/Remote/ForwardButton" index="0" unique_id=1715331426]
+transform = Transform3D(0.0040000007, 0, -1.1641532e-10, -1.1641532e-10, -1.7484557e-10, -0.0040000007, 0, 0.004, -1.7484555e-10, 0.001, 0.001, 0)
+no_depth_test = true
+render_priority = 7
+texture = ExtResource("4_n054j")
+
+[node name="ForwardKeyLabel" type="Label3D" parent="Remote/Remote/ForwardButton" index="1" unique_id=936068823]
+transform = Transform3D(1, 2.7533531e-14, 0, 0, -4.371139e-08, 1, 2.084321e-14, -1, -4.371139e-08, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 9
+outline_render_priority = 8
+text = "?"
+font = SubResource("SystemFont_1ut60")
+font_size = 70
+outline_size = 20
+
+[node name="ForwardGamepadSprite" type="Sprite3D" parent="Remote/Remote/ForwardButton" index="2" unique_id=75115878]
+transform = Transform3D(0.0040000007, 6.938894e-18, 0, 0, -1.748456e-10, -0.0040000007, 0, 0.004, -1.7484555e-10, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.12
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 8
+texture = ExtResource("5_gy1m2")
+
+[node name="PauseUnpauseButton" parent="Remote/Remote" index="4" unique_id=2142567429]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.03563255, 0.014)
+layers = 2
+instance_shader_parameters/color = Color(0.89411765, 0.89411765, 0.89411765, 1)
+surface_material_override/0 = ExtResource("2_sxhsy")
+
+[node name="PauseSprite" type="Sprite3D" parent="Remote/Remote/PauseUnpauseButton" index="0" unique_id=518008540]
+transform = Transform3D(0.0040000007, 0, 0, 0, -1.7484558e-10, -0.004, 0, 0.0040000007, -1.7484555e-10, 0.00029478967, 0.0010237992, 0)
+no_depth_test = true
+render_priority = 7
+texture = ExtResource("6_n0ev1")
+
+[node name="PlaySprite" type="Sprite3D" parent="Remote/Remote/PauseUnpauseButton" index="1" unique_id=1537433234]
+transform = Transform3D(0.0040000007, 0, 0, 0, -1.7484558e-10, -0.004, 0, 0.0040000007, -1.7484555e-10, 0.001, 0.001, 0)
+no_depth_test = true
+render_priority = 7
+texture = ExtResource("7_4qv8s")
+
+[node name="PauseUnpauseKeyLabel" type="Label3D" parent="Remote/Remote/PauseUnpauseButton" index="2" unique_id=780736421]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 9
+outline_render_priority = 8
+text = "?"
+font = SubResource("SystemFont_1ut60")
+font_size = 70
+outline_size = 20
+
+[node name="PauseUnpauseGamepadSprite" type="Sprite3D" parent="Remote/Remote/PauseUnpauseButton" index="3" unique_id=1172112823]
+transform = Transform3D(0.0040000007, 3.469447e-18, 0, 0, -1.7484558e-10, -0.0040000007, 0, 0.004, -1.7484555e-10, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.15
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 8
+texture = ExtResource("8_qtct0")
+
+[node name="ReverseButton" parent="Remote/Remote" index="5" unique_id=1185525685]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -0.04, 0.03563255, 0.014)
+layers = 2
+instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
+surface_material_override/0 = ExtResource("2_sxhsy")
+
+[node name="ReverseSprite" type="Sprite3D" parent="Remote/Remote/ReverseButton" index="0" unique_id=2001845615]
+transform = Transform3D(0.004, 0, 0, 0, -1.7484555e-10, -0.004, 0, 0.004, -1.7484555e-10, -0.001, 0.001, 0)
+flip_h = true
+no_depth_test = true
+render_priority = 7
+texture = ExtResource("4_n054j")
+
+[node name="ReverseKeyLabel" type="Label3D" parent="Remote/Remote/ReverseButton" index="1" unique_id=902607029]
+transform = Transform3D(1, 2.6645353e-14, 0, 0, -4.371139e-08, 1, 2.084321e-14, -1, -4.371139e-08, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 9
+outline_render_priority = 8
+text = "?"
+font = SubResource("SystemFont_1ut60")
+font_size = 70
+outline_size = 20
+
+[node name="ReverseGamepadSprite" type="Sprite3D" parent="Remote/Remote/ReverseButton" index="2" unique_id=415173814]
+transform = Transform3D(0.0040000007, 1.0408341e-17, 0, 0, -1.7484561e-10, -0.0040000007, 0, 0.004, -1.7484555e-10, 0.015915811, -0.004582733, 0.010911539)
+pixel_size = 0.12
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 8
+texture = ExtResource("9_dni0q")
+
+[node name="Screen" parent="Remote/Remote" index="6" unique_id=2056986451]
+layers = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_n054j")
+
+[node name="RemoteViewport" type="SubViewport" parent="Remote/Remote/Screen" index="0" unique_id=838512464]
+gui_embed_subwindows = true
+size = Vector2i(1000, 1000)
+
+[node name="RemoteUI" parent="Remote/Remote/Screen/RemoteViewport" unique_id=685619501 instance=ExtResource("10_5c5oo")]
+
+[node name="MouseArea" type="Area3D" parent="Remote/Remote/Screen" index="1" unique_id=1364793757]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Remote/Remote/Screen/MouseArea" unique_id=739956744]
+shape = SubResource("BoxShape3D_5f2kl")
+
+[node name="RemoteAnimationPlayer" type="AnimationPlayer" parent="." unique_id=522675832]
+libraries/ = SubResource("AnimationLibrary_sxhsy")
+
+[node name="RemoteStaticLight" type="OmniLight3D" parent="." unique_id=1517174397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18209895, 0.12829405, 0.44139087)
+light_energy = 0.28
+light_cull_mask = 4293918722
+
+[editable path="Remote"]

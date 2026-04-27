@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cwn2hk2mnh22c"
+path="res://.godot/imported/Space, You, and Me.mp3-4e4aa9486a060d8aec4c1dc07f915da4.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/Space, You, and Me.mp3"
+dest_files=["res://.godot/imported/Space, You, and Me.mp3-4e4aa9486a060d8aec4c1dc07f915da4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://bctg3bg1xoidk"]
+
+[ext_resource type="Material" uid="uid://btdxxahuhlo56" path="res://assets/materials/static_area/static_area.tres" id="1_cvxv7"]
+[ext_resource type="Texture2D" uid="uid://7twn2h443xcm" path="res://assets/textures/flag.png" id="2_cvxv7"]
+[ext_resource type="Material" uid="uid://d353brxs70bnx" path="res://assets/materials/cel_shading/cel_shading.tres" id="2_lhdwp"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ieux0"]
+height = 2.5
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lhdwp"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 2.5
+
+[sub_resource type="TorusMesh" id="TorusMesh_ieux0"]
+inner_radius = 0.95
+outer_radius = 1.05
+
+[node name="Goal" type="Area3D" unique_id=823588948]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1883460504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("CylinderShape3D_ieux0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1813910662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26, 0)
+instance_shader_parameters/color = Color(1, 1, 1, 0.15294118)
+mesh = SubResource("CylinderMesh_lhdwp")
+surface_material_override/0 = ExtResource("1_cvxv7")
+
+[node name="Circle" type="MeshInstance3D" parent="." unique_id=1986564802]
+instance_shader_parameters/color = Color(0.83889705, 0.83889705, 0.838897, 1)
+instance_shader_parameters/emission = 1.0
+mesh = SubResource("TorusMesh_ieux0")
+surface_material_override/0 = ExtResource("2_lhdwp")
+
+[node name="Flag" type="Sprite3D" parent="." unique_id=560192738]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+pixel_size = 0.0001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 6
+texture = ExtResource("2_cvxv7")
