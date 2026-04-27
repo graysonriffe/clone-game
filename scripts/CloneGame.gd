@@ -68,10 +68,21 @@ var settingsBackButton: Button
 
 var mainMenuPause: PanelContainer
 
+# SFX
+var pauseSFX: AudioStream = preload("res://assets/audio/sfx/pause.mp3")
+var unpauseSFX: AudioStream = preload("res://assets/audio/sfx/unpause.mp3")
+
+var levelEndSFX: AudioStream = preload("res://assets/audio/sfx/level_end.mp3")
+var gameWinSFX: AudioStream = preload("res://assets/audio/sfx/game_win.mp3")
+
 # onready variables
 @onready var player: Player = $Player
 @onready var sceneContainer: Node = $Scene
 @onready var cloneContainer: Node = $Clones
+
+@onready var remoteSFXPlayer: AudioStreamPlayer = $Audio/RemoteSFXPlayer
+@onready var noBranchZoneSFXPlayer: AudioStreamPlayer = $Audio/NoBranchZoneSFXPlayer
+@onready var winSFXPlayer: AudioStreamPlayer = $Audio/WinSFXPlayer
 
 @onready var timelineUI: Control = find_child("TimelineUI", true, false)
 @onready var timelineSlider: HSlider = find_child("TimelineSlider", true, false)
@@ -365,6 +376,9 @@ func _doPause():
     RenderingServer.global_shader_parameter_set("pause_effect", true);
     MusicPlayer.pauseEffect()
     
+    remoteSFXPlayer.stream = pauseSFX
+    remoteSFXPlayer.play()
+    
     remoteAnimationPlayer.play("pauseUnpausePress")
     
     player.pause()
@@ -398,6 +412,9 @@ func _doUnpause() -> bool:
     
     RenderingServer.global_shader_parameter_set("pause_effect", false);
     MusicPlayer.pauseEffect(false) # Unpause
+    
+    remoteSFXPlayer.stream = unpauseSFX
+    remoteSFXPlayer.play()
     
     remoteAnimationPlayer.play("pauseUnpausePress")
     
@@ -690,10 +707,17 @@ func _endLevel():
     
     player.pause()
     
-    if currentLevel == NUM_LEVELS:
-        _win()
-    
+    if currentLevel == NUM_LEVELS: # All levels complete
+        winSFXPlayer.stream = gameWinSFX
+        winSFXPlayer.play()
+            
+        gameWin.show()
+        gameWinExitButton.grab_focus()
+        
     else:
+        winSFXPlayer.stream = levelEndSFX
+        winSFXPlayer.play()
+        
         levelWin.show()
         levelWinNextLevelButton.grab_focus()
 
@@ -703,11 +727,6 @@ func _nextLevel():
     
     currentLevel += 1
     _setupLevel(currentLevel)
-
-
-func _win():
-    gameWin.show()
-    gameWinExitButton.grab_focus()
 
 
 func _checkInputMethod():
@@ -761,8 +780,11 @@ func _updateUI():
     
     if _inNoBranchZone():
         remoteNoBranch.show()
+        if not noBranchZoneSFXPlayer.playing:
+            noBranchZoneSFXPlayer.play()
     else:
         remoteNoBranch.hide()
+        noBranchZoneSFXPlayer.stop()
     
     if gamestate == Gamestate.Paused:
         remotePaused.show()

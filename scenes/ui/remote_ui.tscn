@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://kawmhhp1i5k0"]
 
 [ext_resource type="Texture2D" uid="uid://dyqwd65f0p7li" path="res://assets/textures/nobranch.png" id="1_f8v7o"]
-[ext_resource type="Texture2D" uid="uid://cou3fybr2kn1q" path="res://assets/textures/title.png" id="1_wg4ti"]
+[ext_resource type="Texture2D" uid="uid://brfyn2biw1vut" path="res://assets/textures/title.png" id="1_wg4ti"]
 
 [sub_resource type="Gradient" id="Gradient_wg4ti"]
 offsets = PackedFloat32Array(0.955, 0.96462715, 1)
@@ -108,7 +108,7 @@ grow_vertical = 2
 texture = SubResource("GradientTexture2D_gtj3a")
 
 [node name="BackgroundLogo" type="TextureRect" parent="." unique_id=1855580151]
-modulate = Color(0, 0, 0, 0.05490196)
+modulate = Color(1, 1, 1, 0.02745098)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -261,6 +261,7 @@ theme_override_font_sizes/font_size = 100
 text = "Quit"
 
 [node name="Settings" type="PanelContainer" parent="." unique_id=716135856]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

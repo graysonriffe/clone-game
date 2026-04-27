@@ -7,10 +7,12 @@
 [ext_resource type="AudioStream" uid="uid://divmoq2qcr3w4" path="res://assets/audio/music/Time Loop.mp3" id="5_qawf8"]
 [ext_resource type="AudioStream" uid="uid://he2ekn6sjd4o" path="res://assets/audio/music/Tombstone.mp3" id="6_8k68y"]
 [ext_resource type="AudioStream" uid="uid://cwn2hk2mnh22c" path="res://assets/audio/music/Space, You, and Me.mp3" id="6_gn3ch"]
+[ext_resource type="AudioStream" uid="uid://d3ghqvrtgjq5f" path="res://assets/audio/music/Andromeda.mp3" id="8_mqcfu"]
+[ext_resource type="AudioStream" uid="uid://cofwjuh571bve" path="res://assets/audio/music/Calipso.mp3" id="9_qawf8"]
 
 [resource]
 shuffle = true
-stream_count = 7
+stream_count = 9
 stream_0 = ExtResource("1_e7tac")
 stream_1 = ExtResource("2_8k68y")
 stream_2 = ExtResource("3_8oqp4")
@@ -18,3 +20,5 @@ stream_3 = ExtResource("4_mqcfu")
 stream_4 = ExtResource("5_qawf8")
 stream_5 = ExtResource("6_8k68y")
 stream_6 = ExtResource("6_gn3ch")
+stream_7 = ExtResource("8_mqcfu")
+stream_8 = ExtResource("9_qawf8")

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bci0oj36yaoce" path="res://assets/materials/metal_sheet/Metal_Sheet_basecolor.png" id="2_6ad1t"]
 [ext_resource type="Texture2D" uid="uid://dhn41akbn8mqe" path="res://assets/materials/metal_sheet/Metal_Sheet_normal.png" id="3_wbyn4"]
 [ext_resource type="Texture2D" uid="uid://bnm7m0hvvu4vy" path="res://assets/materials/metal_sheet/Metal_Sheet_roughness.png" id="4_8fdqi"]
-[ext_resource type="Texture2D" uid="uid://cou3fybr2kn1q" path="res://assets/textures/title.png" id="5_ofrqx"]
+[ext_resource type="Texture2D" uid="uid://brfyn2biw1vut" path="res://assets/textures/title.png" id="5_yj20m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vue75"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -94,9 +94,6 @@ visible = false
 [node name="NoBranch" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="5" unique_id=266432615]
 visible = false
 
-[node name="Settings" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="7" unique_id=716135856]
-visible = false
-
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1616335921]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8649873, -0.86423016, 2.5264902)
 light_energy = 0.16
@@ -120,10 +117,9 @@ material = SubResource("StandardMaterial3D_tbmy8")
 
 [node name="Decal" type="Decal" parent="CSGBox3D" unique_id=1740185460]
 transform = Transform3D(0.9999997, 0, 0, 0, -4.371139e-08, -0.9999997, 0, 1, -4.3711374e-08, 0.017271169, -0.06084023, 0.13891116)
-size = Vector3(0.327, 0.15, 0.15)
-texture_albedo = ExtResource("5_ofrqx")
-texture_emission = ExtResource("5_ofrqx")
-emission_energy = 3.0
+size = Vector3(0.345, 0.15, 0.15)
+texture_albedo = ExtResource("5_yj20m")
+texture_emission = ExtResource("5_yj20m")
 
 [editable path="Remote"]
 [editable path="Remote/Remote"]
