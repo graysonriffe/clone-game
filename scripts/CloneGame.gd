@@ -890,7 +890,7 @@ func _setKeyLabels():
 func _play():
     player.process_mode = Node.PROCESS_MODE_INHERIT
     
-    currentLevel = 1
+    currentLevel = 99
     _setupLevel(currentLevel)
 
 

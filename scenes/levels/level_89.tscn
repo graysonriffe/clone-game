@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://bctjj15r6jyas"]
+
+[ext_resource type="Script" uid="uid://c3g3qngf332hl" path="res://scripts/Level.gd" id="1_br10c"]
+[ext_resource type="Material" uid="uid://k31nnausch81" path="res://assets/materials/post_processing/post_processing.tres" id="2_pwukr"]
+[ext_resource type="PackedScene" uid="uid://bctg3bg1xoidk" path="res://scenes/level_components/goal.tscn" id="3_bwyqy"]
+[ext_resource type="Material" uid="uid://csunmo5r7lgvw" path="res://assets/materials/metal_grip_sheet/metal_grip_sheet.tres" id="4_5280n"]
+[ext_resource type="Material" uid="uid://ychntj2cs7nm" path="res://assets/materials/metal_panels/metal_panels.tres" id="5_nqcyw"]
+[ext_resource type="Material" uid="uid://bm5oc0vuy5piw" path="res://assets/materials/metal_sheet/metal_sheet.tres" id="6_mh0bk"]
+[ext_resource type="MeshLibrary" uid="uid://de6pq7wccosnq" path="res://assets/models/world_blocks/world_blocks_mesh_library.meshlib" id="7_rrya7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_77iqg"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_2k85p"]
+sky_material = SubResource("ProceduralSkyMaterial_77iqg")
+
+[sub_resource type="Environment" id="Environment_mx0yr"]
+background_mode = 1
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_2k85p")
+ambient_light_source = 1
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_j81xe"]
+material = ExtResource("2_pwukr")
+flip_faces = true
+size = Vector2(2, 2)
+
+[node name="LevelTemplate" type="Node3D" unique_id=1254966120]
+script = ExtResource("1_br10c")
+metadata/_custom_type_script = "uid://c3g3qngf332hl"
+metadata/_edit_lock_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1694658970]
+environment = SubResource("Environment_mx0yr")
+
+[node name="PostProcessingMesh" type="MeshInstance3D" parent="." unique_id=712186095]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_j81xe")
+
+[node name="PlayerStart" type="Marker3D" parent="." unique_id=1770252819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="Goal" parent="." unique_id=823588948 instance=ExtResource("3_bwyqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17259121, 0, -17.703472)
+
+[node name="Lights" type="Node" parent="." unique_id=2107385631]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" unique_id=1834058416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.466645, 0)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Lights" unique_id=593210828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.01589, 4.466645, -13.482394)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Lights" unique_id=266228197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.747875, 4.466645, 12.543691)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Lights" unique_id=657344719]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.238407, 4.466645, 12.543691)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" unique_id=977711390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.406857, 4.466645, -13.739951)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="World" type="Node" parent="." unique_id=554948861]
+
+[node name="Room" type="Node3D" parent="World" unique_id=1478904478]
+
+[node name="Floor" type="CSGBox3D" parent="World/Room" unique_id=464194791]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+use_collision = true
+size = Vector3(41, 0.5, 41)
+material = ExtResource("4_5280n")
+
+[node name="Wall1" type="CSGBox3D" parent="World/Room" unique_id=127119137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.25, 5, 0)
+use_collision = true
+size = Vector3(0.5, 10, 41)
+material = ExtResource("5_nqcyw")
+
+[node name="Wall2" type="CSGBox3D" parent="World/Room" unique_id=1093076735]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.25, 5, 0)
+use_collision = true
+size = Vector3(0.5, 10, 41)
+material = ExtResource("5_nqcyw")
+
+[node name="Wall3" type="CSGBox3D" parent="World/Room" unique_id=1161521888]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 5, 20.25)
+use_collision = true
+size = Vector3(0.5, 10, 40)
+material = ExtResource("5_nqcyw")
+
+[node name="Wall4" type="CSGBox3D" parent="World/Room" unique_id=1033766136]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 5, -20.25)
+use_collision = true
+size = Vector3(0.5, 10, 40)
+material = ExtResource("5_nqcyw")
+
+[node name="Ceiling" type="CSGBox3D" parent="World/Room" unique_id=613614166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.25, 0)
+use_collision = true
+size = Vector3(41, 0.5, 41)
+material = ExtResource("6_mh0bk")
+
+[node name="GridMap" type="GridMap" parent="World" unique_id=1447304026]
+mesh_library = ExtResource("7_rrya7")
+metadata/_editor_floor_ = Vector3(0, 0, -5)

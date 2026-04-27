@@ -1,0 +1,246 @@
+[gd_scene format=3 uid="uid://cu1bd8rgt4fps"]
+
+[ext_resource type="Script" uid="uid://c3g3qngf332hl" path="res://scripts/Level.gd" id="1_y825t"]
+[ext_resource type="Material" uid="uid://k31nnausch81" path="res://assets/materials/post_processing/post_processing.tres" id="2_wyqg2"]
+[ext_resource type="PackedScene" uid="uid://bctg3bg1xoidk" path="res://scenes/level_components/goal.tscn" id="3_sqwbh"]
+[ext_resource type="Material" uid="uid://csunmo5r7lgvw" path="res://assets/materials/metal_grip_sheet/metal_grip_sheet.tres" id="4_ereeb"]
+[ext_resource type="Material" uid="uid://ychntj2cs7nm" path="res://assets/materials/metal_panels/metal_panels.tres" id="5_t25hi"]
+[ext_resource type="Material" uid="uid://bm5oc0vuy5piw" path="res://assets/materials/metal_sheet/metal_sheet.tres" id="6_a6t5e"]
+[ext_resource type="MeshLibrary" uid="uid://de6pq7wccosnq" path="res://assets/models/world_blocks/world_blocks_mesh_library.meshlib" id="7_cv0ag"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_77iqg"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_2k85p"]
+sky_material = SubResource("ProceduralSkyMaterial_77iqg")
+
+[sub_resource type="Environment" id="Environment_mx0yr"]
+background_mode = 1
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_2k85p")
+ambient_light_source = 1
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_j81xe"]
+material = ExtResource("2_wyqg2")
+flip_faces = true
+size = Vector2(2, 2)
+
+[node name="LevelTemplate" type="Node3D" unique_id=1254966120]
+script = ExtResource("1_y825t")
+metadata/_custom_type_script = "uid://c3g3qngf332hl"
+metadata/_edit_lock_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1694658970]
+environment = SubResource("Environment_mx0yr")
+
+[node name="PostProcessingMesh" type="MeshInstance3D" parent="." unique_id=712186095]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_j81xe")
+
+[node name="PlayerStart" type="Marker3D" parent="." unique_id=1770252819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 43.51511, 51.26035)
+
+[node name="Goal" parent="." unique_id=823588948 instance=ExtResource("3_sqwbh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 38.50263, -18.603157)
+
+[node name="Lights" type="Node" parent="." unique_id=2107385631]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" unique_id=1834058416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45.149517, 0)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Lights" unique_id=593210828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.01589, 45.149517, -13.482394)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Lights" unique_id=266228197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.747875, 45.149517, 12.543691)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D11" type="OmniLight3D" parent="Lights" unique_id=1589709761]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.747875, 34.012882, 26.712404)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="Lights" unique_id=2096818364]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.083967, 45.149517, 42.116962)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="Lights" unique_id=90332048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.882488, 45.149517, 42.116962)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D9" type="OmniLight3D" parent="Lights" unique_id=581387137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.965088, 23.738491, -5.895584)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D10" type="OmniLight3D" parent="Lights" unique_id=1265970258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.87723, 23.738491, 11.281702)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D8" type="OmniLight3D" parent="Lights" unique_id=910208741]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.009485245, 45.149517, 42.116962)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Lights" unique_id=657344719]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.238407, 45.149517, 12.543691)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" unique_id=977711390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.406857, 45.149517, -13.739951)
+light_color = Color(0.8580337, 0.8394728, 0.7892842, 1)
+light_energy = 44.627
+shadow_enabled = true
+omni_range = 20.0
+omni_attenuation = 2.0
+
+[node name="World" type="Node" parent="." unique_id=554948861]
+
+[node name="Room" type="Node3D" parent="World" unique_id=1478904478]
+
+[node name="Death Floor" type="CSGBox3D" parent="World/Room" unique_id=464194791]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1454935, -0.25, 17.908344)
+use_collision = true
+size = Vector3(41, 0.5, 77.00281)
+material = ExtResource("4_ereeb")
+
+[node name="Pillar" type="CSGBox3D" parent="World/Room" unique_id=1917177343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.8186, 30.708403, 39.628113)
+use_collision = true
+size = Vector3(6.883911, 18.156952, 6.930065)
+material = ExtResource("4_ereeb")
+
+[node name="Pillar2" type="CSGBox3D" parent="World/Room" unique_id=372272628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.398735, 23.15782, 31.24659)
+use_collision = true
+size = Vector3(6.883911, 27.716248, 6.930065)
+material = ExtResource("4_ereeb")
+
+[node name="Pillar3" type="CSGBox3D" parent="World/Room" unique_id=143763536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.610544, 22.654501, 19.384775)
+use_collision = true
+size = Vector3(6.883911, 35.126892, 6.930065)
+material = ExtResource("4_ereeb")
+
+[node name="Pillar4" type="CSGBox3D" parent="World/Room" unique_id=117338878]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9937844, 19.689976, 6.1908426)
+use_collision = true
+size = Vector3(6.883911, 35.126892, 5.202215)
+material = ExtResource("4_ereeb")
+
+[node name="Pillar6" type="CSGBox3D" parent="World/Room" unique_id=420304351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.367405, 27.951723, 4.9480247)
+use_collision = true
+size = Vector3(3.3530884, 35.126892, 15.677279)
+material = ExtResource("4_ereeb")
+
+[node name="Pillar5" type="CSGBox3D" parent="World/Room" unique_id=828388948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.200495, 20.768919, 14.686592)
+use_collision = true
+size = Vector3(2.8163147, 27.431076, 2.586093)
+material = ExtResource("4_ereeb")
+
+[node name="Goal Floor" type="CSGBox3D" parent="World/Room" unique_id=636739742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 38.015305, -14.044312)
+use_collision = true
+size = Vector3(41, 0.5, 12.911377)
+material = ExtResource("4_ereeb")
+
+[node name="Wall1" type="CSGBox3D" parent="World/Room" unique_id=127119137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.25, 25.209366, 18.003387)
+use_collision = true
+size = Vector3(0.5, 50, 77.006775)
+material = ExtResource("5_t25hi")
+
+[node name="Wall2" type="CSGBox3D" parent="World/Room" unique_id=1093076735]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.25, 25, 18.003387)
+use_collision = true
+size = Vector3(0.5, 50, 77.006775)
+material = ExtResource("5_t25hi")
+
+[node name="Wall5" type="CSGBox3D" parent="World/Room" unique_id=999657678]
+transform = Transform3D(-0.266431, 0, -0.963854, 0, 1, 0, 0.963854, 0, -0.266431, 14.348367, 25, 13.735955)
+use_collision = true
+size = Vector3(0.5, 50, 12.429485)
+material = ExtResource("5_t25hi")
+
+[node name="Wall3" type="CSGBox3D" parent="World/Room" unique_id=1161521888]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.048635483, 24.97431, 56.328205)
+use_collision = true
+size = Vector3(0.5, 50, 40)
+material = ExtResource("5_t25hi")
+
+[node name="Wall4" type="CSGBox3D" parent="World/Room" unique_id=1033766136]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 25, -20.25)
+use_collision = true
+size = Vector3(0.5, 50, 40)
+material = ExtResource("5_t25hi")
+
+[node name="Ceiling" type="CSGBox3D" parent="World/Room" unique_id=613614166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50.08545, 17.955566)
+use_collision = true
+size = Vector3(41, 0.5, 76.91113)
+material = ExtResource("6_a6t5e")
+
+[node name="GridMap" type="GridMap" parent="." unique_id=236482710]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 37.952362, 0)
+mesh_library = ExtResource("7_cv0ag")
+data = {
+"cells": PackedInt32Array(7, 26, 7, 6, 26, 7, 5, 26, 7, 4, 26, 7, 4, 25, 7, 3, 25, 7, 2, 25, 7, 1, 25, 7, 1, 24, 7, 0, 24, 7, 65535, 24, 7, 65535, 25, 7, 0, 25, 7, 0, 26, 7, 1, 26, 7, 1, 27, 7, 2, 27, 7, 2, 28, 7, 3, 27, 7, 3, 28, 7, 4, 27, 7, 4, 28, 7, 2, 26, 7, 3, 26, 7, 9, 27, 7, 9, 26, 7, 8, 26, 7, 8, 25, 7, 7, 25, 7, 6, 25, 7, 9, 25, 7, 10, 25, 7, 5, 25, 7, 6, 27, 7, 7, 27, 7, 8, 27, 7, 5, 27, 7, 0, 27, 7, 65535, 27, 7, 65534, 27, 7, 65533, 27, 7, 65532, 27, 7, 65531, 27, 7, 65530, 27, 7, 65529, 27, 7, 65528, 27, 7, 65527, 27, 7, 65526, 27, 7, 65526, 26, 7, 65526, 25, 7, 65527, 25, 7, 65527, 26, 7, 65528, 26, 7, 65529, 26, 7, 65530, 26, 7, 65531, 25, 7, 65532, 25, 7, 65533, 25, 7, 65534, 25, 7, 65535, 26, 7, 65534, 26, 7, 65533, 26, 7, 65532, 26, 7, 65531, 26, 7, 65529, 25, 7, 65528, 25, 7, 65526, 24, 7, 65527, 24, 7, 65528, 24, 7, 65529, 24, 7, 65530, 25, 7, 65530, 24, 7, 65531, 24, 7, 65532, 24, 7, 65533, 24, 7, 65534, 24, 7, 2, 24, 7, 3, 24, 7, 4, 24, 7, 5, 24, 7, 6, 24, 7, 7, 24, 7, 8, 24, 7, 9, 24, 7, 0, 28, 7, 65535, 28, 7, 65534, 28, 7, 65533, 28, 7, 65532, 28, 7, 65531, 28, 7, 65530, 28, 7, 65529, 28, 7, 65528, 28, 7, 65527, 28, 7, 65526, 28, 7, 65525, 28, 7, 1, 28, 7, 5, 28, 7, 6, 28, 7, 7, 28, 7, 8, 28, 7, 9, 28, 7, 10, 28, 7)
+}
+
+[node name="GridMap2" type="GridMap" parent="." unique_id=1260425440]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0425119, 37.952362, 0)
+mesh_library = ExtResource("7_cv0ag")
+data = {
+"cells": PackedInt32Array(7, 26, 7, 6, 26, 7, 5, 26, 7, 4, 26, 7, 4, 25, 7, 3, 25, 7, 2, 25, 7, 1, 25, 7, 1, 24, 7, 0, 24, 7, 65535, 24, 7, 65535, 25, 7, 0, 25, 7, 0, 26, 7, 1, 26, 7, 1, 27, 7, 2, 27, 7, 2, 28, 7, 3, 27, 7, 3, 28, 7, 4, 27, 7, 4, 28, 7, 2, 26, 7, 3, 26, 7, 9, 27, 7, 9, 26, 7, 8, 26, 7, 8, 25, 7, 7, 25, 7, 6, 25, 7, 9, 25, 7, 10, 25, 7, 5, 25, 7, 6, 27, 7, 7, 27, 7, 8, 27, 7, 5, 27, 7, 0, 27, 7, 65535, 27, 7, 65534, 27, 7, 65533, 27, 7, 65532, 27, 7, 65531, 27, 7, 65530, 27, 7, 65529, 27, 7, 65528, 27, 7, 65527, 27, 7, 65526, 27, 7, 65526, 26, 7, 65526, 25, 7, 65527, 25, 7, 65527, 26, 7, 65528, 26, 7, 65529, 26, 7, 65530, 26, 7, 65531, 25, 7, 65532, 25, 7, 65533, 25, 7, 65534, 25, 7, 65535, 26, 7, 65534, 26, 7, 65533, 26, 7, 65532, 26, 7, 65531, 26, 7, 65529, 25, 7, 65528, 25, 7, 65526, 24, 7, 65527, 24, 7, 65528, 24, 7, 65529, 24, 7, 65530, 25, 7, 65530, 24, 7, 65531, 24, 7, 65532, 24, 7, 65533, 24, 7, 65534, 24, 7, 2, 24, 7, 3, 24, 7, 4, 24, 7, 5, 24, 7, 6, 24, 7, 7, 24, 7, 8, 24, 7, 9, 24, 7, 0, 28, 7, 65535, 28, 7, 65534, 28, 7, 65533, 28, 7, 65532, 28, 7, 65531, 28, 7, 65530, 28, 7, 65529, 28, 7, 65528, 28, 7, 65527, 28, 7, 65526, 28, 7, 65525, 28, 7, 1, 28, 7, 5, 28, 7, 6, 28, 7, 7, 28, 7, 8, 28, 7, 9, 28, 7, 10, 28, 7, 6, 2, 655361, 7, 2, 655365, 7, 3, 655365, 7, 1, 655365, 7, 0, 655365, 6, 3, 655363, 6, 1, 655364)
+}
+
+[node name="GridMap3" type="GridMap" parent="." unique_id=795834012]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4712715, 39.964767, 0)
+mesh_library = ExtResource("7_cv0ag")
+data = {
+"cells": PackedInt32Array(7, 26, 7, 6, 26, 7, 5, 26, 7, 4, 26, 7, 4, 25, 7, 3, 25, 7, 2, 25, 7, 1, 25, 7, 1, 24, 7, 0, 24, 7, 65535, 24, 7, 65535, 25, 7, 0, 25, 7, 0, 26, 7, 1, 26, 7, 1, 27, 7, 2, 27, 7, 2, 28, 7, 3, 27, 7, 3, 28, 7, 4, 27, 7, 4, 28, 7, 2, 26, 7, 3, 26, 7, 9, 27, 7, 9, 26, 7, 8, 26, 7, 8, 25, 7, 7, 25, 7, 6, 25, 7, 9, 25, 7, 10, 25, 7, 5, 25, 7, 6, 27, 7, 7, 27, 7, 8, 27, 7, 5, 27, 7, 0, 27, 7, 65535, 27, 7, 65534, 27, 7, 65533, 27, 7, 65532, 27, 7, 65531, 27, 7, 65530, 27, 7, 65529, 27, 7, 65528, 27, 7, 65527, 27, 7, 65526, 27, 7, 65526, 26, 7, 65526, 25, 7, 65527, 25, 7, 65527, 26, 7, 65528, 26, 7, 65529, 26, 7, 65530, 26, 7, 65531, 25, 7, 65532, 25, 7, 65533, 25, 7, 65534, 25, 7, 65535, 26, 7, 65534, 26, 7, 65533, 26, 7, 65532, 26, 7, 65531, 26, 7, 65529, 25, 7, 65528, 25, 7, 65526, 24, 7, 65527, 24, 7, 65528, 24, 7, 65529, 24, 7, 65530, 25, 7, 65530, 24, 7, 65531, 24, 7, 65532, 24, 7, 65533, 24, 7, 65534, 24, 7, 2, 24, 7, 3, 24, 7, 4, 24, 7, 5, 24, 7, 6, 24, 7, 7, 24, 7, 8, 24, 7, 9, 24, 7, 0, 28, 7, 65535, 28, 7, 65534, 28, 7, 65533, 28, 7, 65532, 28, 7, 65531, 28, 7, 65530, 28, 7, 65529, 28, 7, 65528, 28, 7, 65527, 28, 7, 65526, 28, 7, 65525, 28, 7, 1, 28, 7, 5, 28, 7, 6, 28, 7, 7, 28, 7, 8, 28, 7, 9, 28, 7, 10, 28, 7, 7, 0, 1441793, 8, 65535, 1441797, 7, 65535, 1441797)
+}
