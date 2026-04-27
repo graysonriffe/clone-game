@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://ck8liwwlnc453"]
+
+[ext_resource type="Script" uid="uid://cw1jluxtdl5nl" path="res://scripts/actor/Guard.gd" id="1_d3a5h"]
+[ext_resource type="Script" uid="uid://4ni3hfiqp6v3" path="res://scripts/actor/enemy/EnemyFSM.gd" id="2_5q3as"]
+[ext_resource type="Script" uid="uid://cy1gkprfpxnf2" path="res://scripts/actor/enemy/EnemyStates/IdleState.gd" id="3_ce4uy"]
+[ext_resource type="Script" uid="uid://q78qeacnvxl2" path="res://scripts/actor/enemy/EnemyStates/AlertState.gd" id="4_i7etp"]
+[ext_resource type="Script" uid="uid://cav3k0povqa0a" path="res://scripts/actor/enemy/EnemyStates/SearchState.gd" id="5_4cwho"]
+[ext_resource type="Script" uid="uid://h7mpmv5ludxu" path="res://scripts/actor/enemy/EnemyStates/ChaseState.gd" id="6_xk85r"]
+[ext_resource type="Script" uid="uid://bedba16inxju4" path="res://scripts/actor/enemy/Vision.gd" id="7_5q3as"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_d3a5h"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wxiqp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_024bi"]
+
+[node name="Guard" type="CharacterBody3D" unique_id=534109161]
+script = ExtResource("1_d3a5h")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1588208744]
+mesh = SubResource("CapsuleMesh_d3a5h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=652536052]
+shape = SubResource("CapsuleShape3D_wxiqp")
+debug_color = Color(0.9647059, 0, 0.49803922, 1)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=441831757]
+avoidance_enabled = true
+
+[node name="EnemyFSM" type="Node" parent="." unique_id=147215612]
+script = ExtResource("2_5q3as")
+
+[node name="IdleState" type="Node" parent="EnemyFSM" unique_id=1442945026]
+script = ExtResource("3_ce4uy")
+
+[node name="AlertState" type="Node" parent="EnemyFSM" unique_id=862977696]
+script = ExtResource("4_i7etp")
+
+[node name="SearchState" type="Node" parent="EnemyFSM" unique_id=684390052]
+script = ExtResource("5_4cwho")
+
+[node name="ChaseState" type="Node" parent="EnemyFSM" unique_id=218950644]
+script = ExtResource("6_xk85r")
+
+[node name="Hearing Area" type="Area3D" parent="." unique_id=1684923969]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hearing Area" unique_id=561715585]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+shape = SubResource("SphereShape3D_024bi")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=884755204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21637928, 0)
+spot_range = 2.7
+spot_attenuation = -1.91
+script = ExtResource("7_5q3as")
+
+[connection signal="body_entered" from="Hearing Area" to="." method="on_hearing_entered"]

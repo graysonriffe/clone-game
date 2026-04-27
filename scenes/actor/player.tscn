@@ -10,7 +10,7 @@ radius = 0.35
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_o5ntp"]
 radius = 0.35
 
-[node name="Player" unique_id=2013142565 instance=ExtResource("1_4ykpa")]
+[node name="Player" unique_id=2013142565 groups=["Player"] instance=ExtResource("1_4ykpa")]
 script = ExtResource("2_xw35t")
 
 [node name="BodyCollision1" parent="." index="0" unique_id=1399796085]

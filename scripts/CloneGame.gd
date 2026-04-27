@@ -135,6 +135,7 @@ var gameWinSFX: AudioStream = preload("res://assets/audio/sfx/game_win.mp3")
 func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
     
+    player.add_to_group("Player")
     timelineUI.hide()
     interactPrompt.hide()
     levelWin.hide()
@@ -890,7 +891,7 @@ func _setKeyLabels():
 func _play():
     player.process_mode = Node.PROCESS_MODE_INHERIT
     
-    currentLevel = 99
+    currentLevel = 97
     _setupLevel(currentLevel)
 
 
