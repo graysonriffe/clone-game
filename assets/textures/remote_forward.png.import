@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boltecjlqbyix"
-path.s3tc="res://.godot/imported/branch.png-8df4cc1830ebca18d4a2bd63aff0cebd.s3tc.ctex"
+uid="uid://cv36lv7bjn1e3"
+path.s3tc="res://.godot/imported/remote_forward.png-ba167a56d41324a8f0f4e45ff3313736.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/ui_textures/branch.png"
-dest_files=["res://.godot/imported/branch.png-8df4cc1830ebca18d4a2bd63aff0cebd.s3tc.ctex"]
+source_file="res://assets/textures/remote_forward.png"
+dest_files=["res://.godot/imported/remote_forward.png-ba167a56d41324a8f0f4e45ff3313736.s3tc.ctex"]
 
 [params]
 

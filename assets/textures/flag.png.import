@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv36lv7bjn1e3"
-path.s3tc="res://.godot/imported/remote_forward.png-a73b9f1ca26f420409a161e07d82d42c.s3tc.ctex"
+uid="uid://7twn2h443xcm"
+path.s3tc="res://.godot/imported/flag.png-a11215c87ad2cd374bd693e583dc8a29.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/ui_textures/remote_forward.png"
-dest_files=["res://.godot/imported/remote_forward.png-a73b9f1ca26f420409a161e07d82d42c.s3tc.ctex"]
+source_file="res://assets/textures/flag.png"
+dest_files=["res://.godot/imported/flag.png-a11215c87ad2cd374bd693e583dc8a29.s3tc.ctex"]
 
 [params]
 

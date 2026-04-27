@@ -4,6 +4,7 @@
 [ext_resource type="Material" uid="uid://csunmo5r7lgvw" path="res://assets/materials/metal_grip_sheet/metal_grip_sheet.tres" id="2_4s5u3"]
 [ext_resource type="Material" uid="uid://k31nnausch81" path="res://assets/materials/post_processing/post_processing.tres" id="2_eokde"]
 [ext_resource type="Material" uid="uid://ychntj2cs7nm" path="res://assets/materials/metal_panels/metal_panels.tres" id="3_eokde"]
+[ext_resource type="PackedScene" uid="uid://bctg3bg1xoidk" path="res://scenes/level_components/goal.tscn" id="3_ulyey"]
 [ext_resource type="Material" uid="uid://bm5oc0vuy5piw" path="res://assets/materials/metal_sheet/metal_sheet.tres" id="4_ulyey"]
 [ext_resource type="MeshLibrary" uid="uid://de6pq7wccosnq" path="res://assets/models/world_blocks/world_blocks_mesh_library.meshlib" id="5_4s5u3"]
 
@@ -41,6 +42,9 @@ mesh = SubResource("QuadMesh_j81xe")
 
 [node name="PlayerStart" type="Marker3D" parent="." unique_id=1770252819]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="Goal" parent="." unique_id=823588948 instance=ExtResource("3_ulyey")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 
 [node name="Lights" type="Node" parent="." unique_id=2107385631]
 

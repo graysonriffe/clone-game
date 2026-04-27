@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://w5g8m5l4hkbv"]
 
 [ext_resource type="PackedScene" uid="uid://bwc4qx6iq4vyg" path="res://assets/models/remote.glb" id="1_6k5q6"]
-[ext_resource type="Texture2D" uid="uid://boltecjlqbyix" path="res://assets/ui_textures/branch.png" id="2_iss42"]
+[ext_resource type="Texture2D" uid="uid://boltecjlqbyix" path="res://assets/textures/branch.png" id="2_iss42"]
 [ext_resource type="Material" uid="uid://c05li443wa151" path="res://assets/materials/remote/cel_shading_remote.tres" id="2_sxhsy"]
-[ext_resource type="Texture2D" uid="uid://b6v1pefmln3gq" path="res://assets/ui_textures/gamepad_button_left.png" id="3_sxhsy"]
-[ext_resource type="Texture2D" uid="uid://cv36lv7bjn1e3" path="res://assets/ui_textures/remote_forward.png" id="4_n054j"]
-[ext_resource type="Texture2D" uid="uid://dhbdknhk074hj" path="res://assets/ui_textures/gamepad_left_stick_right.png" id="5_gy1m2"]
+[ext_resource type="Texture2D" uid="uid://b6v1pefmln3gq" path="res://assets/textures/gamepad_button_left.png" id="3_sxhsy"]
+[ext_resource type="Texture2D" uid="uid://cv36lv7bjn1e3" path="res://assets/textures/remote_forward.png" id="4_n054j"]
+[ext_resource type="Texture2D" uid="uid://dhbdknhk074hj" path="res://assets/textures/gamepad_left_stick_right.png" id="5_gy1m2"]
 [ext_resource type="Shader" uid="uid://3o3iooil1ctu" path="res://assets/materials/remote/bulb.gdshader" id="5_n054j"]
-[ext_resource type="Texture2D" uid="uid://bqwuyyjho23lt" path="res://assets/ui_textures/remote_pause.png" id="6_n0ev1"]
-[ext_resource type="Texture2D" uid="uid://byqvct2wm5epa" path="res://assets/ui_textures/remote_play.png" id="7_4qv8s"]
-[ext_resource type="Texture2D" uid="uid://d2ve2ume1eqcp" path="res://assets/ui_textures/gamepad_button_right.png" id="8_qtct0"]
-[ext_resource type="Texture2D" uid="uid://74o483t8jq0g" path="res://assets/ui_textures/gamepad_left_stick_left.png" id="9_dni0q"]
+[ext_resource type="Texture2D" uid="uid://bqwuyyjho23lt" path="res://assets/textures/remote_pause.png" id="6_n0ev1"]
+[ext_resource type="Texture2D" uid="uid://byqvct2wm5epa" path="res://assets/textures/remote_play.png" id="7_4qv8s"]
+[ext_resource type="Texture2D" uid="uid://d2ve2ume1eqcp" path="res://assets/textures/gamepad_button_right.png" id="8_qtct0"]
+[ext_resource type="Texture2D" uid="uid://74o483t8jq0g" path="res://assets/textures/gamepad_left_stick_left.png" id="9_dni0q"]
 [ext_resource type="PackedScene" uid="uid://kawmhhp1i5k0" path="res://scenes/ui/remote_ui.tscn" id="10_5c5oo"]
 
 [sub_resource type="SystemFont" id="SystemFont_1ut60"]
@@ -18,7 +18,7 @@ font_names = PackedStringArray("Consolas")
 subpixel_positioning = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s038d"]
-render_priority = 6
+render_priority = 7
 shader = ExtResource("5_n054j")
 shader_parameter/albedo = Color(0.34781694, 0.34781697, 0.3478169, 1)
 shader_parameter/albedo_texture_size = Vector2i(0, 0)
@@ -38,7 +38,7 @@ viewport_path = NodePath("Remote/Screen/RemoteViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n054j"]
 resource_local_to_scene = true
-render_priority = 7
+render_priority = 8
 no_depth_test = true
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_sxhsy")
@@ -234,18 +234,18 @@ transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 [node name="Remote" parent="." unique_id=1028460440 instance=ExtResource("1_6k5q6")]
 transform = Transform3D(0.9999999, 0, 0, 0, 1, 0, 0, 0, 0.9999999, 0, 0, 0)
 
-[node name="Remote" parent="Remote" index="0" unique_id=1510074190]
+[node name="Remote" parent="Remote" index="0" unique_id=1123459916]
 layers = 2
 instance_shader_parameters/color = Color(0.5686275, 0.7058824, 0.70980394, 1)
 instance_shader_parameters/emission = 0.1
 surface_material_override/0 = ExtResource("2_sxhsy")
 
-[node name="Antenna" parent="Remote/Remote" index="0" unique_id=1130025462]
+[node name="Antenna" parent="Remote/Remote" index="0" unique_id=471497360]
 layers = 2
 instance_shader_parameters/color = Color(0.5330367, 0.5330367, 0.5330367, 1)
 surface_material_override/0 = ExtResource("2_sxhsy")
 
-[node name="BranchButton" parent="Remote/Remote" index="1" unique_id=516542695]
+[node name="BranchButton" parent="Remote/Remote" index="1" unique_id=921044645]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.0024936008, 0.015)
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
@@ -256,7 +256,7 @@ transform = Transform3D(0.004, 0, 0, 0, -1.7484555e-10, -0.004, 0, 0.004, -1.748
 flip_h = true
 flip_v = true
 no_depth_test = true
-render_priority = 6
+render_priority = 7
 texture = ExtResource("2_iss42")
 
 [node name="BranchKeyLabel" type="Label3D" parent="Remote/Remote/BranchButton" index="1" unique_id=1485185232]
@@ -265,8 +265,8 @@ pixel_size = 0.001
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 8
-outline_render_priority = 7
+render_priority = 9
+outline_render_priority = 8
 text = "?"
 font = SubResource("SystemFont_1ut60")
 font_size = 70
@@ -278,16 +278,16 @@ pixel_size = 0.15
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 7
+render_priority = 8
 texture = ExtResource("3_sxhsy")
 
-[node name="Bulb" parent="Remote/Remote" index="2" unique_id=1732980750]
+[node name="Bulb" parent="Remote/Remote" index="2" unique_id=1031719691]
 layers = 2
 instance_shader_parameters/color = Color(0.47788018, 0.47788012, 0.47788012, 1)
 surface_material_override/0 = ExtResource("2_sxhsy")
 surface_material_override/1 = SubResource("ShaderMaterial_s038d")
 
-[node name="ForwardButton" parent="Remote/Remote" index="3" unique_id=1904274767]
+[node name="ForwardButton" parent="Remote/Remote" index="3" unique_id=671586722]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.04, 0.03563255, 0.014)
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
@@ -296,7 +296,7 @@ surface_material_override/0 = ExtResource("2_sxhsy")
 [node name="ForwardSprite" type="Sprite3D" parent="Remote/Remote/ForwardButton" index="0" unique_id=1715331426]
 transform = Transform3D(0.0040000007, 0, -1.1641532e-10, -1.1641532e-10, -1.7484557e-10, -0.0040000007, 0, 0.004, -1.7484555e-10, 0.001, 0.001, 0)
 no_depth_test = true
-render_priority = 6
+render_priority = 7
 texture = ExtResource("4_n054j")
 
 [node name="ForwardKeyLabel" type="Label3D" parent="Remote/Remote/ForwardButton" index="1" unique_id=936068823]
@@ -305,8 +305,8 @@ pixel_size = 0.001
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 8
-outline_render_priority = 7
+render_priority = 9
+outline_render_priority = 8
 text = "?"
 font = SubResource("SystemFont_1ut60")
 font_size = 70
@@ -318,10 +318,10 @@ pixel_size = 0.12
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 7
+render_priority = 8
 texture = ExtResource("5_gy1m2")
 
-[node name="PauseUnpauseButton" parent="Remote/Remote" index="4" unique_id=785223156]
+[node name="PauseUnpauseButton" parent="Remote/Remote" index="4" unique_id=2142567429]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.03563255, 0.014)
 layers = 2
 instance_shader_parameters/color = Color(0.89411765, 0.89411765, 0.89411765, 1)
@@ -330,13 +330,13 @@ surface_material_override/0 = ExtResource("2_sxhsy")
 [node name="PauseSprite" type="Sprite3D" parent="Remote/Remote/PauseUnpauseButton" index="0" unique_id=518008540]
 transform = Transform3D(0.0040000007, 0, 0, 0, -1.7484558e-10, -0.004, 0, 0.0040000007, -1.7484555e-10, 0.00029478967, 0.0010237992, 0)
 no_depth_test = true
-render_priority = 6
+render_priority = 7
 texture = ExtResource("6_n0ev1")
 
 [node name="PlaySprite" type="Sprite3D" parent="Remote/Remote/PauseUnpauseButton" index="1" unique_id=1537433234]
 transform = Transform3D(0.0040000007, 0, 0, 0, -1.7484558e-10, -0.004, 0, 0.0040000007, -1.7484555e-10, 0.001, 0.001, 0)
 no_depth_test = true
-render_priority = 6
+render_priority = 7
 texture = ExtResource("7_4qv8s")
 
 [node name="PauseUnpauseKeyLabel" type="Label3D" parent="Remote/Remote/PauseUnpauseButton" index="2" unique_id=780736421]
@@ -345,8 +345,8 @@ pixel_size = 0.001
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 8
-outline_render_priority = 7
+render_priority = 9
+outline_render_priority = 8
 text = "?"
 font = SubResource("SystemFont_1ut60")
 font_size = 70
@@ -358,10 +358,10 @@ pixel_size = 0.15
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 7
+render_priority = 8
 texture = ExtResource("8_qtct0")
 
-[node name="ReverseButton" parent="Remote/Remote" index="5" unique_id=1188327423]
+[node name="ReverseButton" parent="Remote/Remote" index="5" unique_id=1185525685]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -0.04, 0.03563255, 0.014)
 layers = 2
 instance_shader_parameters/color = Color(0.89492244, 0.89492244, 0.8949224, 1)
@@ -371,7 +371,7 @@ surface_material_override/0 = ExtResource("2_sxhsy")
 transform = Transform3D(0.004, 0, 0, 0, -1.7484555e-10, -0.004, 0, 0.004, -1.7484555e-10, -0.001, 0.001, 0)
 flip_h = true
 no_depth_test = true
-render_priority = 6
+render_priority = 7
 texture = ExtResource("4_n054j")
 
 [node name="ReverseKeyLabel" type="Label3D" parent="Remote/Remote/ReverseButton" index="1" unique_id=902607029]
@@ -380,8 +380,8 @@ pixel_size = 0.001
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 8
-outline_render_priority = 7
+render_priority = 9
+outline_render_priority = 8
 text = "?"
 font = SubResource("SystemFont_1ut60")
 font_size = 70
@@ -393,10 +393,10 @@ pixel_size = 0.12
 billboard = 1
 no_depth_test = true
 fixed_size = true
-render_priority = 7
+render_priority = 8
 texture = ExtResource("9_dni0q")
 
-[node name="Screen" parent="Remote/Remote" index="6" unique_id=1106497483]
+[node name="Screen" parent="Remote/Remote" index="6" unique_id=2056986451]
 layers = 2
 surface_material_override/0 = SubResource("StandardMaterial3D_n054j")
 

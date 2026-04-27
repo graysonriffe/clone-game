@@ -88,6 +88,8 @@ var stepProgress: float
 @onready var collisionDetector: Area3D = $CollisionDetector
 @onready var footstepsPlayer: AudioStreamPlayer3D = $FootstepsPlayer
 
+@onready var cloneGame: CloneGame = get_tree().root.find_child("CloneGame", true, false)
+
 func _ready() -> void:
     paused = true
     color = ActorColor.White

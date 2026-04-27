@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyqwd65f0p7li"
-path.s3tc="res://.godot/imported/nobranch.png-99481bc166403119f247539e95810455.s3tc.ctex"
+uid="uid://74o483t8jq0g"
+path.s3tc="res://.godot/imported/gamepad_left_stick_left.png-400ce21e2838bbdd514a61b558310347.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/ui_textures/nobranch.png"
-dest_files=["res://.godot/imported/nobranch.png-99481bc166403119f247539e95810455.s3tc.ctex"]
+source_file="res://assets/textures/gamepad_left_stick_left.png"
+dest_files=["res://.godot/imported/gamepad_left_stick_left.png-400ce21e2838bbdd514a61b558310347.s3tc.ctex"]
 
 [params]
 

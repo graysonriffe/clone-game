@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bci0oj36yaoce" path="res://assets/materials/metal_sheet/Metal_Sheet_basecolor.png" id="2_6ad1t"]
 [ext_resource type="Texture2D" uid="uid://dhn41akbn8mqe" path="res://assets/materials/metal_sheet/Metal_Sheet_normal.png" id="3_wbyn4"]
 [ext_resource type="Texture2D" uid="uid://bnm7m0hvvu4vy" path="res://assets/materials/metal_sheet/Metal_Sheet_roughness.png" id="4_8fdqi"]
-[ext_resource type="Texture2D" uid="uid://cou3fybr2kn1q" path="res://assets/ui_textures/title.png" id="5_ofrqx"]
+[ext_resource type="Texture2D" uid="uid://cou3fybr2kn1q" path="res://assets/textures/title.png" id="5_ofrqx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vue75"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -52,34 +52,34 @@ environment = SubResource("Environment_l6cm7")
 [node name="Remote" parent="." unique_id=1358912617 instance=ExtResource("1_yj20m")]
 transform = Transform3D(0.95479184, 0, -0.29727483, 0, 1, 0, 0.29727483, 0, 0.95479184, 0.0762136, -0.07747567, -0.14401063)
 
-[node name="BranchKeyLabel" parent="Remote/Remote/Remote/BranchButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 516542695) index="1" unique_id=1485185232]
+[node name="BranchKeyLabel" parent="Remote/Remote/Remote/BranchButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 921044645) index="1" unique_id=1485185232]
 visible = false
 
-[node name="BranchGamepadSprite" parent="Remote/Remote/Remote/BranchButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 516542695) index="2" unique_id=1346002764]
+[node name="BranchGamepadSprite" parent="Remote/Remote/Remote/BranchButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 921044645) index="2" unique_id=1346002764]
 visible = false
 
-[node name="ForwardKeyLabel" parent="Remote/Remote/Remote/ForwardButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1904274767) index="1" unique_id=936068823]
+[node name="ForwardKeyLabel" parent="Remote/Remote/Remote/ForwardButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 671586722) index="1" unique_id=936068823]
 visible = false
 
-[node name="ForwardGamepadSprite" parent="Remote/Remote/Remote/ForwardButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1904274767) index="2" unique_id=75115878]
+[node name="ForwardGamepadSprite" parent="Remote/Remote/Remote/ForwardButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 671586722) index="2" unique_id=75115878]
 visible = false
 
-[node name="PauseSprite" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 785223156) index="0" unique_id=518008540]
+[node name="PauseSprite" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 2142567429) index="0" unique_id=518008540]
 visible = false
 
-[node name="PauseUnpauseKeyLabel" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 785223156) index="2" unique_id=780736421]
+[node name="PauseUnpauseKeyLabel" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 2142567429) index="2" unique_id=780736421]
 visible = false
 
-[node name="PauseUnpauseGamepadSprite" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 785223156) index="3" unique_id=1172112823]
+[node name="PauseUnpauseGamepadSprite" parent="Remote/Remote/Remote/PauseUnpauseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 2142567429) index="3" unique_id=1172112823]
 visible = false
 
-[node name="ReverseKeyLabel" parent="Remote/Remote/Remote/ReverseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1188327423) index="1" unique_id=902607029]
+[node name="ReverseKeyLabel" parent="Remote/Remote/Remote/ReverseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1185525685) index="1" unique_id=902607029]
 visible = false
 
-[node name="ReverseGamepadSprite" parent="Remote/Remote/Remote/ReverseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1188327423) index="2" unique_id=415173814]
+[node name="ReverseGamepadSprite" parent="Remote/Remote/Remote/ReverseButton" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1185525685) index="2" unique_id=415173814]
 visible = false
 
-[node name="Screen" parent="Remote/Remote/Remote" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1510074190) index="6" unique_id=1106497483]
+[node name="Screen" parent="Remote/Remote/Remote" parent_id_path=PackedInt32Array(1358912617, 1028460440, 1123459916) index="6" unique_id=2056986451]
 surface_material_override/0 = SubResource("StandardMaterial3D_6ad1t")
 
 [node name="RemoteTime" parent="Remote/Remote/Remote/Screen/RemoteViewport/RemoteUI" parent_id_path=PackedInt32Array(1358912617, 685619501) index="2" unique_id=865539577]

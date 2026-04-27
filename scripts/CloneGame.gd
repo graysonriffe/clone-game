@@ -5,9 +5,10 @@ extends Node
 # Enums
 enum Gamestate {
     MainMenu, # Main menu
+    Loading, # Level is changing
     Playing, # Time is passing, player is moving
     Paused, # Time is paused, player is moving timeline or in the pause menu
-    Loading # Level is changing
+    Transition # On level win screen
 }
 
 enum InputMethod {
@@ -16,7 +17,7 @@ enum InputMethod {
 }
 
 # Constants
-const NUM_LEVELS: int = 1
+const NUM_LEVELS: int = 2
 const LEVEL_PATH: String = "res://scenes/levels/"
 
 const CLONE_SCENE: PackedScene = preload("res://scenes/actor/clone.tscn")
@@ -27,7 +28,7 @@ var gamestate: Gamestate
 # Level variables
 var currentLevel: int
 
-# Time variables
+# Current level state variables
 var timeIndex: int
 
 var timelineData: TimelineData;
@@ -39,6 +40,8 @@ var scrubTime: float
 # Keeps track of available clones of each clone
 var availableClonesHistory: Dictionary[int, int]
 
+var goal: Area3D
+
 # All NoBranchZones in the current level
 var noBranchZones: Array[Area3D]
 
@@ -46,6 +49,7 @@ var lastMousePosition: Vector2i
 
 var inputMethod: InputMethod
 
+# Main menu variables
 var mainMenuRemoteMouseArea: Area3D
 var mainMenu: PanelContainer
 var mainMenuPlayButton: Button
@@ -71,9 +75,17 @@ var mainMenuPause: PanelContainer
 
 @onready var timelineUI: Control = find_child("TimelineUI", true, false)
 @onready var timelineSlider: HSlider = find_child("TimelineSlider", true, false)
+
 @onready var interactPrompt: PanelContainer = find_child("InteractPrompt", true, false)
 @onready var interactKeyHint: MarginContainer = find_child("InteractKeyLabelMargin", true, false)
 @onready var interactGamepadHint: MarginContainer = find_child("InteractGamepadIconMargin", true, false)
+
+@onready var levelWin: PanelContainer = find_child("LevelWin", true, false)
+@onready var levelWinNextLevelButton: Button = find_child("LevelWinNextLevelButton", true, false)
+@onready var levelWinExitButton: Button = find_child("LevelWinExitButton", true, false)
+
+@onready var gameWin: PanelContainer = find_child("GameWin", true, false)
+@onready var gameWinExitButton: Button = find_child("GameWinExitButton", true, false)
 
 @onready var remoteMouseArea: Area3D = find_child("MouseArea", true, false)
 @onready var remoteViewport: SubViewport = find_child("RemoteViewport", true, false)
@@ -113,11 +125,21 @@ func _ready() -> void:
     process_physics_priority = 1 # Makes CloneGame update after other stuff like Actors each physics process
     
     timelineUI.hide()
+    interactPrompt.hide()
+    levelWin.hide()
+    gameWin.hide()
     
     remoteMainMenu.hide()
     remotePauseMenu.hide()
     remoteCredits.hide()
     remoteSettings.hide()
+    
+    # Level win menu setup
+    levelWinNextLevelButton.pressed.connect(_nextLevel)
+    levelWinExitButton.pressed.connect(_setupMainMenu)
+    
+    # Game win menu setup
+    gameWinExitButton.pressed.connect(_setupMainMenu)
     
     # Remote pause menu setup
     remotePauseSettingsButton.pressed.connect(_remoteSettingsButtonPressed)
@@ -135,7 +157,7 @@ func _ready() -> void:
     
     remoteMouseArea.input_event.connect(_remoteInputEvent)
     
-    lastMousePosition = Vector2i(-1, -1)
+    lastMousePosition = get_viewport().get_visible_rect().size / 2
     
     inputMethod = InputMethod.MouseAndKeyboard
     
@@ -153,7 +175,7 @@ func _physics_process(delta: float) -> void:
     
     _checkInputMethod()
     
-    if gamestate != Gamestate.MainMenu:
+    if gamestate == Gamestate.Playing or gamestate == Gamestate.Paused:
         _updateUI()
 
 
@@ -165,6 +187,7 @@ func _setupMainMenu():
     
     gamestate = Gamestate.MainMenu
     
+    player.hide()
     player.process_mode = Node.PROCESS_MODE_DISABLED
     
     await _changeScene("res://scenes/main_menu_scene.tscn")
@@ -174,6 +197,8 @@ func _setupMainMenu():
     mainMenuCamera.current = true
     
     interactPrompt.hide()
+    levelWin.hide()
+    gameWin.hide()
     
     remoteViewport = sceneContainer.find_child("RemoteViewport", true, false)
     mainMenuRemoteMouseArea = sceneContainer.find_child("MouseArea", true, false)
@@ -247,15 +272,12 @@ func _handleInput(delta: float):
 func _setupLevel(newLevelNumber: int):
     gamestate = Gamestate.Loading
     
-    # TODO: Move clone deletion somewhere else later
-    _deleteAllClones()
-    
     await _changeScene(LEVEL_PATH + "level_" + str(newLevelNumber) + ".tscn")
     
     # Teleport player to PlayerStart marker
-    # TODO: Probably move this later to another function
     var playerStart: Node3D = sceneContainer.find_child("PlayerStart", true, false)
     player.reset(playerStart.global_transform)
+    player.show()
     
     timeIndex = 0
     timelineData = TimelineData.new()
@@ -269,6 +291,9 @@ func _setupLevel(newLevelNumber: int):
     
     availableClonesHistory.clear()
     availableClonesHistory[0] = 2
+    
+    goal = sceneContainer.find_child("Goal", true, false)
+    goal.body_entered.connect(_goalEntered)
     
     # Get all NoBranchZones
     noBranchZones.clear()
@@ -286,10 +311,16 @@ func _setupLevel(newLevelNumber: int):
     remoteSettingsMasterVolume.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master"))
     remoteSettingsMusicVolume.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music")) * 4
     
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
+    player.pause(false) # Unpause
+    
     gamestate = Gamestate.Playing
 
 
 func _changeScene(scene: String):
+    _deleteAllClones()
+    
     var levelScene: PackedScene = load(scene)
     
     # Unload current level
@@ -350,16 +381,10 @@ func _doPause():
     remotePauseMenu.show()
     remotePauseSettingsButton.grab_focus()
     
-    if lastMousePosition == Vector2i(-1, -1):
-        lastMousePosition = get_viewport().get_visible_rect().size / 2
+    _checkInputMethod()
     
-    match inputMethod:
-        InputMethod.MouseAndKeyboard:
-            Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-            get_viewport().warp_mouse(lastMousePosition)
-        
-        InputMethod.Gamepad:
-            Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+    if inputMethod == InputMethod.MouseAndKeyboard:
+        get_viewport().warp_mouse(lastMousePosition)
 
 
 func _doUnpause() -> bool:
@@ -653,6 +678,38 @@ func _recordCloneData():
     currentCloneData.pushBackInteract(timeIndex, player.getInteractButton())
 
 
+func _goalEntered(body: Node3D):
+    if gamestate == Gamestate.Playing and body == player and timeIndex != 0:
+        _endLevel()
+
+
+func _endLevel():
+    gamestate = Gamestate.Transition
+    
+    _checkInputMethod()
+    
+    player.pause()
+    
+    if currentLevel == NUM_LEVELS:
+        _win()
+    
+    else:
+        levelWin.show()
+        levelWinNextLevelButton.grab_focus()
+
+
+func _nextLevel():
+    levelWin.hide()
+    
+    currentLevel += 1
+    _setupLevel(currentLevel)
+
+
+func _win():
+    gameWin.show()
+    gameWinExitButton.grab_focus()
+
+
 func _checkInputMethod():
     if not (gamestate != Gamestate.Playing and gamestate != Gamestate.Loading):
         return
@@ -810,11 +867,9 @@ func _setKeyLabels():
 # UI Functions
 func _play():
     player.process_mode = Node.PROCESS_MODE_INHERIT
-    _setupLevel(1)
     
-    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-    
-    player.pause(false) # Unpause
+    currentLevel = 1
+    _setupLevel(currentLevel)
 
 
 func _mainSettingsButtonPressed():

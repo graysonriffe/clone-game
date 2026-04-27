@@ -3,7 +3,7 @@ render_mode unshaded, ambient_light_disabled, cull_disabled;
 
 uniform float lines = 30.0;
 
-uniform vec4 color: source_color;
+instance uniform vec4 color: source_color;
 
 uniform sampler2D noise_texture;
 

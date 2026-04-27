@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dqh7qjcvou74b"]
 
-[ext_resource type="Material" uid="uid://btdxxahuhlo56" path="res://assets/materials/no_branch_zone/no_branch_zone.tres" id="1_gbu8c"]
+[ext_resource type="Material" uid="uid://btdxxahuhlo56" path="res://assets/materials/static_area/static_area.tres" id="1_gbu8c"]
 [ext_resource type="Script" uid="uid://bnw0s0g0rfe6b" path="res://scripts/level_components/NoBranchZone.gd" id="1_sm0jv"]
-[ext_resource type="Texture2D" uid="uid://dyqwd65f0p7li" path="res://assets/ui_textures/nobranch.png" id="3_sm0jv"]
+[ext_resource type="Texture2D" uid="uid://dyqwd65f0p7li" path="res://assets/textures/nobranch.png" id="3_sm0jv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ty64k"]
 
@@ -45,6 +45,7 @@ script = ExtResource("1_sm0jv")
 shape = SubResource("BoxShape3D_ty64k")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=981904835]
+instance_shader_parameters/color = Color(0, 0.6313726, 0.96862745, 0.15294118)
 mesh = SubResource("BoxMesh_gbu8c")
 surface_material_override/0 = ExtResource("1_gbu8c")
 

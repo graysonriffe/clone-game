@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://74o483t8jq0g"
-path.s3tc="res://.godot/imported/gamepad_left_stick_left.png-fbba1234e840e8888e763a1325f52158.s3tc.ctex"
+uid="uid://d2ve2ume1eqcp"
+path.s3tc="res://.godot/imported/gamepad_button_right.png-9f7c0d3c12a8b9f78b67eefb5a40b7a9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/ui_textures/gamepad_left_stick_left.png"
-dest_files=["res://.godot/imported/gamepad_left_stick_left.png-fbba1234e840e8888e763a1325f52158.s3tc.ctex"]
+source_file="res://assets/textures/gamepad_button_right.png"
+dest_files=["res://.godot/imported/gamepad_button_right.png-9f7c0d3c12a8b9f78b67eefb5a40b7a9.s3tc.ctex"]
 
 [params]
 

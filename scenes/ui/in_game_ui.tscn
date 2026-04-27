@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dmgudqgytltyu"]
 
-[ext_resource type="Texture2D" uid="uid://b6v1pefmln3gq" path="res://assets/ui_textures/gamepad_button_left.png" id="1_uyty4"]
+[ext_resource type="Texture2D" uid="uid://b6v1pefmln3gq" path="res://assets/textures/gamepad_button_left.png" id="1_uyty4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhy8o"]
 content_margin_left = 0.0
@@ -218,3 +218,66 @@ layout_mode = 2
 theme_override_constants/outline_size = 7
 theme_override_font_sizes/font_size = 35
 text = "Interact"
+
+[node name="LevelWin" type="PanelContainer" parent="." unique_id=1085636728]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -25.5
+offset_right = 170.0
+offset_bottom = 25.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelWinMargin" type="MarginContainer" parent="LevelWin" unique_id=1514783638]
+layout_mode = 2
+
+[node name="LevelWinVBox" type="VBoxContainer" parent="LevelWin/LevelWinMargin" unique_id=490363626]
+layout_mode = 2
+
+[node name="LevelWinLabel" type="Label" parent="LevelWin/LevelWinMargin/LevelWinVBox" unique_id=1948361266]
+layout_mode = 2
+text = "Level Complete!"
+horizontal_alignment = 1
+
+[node name="LevelWinNextLevelButton" type="Button" parent="LevelWin/LevelWinMargin/LevelWinVBox" unique_id=289831965]
+layout_mode = 2
+text = "Next Level"
+
+[node name="LevelWinExitButton" type="Button" parent="LevelWin/LevelWinMargin/LevelWinVBox" unique_id=1017722098]
+layout_mode = 2
+text = "Exit"
+
+[node name="GameWin" type="PanelContainer" parent="." unique_id=1265988668]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -93.0
+offset_top = -52.0
+offset_right = 93.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameWinMargin" type="MarginContainer" parent="GameWin" unique_id=1358132796]
+layout_mode = 2
+
+[node name="GameWinVBox" type="VBoxContainer" parent="GameWin/GameWinMargin" unique_id=1700624180]
+layout_mode = 2
+
+[node name="GameWinLabel" type="Label" parent="GameWin/GameWinMargin/GameWinVBox" unique_id=1796566463]
+layout_mode = 2
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="GameWinExitButton" type="Button" parent="GameWin/GameWinMargin/GameWinVBox" unique_id=366682226]
+layout_mode = 2
+text = "Yay!"
