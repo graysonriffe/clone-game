@@ -13,10 +13,10 @@ font_names = PackedStringArray("Consolas")
 [node name="LevelTemplate" unique_id=1254966120 instance=ExtResource("1_puuuv")]
 
 [node name="PlayerStart" parent="." index="2" unique_id=1770252819]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 14)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 8, 12)
 
 [node name="Goal" parent="." index="3" unique_id=823588948]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 8, -7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 8, -6)
 
 [node name="OmniLight3D" parent="Lights" parent_id_path=PackedInt32Array(2107385631) index="0" unique_id=1834058416]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.466644, 0)
@@ -121,7 +121,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 8, -3)
 activators = [NodePath("../Lever"), NodePath("../Lever5"), NodePath("../Lever7")]
 deactivators = [NodePath("../Lever2"), NodePath("../Lever3"), NodePath("../Lever4"), NodePath("../Lever6"), NodePath("../Lever8"), NodePath("../Lever9")]
 
-[node name="KMTutorial1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="14" unique_id=1994170696]
+[node name="Tutorial1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="14" unique_id=2000010797]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 10.5, 15.99)
+render_priority = 1
+outline_render_priority = 0
+text = "Branching is not possible
+while in a
+No-Branch Zone"
+font = SubResource("SystemFont_oc4kc")
+font_size = 50
+outline_size = 15
+autowrap_trim_flags = 64
+
+[node name="KMTutorial2" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="15" unique_id=1994170696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.877301, 4.001)
 render_priority = 1
 outline_render_priority = 0
@@ -134,7 +146,7 @@ font_size = 50
 outline_size = 15
 autowrap_trim_flags = 64
 
-[node name="GamepadTutorial1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="15" unique_id=1050355929]
+[node name="GamepadTutorial2" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="16" unique_id=1050355929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.877301, 4.001)
 render_priority = 1
 outline_render_priority = 0
@@ -147,12 +159,12 @@ font_size = 50
 outline_size = 15
 autowrap_trim_flags = 0
 
-[node name="Sprite3D" type="Sprite3D" parent="World/GamepadTutorial1" index="0" unique_id=758548971]
+[node name="Sprite3D" type="Sprite3D" parent="World/GamepadTutorial2" index="0" unique_id=758548971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6840155, -0.36710596, -5.722046e-06)
 pixel_size = 0.003
 texture = ExtResource("6_qpwj6")
 
-[node name="LeverText1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="16" unique_id=2076783903]
+[node name="LeverText1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="17" unique_id=2076783903]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9.995, 2.877, 14)
 render_priority = 1
 outline_render_priority = 0
@@ -163,7 +175,7 @@ font = SubResource("SystemFont_oc4kc")
 font_size = 50
 outline_size = 15
 
-[node name="LeverText2" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="17" unique_id=1881361062]
+[node name="LeverText2" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="18" unique_id=1881361062]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.877, 15.98)
 render_priority = 1
 outline_render_priority = 0
@@ -174,7 +186,7 @@ font = SubResource("SystemFont_oc4kc")
 font_size = 50
 outline_size = 15
 
-[node name="LeverText3" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="18" unique_id=1399541808]
+[node name="LeverText3" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="19" unique_id=1399541808]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -9.999, 2.877, 14)
 render_priority = 1
 outline_render_priority = 0
