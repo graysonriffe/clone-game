@@ -678,7 +678,7 @@ mesh = SubResource("SphereMesh_0jpl5")
 
 [node name="InteractRayCast" type="RayCast3D" parent="Head" unique_id=2009332292]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.241, 0)
-target_position = Vector3(0, 0, -1.5)
+target_position = Vector3(0, 0, -2)
 
 [node name="FootstepsPlayer" type="AudioStreamPlayer3D" parent="." unique_id=324658176]
 stream = ExtResource("3_7vwln")

@@ -15,7 +15,7 @@ font_names = PackedStringArray("Consolas")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18)
 
 [node name="Goal" parent="." index="3" unique_id=823588948]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 12, -11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 12, -10)
 
 [node name="OmniLight3D" parent="Lights" parent_id_path=PackedInt32Array(2107385631) index="0" unique_id=1834058416]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, 0)

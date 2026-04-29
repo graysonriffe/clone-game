@@ -18,7 +18,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 6.0189238, 0)
 
 [node name="Goal" parent="." index="3" unique_id=823588948]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 6, 13)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 6, 12)
 
 [node name="OmniLight3D" parent="Lights" parent_id_path=PackedInt32Array(2107385631) index="0" unique_id=1834058416]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.344259, 11)
@@ -188,7 +188,19 @@ color = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 9.046326, 5.0004997)
 size = Vector3(7.6396484, 6.1794434, 0.001)
 
-[node name="Tutorial1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="17" unique_id=451042670]
+[node name="Tutorial1" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="17" unique_id=574473031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 8.5, -11.99)
+render_priority = 1
+outline_render_priority = 0
+text = "Rewinding is
+not necessary
+to branch."
+font = SubResource("SystemFont_6761a")
+font_size = 50
+outline_size = 15
+autowrap_trim_flags = 64
+
+[node name="Tutorial2" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="18" unique_id=451042670]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -19.999)
 render_priority = 1
 outline_render_priority = 0
@@ -197,30 +209,37 @@ Colors convey this.
 
 White → Green → Yellow → Red
 
-The bulb shows your color."
+The remote's bulb
+shows your color."
 font = SubResource("SystemFont_6761a")
 font_size = 50
 outline_size = 15
 autowrap_trim_flags = 64
 
-[node name="Tutorial2" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="18" unique_id=225991917]
+[node name="Tutorial3" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="19" unique_id=225991917]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 2, -19.999)
 render_priority = 1
 outline_render_priority = 0
-text = "The remote shows that every
-clone can create 2 more.
+text = "The ☺ in the remote shows
+that every clone
+can create 2 more.
 
-Except for red clones."
+Red clones cannot
+create any more clones."
 font = SubResource("SystemFont_6761a")
 font_size = 50
 outline_size = 15
 autowrap_trim_flags = 64
 
-[node name="Tutorial3" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="19" unique_id=571759041]
+[node name="Tutorial4" type="Label3D" parent="World" parent_id_path=PackedInt32Array(554948861) index="20" unique_id=571759041]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 2, -19.999)
 render_priority = 1
 outline_render_priority = 0
-text = "Branching order matters."
+text = "Branching order matters.
+
+Rewind to become
+a previous color to access
+more clones."
 font = SubResource("SystemFont_6761a")
 font_size = 50
 outline_size = 15
